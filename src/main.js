@@ -3,18 +3,31 @@
 factions = [];
 systems = [];
 ships = [];
-NO_FACTION = new Faction('No Faction', {r:100,g:100,b:100});
-TEST_FACTION1 = new Faction('Test1 Faction', {r:255,g:0,b:0});
-TEST_FACTION2 = new Faction('Test2 Faction', { r: 0, g: 255, b: 0 });
+
+
+NO_FACTION = new Faction('No Faction', { r: 100, g: 100, b: 100 });
+
+factions.push(new Faction('Test1 Faction', { r: 255, g: 0, b: 0 }));
+factions.push(new Faction('Test2 Faction', { r: 0, g: 255, b: 0 }));
+factions.push(new Faction('Test3 Faction', { r: 0, g: 255, b: 255 }));
+factions.push(new Faction('Test4 Faction', { r: 255, g: 0, b: 255 }));
+factions.push(new Faction('Test5 Faction', { r: 255, g: 255, b: 0 }));
 
 // screen globals
 SCREEN_X = window.innerWidth;
 SCREEN_Y = window.innerHeight;
 
-function generateWorld(star_max_dist){
+
+// world gen params
+N_SHIPS = 100;
+
+
+
+function generateWorld(star_max_dist) {
+
 	var sys = [];
 	// use poisson sampling to get an array of position vectors
-	var pos_vectors = generatePoints(star_max_dist, width, height, 40, 2);
+	var pos_vectors = genPoints(star_max_dist, width, height, 40, 2);
 
 	// create system objects
 	for (var i=0; i<pos_vectors.length; i++){
@@ -28,18 +41,20 @@ function generateWorld(star_max_dist){
 	return sys;
 }
 
-function setup(){
+function setup() {
+
+
 	createCanvas(SCREEN_X, SCREEN_Y);
 	systems = generateWorld(150);
 
-	camera = new Camera(width/2, height/2, width, height);
+	camera = new Camera(width/2, height/2, width, height, zoom=1);
 	cameraInMax = 4;
 	cameraOutMax = 0.05;
 
 	/* spawn ship */
-	for (var i=0; i<250; i++){
+	for (var i=0; i<N_SHIPS; i++){
 		var test_system = int(random(systems.length));
-		ships.push(new Ship(random([TEST_FACTION1, TEST_FACTION2]), test_system, i));
+		ships.push(new Ship(random(factions), test_system, i));
 		systems[test_system].ships.push(i);
 	}
 
@@ -58,7 +73,7 @@ function mousePressed() {
 	*/
 }
 
-function input_handler(){
+function inputHandler(){
 	/*update camera zoom*/
 	var cameraDelta = 0;
 	if (keyIsDown(189)){
@@ -92,61 +107,85 @@ function input_handler(){
 	camera.zoom = constrain(camera.zoom, cameraOutMax, cameraInMax);
 }
 
-function iterate_system_connections(){
+function iterateSystemConnections(){
 	for (var i=0 ; i<systems.length; i++){
 		push();
 		stroke(50);
 		for (var j=0; j<systems[i].near.length; j++){
-			if (systems[i].near[j] < i){
-				var adj1 = camera.w2s(systems[i].loc);
-				var adj2 = camera.w2s(systems[systems[i].near[j]].loc);
-				line(adj1.x, adj1.y, adj2.x, adj2.y);
+			if (systems[i].near[j] < i) {
+
+				// frustrum cull lines
+				if (camera.inBounds(systems[i].loc) || camera.inBounds(systems[systems[i].near[j]].loc)) {
+					// draw line
+					var adj1 = camera.w2s(systems[i].loc);
+					var adj2 = camera.w2s(systems[systems[i].near[j]].loc);
+					line(adj1.x, adj1.y, adj2.x, adj2.y);
+                }
+
+				// TODO: STOP DOUBLE DRAWING LINES
+
 			}
 		}
 		pop();
 	}
 }
 
-function iterate_systems(){
+function iterateSystems(){
 	// draw systems themselves
-	for (var i=0 ; i<systems.length; i++){
-		systems[i].draw();
-		var sysLoc = systems[i].loc;
-		var screenLoc = camera.w2s(sysLoc);
+	for (var i = 0; i < systems.length; i++){
 
-		/* system world coordinates
-		fill(255);
-		text('x:'+str(sysLoc.x).slice(0, 3) + 'y:' + str(sysLoc.y).slice(0, 3), screenLoc.x, screenLoc.y);
-		*/
+
+		// check if system in camera bounds
+		if (camera.inBounds(systems[i].loc)) {
+			systems[i].draw();
+        }
 	}
 }
 
-function iterate_ships(){
-	for (var i=0; i<ships.length;i++){
+function iterateShips(){
+	for (var i = 0; i < ships.length; i++){
+
+
 		ships[i].update();
-		if (!(ships[i].inWarp)){
-			if (random(500) < 1){
+
+		// random walk the ships
+		if (!(ships[i].inWarp)) {
+			if (random(500) < 1) {
 				ships[i].travel(random(systems[ships[i].system].near));
 			}
 		}
+
+		// frustrum cull the ships
+		else if (camera.inBounds(ships[i].loc)) {
+			ships[i].draw();
+        }
 	}
 }
 
-function debug_info(){
+function debugInfo(){
 
 	push();
 	stroke(255);
 	fill(255);
+	noStroke();
 	textFont('Georgia');
-	var digits = 3;
-	text('camera.zoom :  ' + (''+camera.zoom).slice(0, digits), 25, 25);
-	text('offset :  ' + str((''+camera.xOffset).slice(0, digits)) + ' , ' + str((''+camera.yOffset).slice(0, digits)), 25, 40);
-	text('FPS:  ' + str(frameRate()).slice(0,5), 25, 55);
+	text('camera.zoom :  ' + camera.zoom.toFixed(0), 25, 25);
+	text('offset :  ' + camera.xOffset.toFixed(0) + ' , ' + camera.yOffset.toFixed(0), 25, 40);
+	text('FPS:  ' + frameRate().toFixed(0), 25, 55);
 	pop();
 	push();
 
 
-
+	//system world coordinates
+	/*
+	for (var i = 0; i < systems.length; i++) {
+		var sysLoc = systems[i].loc;
+		var screenLoc = camera.w2s(sysLoc);
+		fill(255);
+		text('x:' + sysLoc.x.toFixed(0) + '\ny:' + sysLoc.y.toFixed(0), screenLoc.x, screenLoc.y);
+	}
+	*/
+	/*
 	// find closest star (index: mainSys)
 	var selectionRadius = 40**2;
 	var mouseVector = {x:mouseX,y:mouseY};
@@ -161,6 +200,8 @@ function debug_info(){
 			systems[mainSys].draw_desc();
 		}
 	}
+
+
 	// else find closest ship and hightlight 
 	else {
 		mainShip = getClosestObject(worldMouseCoords, ships);
@@ -172,21 +213,19 @@ function debug_info(){
 
 		}
 	}
-
+	*/
 
 }
 
 
 function draw() {
 
-
-
 	background(0);
-	input_handler();
+	inputHandler();
 	if (camera.zoom>0.2){
-		iterate_system_connections();
+		iterateSystemConnections();
 	}
-	iterate_systems();
-	iterate_ships();
-	debug_info();
+	iterateSystems();
+	iterateShips();
+	debugInfo();
 }

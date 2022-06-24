@@ -66,7 +66,7 @@ function lerpVector (c1, c2, t) {
 }
 
 /* poisson disc sampling algorithm */
-function generatePoints(radius, max_x, max_y, buffer = 10, numSamplesBeforeRejection = 30){
+function genPoints(radius, max_x, max_y, buffer = 10, numSamplesBeforeRejection = 30){
 
 	/* create a grid */
 	var cellSize = radius/sqrt(2);

@@ -80,9 +80,12 @@ class System {
 		vertex(size, 0);
 		endShape(CLOSE);
 		pop();
+
 	}
 	draw() {
 		/* draw ships*/
+
+		/*
 		for (var i = 0; i < this.ships.length; i++) {
 			var offset = {	
 				x:int(i / 3) * 8 * (1/camera.zoom),
@@ -90,13 +93,13 @@ class System {
 			}
 			ships[this.ships[i]].draw(offset);
 		}
-
+		*/
 		/*draw self*/
 		this.draw_diamond(4);
 		if (camera.zoom>0.9){
 			this.draw_desc();
 		}
-
+		
 	}
 
 	draw_desc(){
@@ -142,6 +145,7 @@ class Ship {
 		this.system = null;
 		this.warpProgress=0;
 	}
+
 	finish_travel(){
 		this.system = this.warpTo;
 		this.warpTo = null;
@@ -164,7 +168,6 @@ class Ship {
 			if (this.warpProgress >= this.warpDistance) {
 				this.finish_travel();
 			}
-			this.draw();
 		}
 	}
 	draw_desc(){
@@ -203,11 +206,14 @@ class Ship {
 }
 
 class Camera {
-	constructor(xOffset, yOffset, screenW, screenH, zoomSpeed = 0.001, moveSpeed = 0.1, zoom=1){
+	constructor(xOffset, yOffset, screenW, screenH, zoom = 1, zoomSpeed = 0.001, moveSpeed = 0.1) {
+
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+
 		this.screenW = screenW;
 		this.screenH = screenH;
+
 		this.zoom = zoom;
 
 		this.moveSpeed = moveSpeed;
@@ -221,6 +227,29 @@ class Camera {
 		return {x:(this.screenW/2) + (-this.xOffset + worldC.x) * this.zoom,
 				y:(this.screenH/2) + (-this.yOffset + worldC.y) * this.zoom};
 	}
+
+	/* check if worldC in camera bounds */
+	inBounds(worldC) {
+
+		let halfWidth = this.screenW / 2;
+		let halfHeight = this.screenH / 2;
+
+		// get world camera bounds
+		let minX = this.xOffset - halfWidth / this.zoom;
+		let maxX = this.xOffset + halfWidth / this.zoom;
+
+		let minY = this.yOffset - halfHeight / this.zoom;
+		let maxY = this.yOffset + halfHeight / this.zoom;
+
+		// check bounds
+
+		if (worldC.x >= minX && worldC.x <= maxX) {
+			if (worldC.y >= minY && worldC.y <= maxY) {
+				return true;
+            }
+		}
+		return false;
+    }
 }
 
 
