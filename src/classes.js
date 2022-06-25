@@ -83,9 +83,9 @@ class System {
 
 	}
 	draw() {
-		/* draw ships*/
 
-		/*
+
+		/* draw ships*/
 		for (var i = 0; i < this.ships.length; i++) {
 			var offset = {	
 				x:int(i / 3) * 8 * (1/camera.zoom),
@@ -93,7 +93,7 @@ class System {
 			}
 			ships[this.ships[i]].draw(offset);
 		}
-		*/
+		
 		/*draw self*/
 		this.draw_diamond(4);
 		if (camera.zoom>0.9){
