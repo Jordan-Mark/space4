@@ -111,8 +111,11 @@ function iterateSystemConnections(){
 	for (var i=0 ; i<systems.length; i++){
 		push();
 		stroke(50);
-		for (var j=0; j<systems[i].near.length; j++){
-			if (systems[i].near[j] < i) {
+
+		for (var j = 0; j < systems[i].near.length; j++){
+
+			// check to not double-draw lines
+			if (systems[i].near[j] > i) {
 
 				// frustrum cull lines
 				if (camera.inBounds(systems[i].loc) || camera.inBounds(systems[systems[i].near[j]].loc)) {
@@ -121,8 +124,6 @@ function iterateSystemConnections(){
 					var adj2 = camera.w2s(systems[systems[i].near[j]].loc);
 					line(adj1.x, adj1.y, adj2.x, adj2.y);
                 }
-
-				// TODO: STOP DOUBLE DRAWING LINES
 
 			}
 		}
