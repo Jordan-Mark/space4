@@ -101,7 +101,7 @@ class System {
 		
 		/*draw self*/
 		this.draw_diamond(4);
-		if (camera.zoom>0.9){
+		if (camera.zoom>SYSTEM_DRAW_DESC_ZOOM_THRESHOLD){
 			this.draw_desc();
 		}
 		
@@ -193,8 +193,8 @@ class Ship {
 
 	draw(offset={x:0,y:0}){
 
-		if (camera.zoom > 0.2){
-			
+		if (camera.zoom > SHIP_DRAW_ZOOM_THRESHOLD){
+
 			push();
 			this.faction.fStroke();
 			this.faction.fFill();
