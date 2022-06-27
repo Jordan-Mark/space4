@@ -5,7 +5,7 @@ function generateWorld(star_max_dist) {
 
 	var sys = [];
 	// use poisson sampling to get an array of position vectors
-	var pos_vectors = genPoints(star_max_dist, width, height, 40, 2);
+	var pos_vectors = genPoints(star_max_dist, width, height, WGEN_PS_BUFFER, WGEN_PS_N_SAMPLES_BEFORE_REJECTION);
 
 	// create system objects
 	for (var i=0; i<pos_vectors.length; i++){
@@ -23,7 +23,7 @@ function setup() {
 
 
 	createCanvas(SCREEN_X, SCREEN_Y);
-	systems = generateWorld(150);
+	systems = generateWorld(WGEN_PS_MAX_DIST);
 
 	camera = new Camera(width/2, height/2, width, height, zoom=1);
 	cameraInMax = 4;
@@ -86,6 +86,7 @@ function inputHandler(){
 }
 
 function iterateSystemConnections(){
+
 	for (var i=0 ; i<systems.length; i++){
 
 		push();
@@ -111,6 +112,7 @@ function iterateSystemConnections(){
 }
 
 function iterateSystems(){
+
 	// draw systems themselves
 	for (var i = 0; i < systems.length; i++){
 
@@ -123,8 +125,8 @@ function iterateSystems(){
 }
 
 function iterateShips(){
-	for (var i = 0; i < ships.length; i++){
 
+	for (var i = 0; i < ships.length; i++){
 
 		ships[i].update();
 
