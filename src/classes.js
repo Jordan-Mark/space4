@@ -64,14 +64,15 @@ class System {
 	}
 
 
-
 	draw_diamond(size) {
+
 		// draw diamond
 		push();
 		this.faction.fStroke();
 		this.faction.fFill();
 		var adj = camera.w2s(this.loc);
 		translate(adj.x, adj.y);
+
 		//scale(camera.zoom);
 		beginShape();
 		vertex(0, -size);
@@ -82,12 +83,14 @@ class System {
 		pop();
 
 	}
+
 	draw() {
 
 
 		/* draw ships*/
 		for (var i = 0; i < this.ships.length; i++) {
 			
+			// stack ships
 			var offset = {	
 				x:int(i / 3) * 8 * (1/camera.zoom),
 				y:(i % 3) * 7 * (1/camera.zoom)
@@ -189,7 +192,9 @@ class Ship {
 
 
 	draw(offset={x:0,y:0}){
+
 		if (camera.zoom > 0.2){
+			
 			push();
 			this.faction.fStroke();
 			this.faction.fFill();
