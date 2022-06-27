@@ -87,6 +87,7 @@ function inputHandler(){
 
 function iterateSystemConnections(){
 	for (var i=0 ; i<systems.length; i++){
+
 		push();
 		stroke(50);
 
@@ -148,8 +149,8 @@ function debugInfo(){
 	fill(255);
 	noStroke();
 	textFont('Georgia');
-	text('camera.zoom :  ' + camera.zoom.toFixed(0), 25, 25);
-	text('offset :  ' + camera.xOffset.toFixed(0) + ' , ' + camera.yOffset.toFixed(0), 25, 40);
+	text('camera.zoom :  ' + camera.zoom.toFixed(2), 25, 25);
+	text('camera.offset :  ' + camera.xOffset.toFixed(0) + ' , ' + camera.yOffset.toFixed(0), 25, 40);
 	text('FPS:  ' + frameRate().toFixed(0), 25, 55);
 	pop();
 	push();
