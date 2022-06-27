@@ -87,10 +87,12 @@ class System {
 
 		/* draw ships*/
 		for (var i = 0; i < this.ships.length; i++) {
+			
 			var offset = {	
 				x:int(i / 3) * 8 * (1/camera.zoom),
 				y:(i % 3) * 7 * (1/camera.zoom)
 			}
+			
 			ships[this.ships[i]].draw(offset);
 		}
 		
@@ -186,7 +188,7 @@ class Ship {
 	}
 
 
-	draw(offset={x:0,y:0}, outbound=true){
+	draw(offset={x:0,y:0}){
 		if (camera.zoom > 0.2){
 			push();
 			this.faction.fStroke();
@@ -194,12 +196,7 @@ class Ship {
 			var adj = camera.w2s({x:this.loc.x + offset.x, y: this.loc.y + offset.y})
 			translate(adj.x, adj.y);
 			//scale(camera.zoom);
-			if (outbound){
-				triangle(5, 3, 5, 7, 10, 5);
-			}
-			else{
-				triangle(5, 5, 10, 3, 10, 7);
-			}
+			triangle(5, 3, 5, 7, 10, 5);
 			pop();
 		}
 	}
