@@ -108,17 +108,28 @@ class System {
 	}
 
 	draw_desc(){
+		
 		push();
+
+		var adj = camera.w2s(this.loc);
+		let nameOffset = SYSTEM_DRAW_DESC_NAME_OFFSET;
+		let factionOffset = SYSTEM_DRAW_DESC_FACTION_OFFSET;
+
+		// draw system name
 		strokeWeight(1);
 		fill(150);
 		stroke(150);
-		var adj = camera.w2s(this.loc);
-		text(this.name, adj.x + 10, adj.y -10)
+		text(this.name, adj.x + nameOffset.x, adj.y + nameOffset.y)
+
+
+		// draw faction name
 		strokeWeight(0);
 		this.faction.fFill();
 		this.faction.fStroke();
-		text(this.faction.name, adj.x+10, adj.y + 5);
+		text(this.faction.name, adj.x + factionOffset.x, adj.y + factionOffset.y);
+
 		//text(this.type, adj.x+10, adj.y + 20);
+
 		pop();
 	}
 }

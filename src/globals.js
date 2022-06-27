@@ -32,4 +32,6 @@ SCREEN_Y = window.innerHeight;
 SYSTEM_DRAW_DESC_ZOOM_THRESHOLD = 0.9;
 SHIP_DRAW_ZOOM_THRESHOLD = 0.2;
 
-
+// system description draw vars
+SYSTEM_DRAW_DESC_NAME_OFFSET = {x:10, y:-10};
+SYSTEM_DRAW_DESC_FACTION_OFFSET = {x:10, y:5};
