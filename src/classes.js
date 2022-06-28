@@ -108,7 +108,7 @@ class System {
 	}
 
 	draw_desc(){
-		
+
 		push();
 
 		var adj = camera.w2s(this.loc);
@@ -154,7 +154,7 @@ class Ship {
 	travel(new_system){
 		this.warpFrom = this.system;
 		this.warpTo = new_system;
-		remove_from_array(systems[this.system].ships, this.index);
+		removeFromArray(systems[this.system].ships, this.index);
 		this.inWarp = true;
 		this.warpDistance = sqrt(distSqrd(systems[this.warpFrom].loc,
 										systems[this.warpTo].loc));
@@ -175,7 +175,7 @@ class Ship {
 	}
 	update() {
 		if (this.inWarp) {
-			this.warpProgress += this.speed * deltaTime;
+			this.warpProgress += this.speed * deltaTime * GLOBAL_TIME_FACTOR;
 			this.loc = lerpVector(systems[this.warpFrom].loc,
 				systems[this.warpTo].loc, this.warpProgress/this.warpDistance);
 

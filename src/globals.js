@@ -25,6 +25,11 @@ factions.push(new Faction('Cyan Faction', { r: 0, g: 255, b: 255 }));
 //  factions.push(new Faction('Yellow Faction', { r: 255, g: 255, b: 0 }));
 
 
+// global time factor
+GLOBAL_TIME_FACTOR = 10;
+
+
+
 /* GLOBAL DRAW PARAMETERS */
 
 // screen globals
