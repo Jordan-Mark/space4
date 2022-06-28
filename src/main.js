@@ -25,9 +25,9 @@ function setup() {
 	createCanvas(SCREEN_X, SCREEN_Y);
 	systems = generateWorld(WGEN_PS_MAX_DIST);
 
-	camera = new Camera(width/2, height/2, width, height, zoom=1);
-	cameraInMax = 4;
-	cameraOutMax = 0.05;
+	camera = new Camera(MAINCAMERA_START_POS.x, MAINCAMERA_START_POS.y, width, height, zoom=MAINCAMERA_START_ZOOM, zoomSpeed=MAINCAMERA_ZOOM_SPEED, moveSpeed=MAINCAMERA_MOVE_SPEED);
+	cameraInMax = MAINCAMERA_IN_MAX;//4;
+	cameraOutMax = MAINCAMERA_OUT_MAX;// 0.05;
 
 	/* spawn ship */
 	for (var i=0; i<N_SHIPS; i++){

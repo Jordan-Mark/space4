@@ -25,8 +25,6 @@ factions.push(new Faction('Cyan Faction', { r: 0, g: 255, b: 255 }));
 //  factions.push(new Faction('Yellow Faction', { r: 255, g: 255, b: 0 }));
 
 
-
-
 /* GLOBAL DRAW PARAMETERS */
 
 // screen globals
@@ -40,3 +38,17 @@ SHIP_DRAW_ZOOM_THRESHOLD = 0.2;
 // system description draw vars
 SYSTEM_DRAW_DESC_NAME_OFFSET = {x:10, y:-15};
 SYSTEM_DRAW_DESC_FACTION_OFFSET = {x:10, y:0};
+
+
+/* MAIN CAMERA PARAMETERS */
+
+// zoom
+MAINCAMERA_IN_MAX = 4;
+MAINCAMERA_OUT_MAX = 0.05;
+MAINCAMERA_START_ZOOM = 1;
+MAINCAMERA_ZOOM_SPEED = 0.001;
+
+// offset
+MAINCAMERA_START_POS = {x:SCREEN_X/2, y:SCREEN_Y/2};
+MAINCAMERA_MOVE_SPEED = 0.1;
+
