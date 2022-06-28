@@ -132,7 +132,9 @@ function iterateShips(){
 
 		// random walk the ships
 		if (!(ships[i].inWarp)) {
-			if (random(500) < 1) {
+			let r = random();
+			if (r < SHIP_RANDOM_WALK_CHANCE * (deltaTime/1000) * GLOBAL_TIME_FACTOR) {
+				console.log(SHIP_RANDOM_WALK_CHANCE, r, (deltaTime/1000), GLOBAL_TIME_FACTOR);
 				ships[i].travel(random(systems[ships[i].system].near));
 			}
 		}

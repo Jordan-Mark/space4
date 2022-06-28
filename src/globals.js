@@ -8,10 +8,10 @@ systems = [];
 ships = [];
 
 /* world generation parameters */
-N_SHIPS = 10;
+N_SHIPS = 30;
 
 /* poisson sampling parameters for constellation generation */
-WGEN_PS_MAX_DIST = 130; // maximum world distance between stars
+WGEN_PS_MAX_DIST = 100; // maximum world distance between stars
 WGEN_PS_BUFFER = 20;
 WGEN_PS_N_SAMPLES_BEFORE_REJECTION = 3; // higher numbers result in more uniform distribution
 
@@ -24,9 +24,12 @@ factions.push(new Faction('Cyan Faction', { r: 0, g: 255, b: 255 }));
 //  factions.push(new Faction('Purple Faction', { r: 255, g: 0, b: 255 }));
 //  factions.push(new Faction('Yellow Faction', { r: 255, g: 255, b: 0 }));
 
+// SHIP AI
+SHIP_RANDOM_WALK_CHANCE = 0.3 // per second (adjusted for GLOBAL_TIME_FACTOR)
+
 
 // global time factor
-GLOBAL_TIME_FACTOR = 10;
+GLOBAL_TIME_FACTOR = 20;
 
 
 
@@ -50,7 +53,7 @@ SYSTEM_DRAW_DESC_FACTION_OFFSET = {x:10, y:0};
 // zoom
 MAINCAMERA_IN_MAX = 4;
 MAINCAMERA_OUT_MAX = 0.05;
-MAINCAMERA_START_ZOOM = 1;
+MAINCAMERA_START_ZOOM = 0.8;
 MAINCAMERA_ZOOM_SPEED = 0.001;
 
 // offset
