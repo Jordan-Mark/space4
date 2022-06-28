@@ -66,7 +66,8 @@ function lerpVector (c1, c2, t) {
 }
 
 /* poisson disc sampling algorithm */
-function genPoints(radius, max_x, max_y, buffer = 10, numSamplesBeforeRejection = 30){
+function genPoints(radius, max_x, max_y, buffer = 10, nsbr = 30){
+
 
 	/* create a grid */
 	var cellSize = radius/sqrt(2);
@@ -80,7 +81,8 @@ function genPoints(radius, max_x, max_y, buffer = 10, numSamplesBeforeRejection 
 
 	var points = [];
 	var spawnPoints = [];
-	spawnPoints.push(createVector(max_x/2, max_y/2));
+
+	spawnPoints.push(createVector(max_x / 2, max_y / 2));
 
 	/* identify parent point for spawning */
 	while (spawnPoints.length > 0){
@@ -89,7 +91,22 @@ function genPoints(radius, max_x, max_y, buffer = 10, numSamplesBeforeRejection 
 		var candidateAccepted = false;
 
 		/* create a candidate point in a random surrounding grid */
-		for (var i=0; i<numSamplesBeforeRejection; i++){
+		
+
+
+		//let numSamplesBeforeRejection = Math.min(Math.max(3000 - (points.length*5), 1), 3);
+		let noiseScale = 100;
+		let gradient = 1 - Math.min((points.length / 5000), 0.5) // needs to start around 1 and go to 0.5
+		let nsbr = noise(spawnCentre.x * noiseScale, spawnCentre.y * noiseScale) * 1.5 + gradient;
+
+		nsbr = Math.round(nsbr);
+
+		// nsbr 1 fails quickly
+		// nsbr 2 sometimes fails
+		// nsbr 3 is patchy but stable
+
+
+		for (var i=0; i<nsbr; i++){
 			var angle = random(TWO_PI);
 			var dir = createVector(sin(angle), cos(angle));
 			var candidate = p5.Vector.add(spawnCentre, dir.mult(random(radius, 2*radius)));

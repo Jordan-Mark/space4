@@ -160,7 +160,7 @@ class Ship {
 		this.inWarp = false;
 
 		// map draw info
-		this.loc = systems[this.system].loc
+		this.loc = systems[this.system].loc;
 		this.speed = speed;
 
 

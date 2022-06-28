@@ -5,7 +5,7 @@ function generateWorld(star_max_dist) {
 
 	var sys = [];
 	// use poisson sampling to get an array of position vectors
-	var pos_vectors = genPoints(star_max_dist, width, height, WGEN_PS_BUFFER, WGEN_PS_N_SAMPLES_BEFORE_REJECTION);
+	var pos_vectors = genPoints(star_max_dist, WORLD_BOUNDS.x, WORLD_BOUNDS.y, WGEN_PS_BUFFER, WGEN_PS_N_SAMPLES_BEFORE_REJECTION);
 
 	// create system objects
 	for (var i=0; i<pos_vectors.length; i++){
@@ -120,8 +120,25 @@ function iterateSystems(){
 		// check if system in camera bounds
 		if (camera.inBounds(systems[i].loc)) {
 			systems[i].draw();
+		}
+
+
+		if (!(systems[i].faction == NO_FACTION)) {
+
+			if (systems[i].ships.length < BIRTH_CONTROL) {
+				if (random() < (SYSTEM_SPAWN_SHIP_CHANCE * (deltaTime / 1000) * GLOBAL_TIME_FACTOR)) {
+					shipIndex = ships.length;
+					ships.push(new Ship(systems[i].faction, i, shipIndex));
+					systems[i].ships.push(shipIndex);
+				}
+            }
+
         }
+
 	}
+
+	
+	
 }
 
 function iterateShips(){
@@ -139,16 +156,43 @@ function iterateShips(){
 				// flocking
 				let found = false;
 
+
+
+
+
 				let nearSystems = shuffle(systems[ships[i].system].near);
+
 				for (s = 0; s < nearSystems.length; s++) {
-					if (systems[nearSystems[s]].getFaction() == ships[i].getFaction()) {
-						//console.log(ships[i], systems[nearSystems[s]]);
-						if (random() < 0.75) {
+
+					// NO FACTION
+					if (systems[nearSystems[s]].getFaction() == NO_FACTION) {
+						if (random() < SHIP_UNEXPLORED_ATTRACTIVENESS) {
+							ships[i].travel(nearSystems[s]);
+							found = true;
+						}
+					}
+
+
+					// SAME FACTION
+					else if (systems[nearSystems[s]].getFaction() == ships[i].getFaction()) {
+						if (random() < SHIP_SAME_FACTION_ATTRACTIVENESS){
 							ships[i].travel(nearSystems[s]);
 							found = true;
                         }
+					}
+
+					// OTHER FACTION
+					else if (systems[nearSystems[s]].getFaction() != ships[i].getFaction()) {
+						if (random() < SHIP_OTHER_FACTION_ATTRACTIVENESS) {
+							ships[i].travel(nearSystems[s]);
+							found = true;
+						}
+					}
+
+					if (found) {
 						break;
                     }
+
 				}
 				if (!(found)) {
 					ships[i].travel(random(systems[ships[i].system].near));
