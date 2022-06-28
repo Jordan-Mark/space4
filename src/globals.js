@@ -8,10 +8,10 @@ systems = [];
 ships = [];
 
 /* world generation parameters */
-N_SHIPS = 2500;
+N_SHIPS = 750;
 
 /* poisson sampling parameters for constellation generation */
-WGEN_PS_MAX_DIST = 50; // maximum world distance between stars
+WGEN_PS_MAX_DIST = 75; // maximum world distance between stars
 WGEN_PS_BUFFER = 20;
 WGEN_PS_N_SAMPLES_BEFORE_REJECTION = 3; // higher numbers result in more uniform distribution
 
@@ -29,7 +29,7 @@ SHIP_RANDOM_WALK_CHANCE = 0.1 // per second (adjusted for GLOBAL_TIME_FACTOR)
 
 
 // global time factor
-GLOBAL_TIME_FACTOR = 50;
+GLOBAL_TIME_FACTOR = 3;
 
 
 

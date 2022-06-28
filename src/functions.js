@@ -154,7 +154,7 @@ function genStarName(){
 			    'Pavo','Pegasus','Perseus','Phoenix','Pictor','Pisces','Piscis','Austrinus','Puppis','Pyxis',
 			    'Reticulum','Sagitta','Sagittarius','Scorpius','Sculptor','Scutum','Serpens','Sextans',
 			    'Taurus','Telescopium','Triangulum','Triangulum Australe','Tucana','Ursa Major','Ursa Minor',
-			    'Vela','Virgo','Volans','Vulpecula'];
+		'Vela', 'Virgo', 'Volans', 'Vulpecula'];
 
     suffixes = ['Prime', 'Alpha', 'Beta', 'Theta', 'Gamma', 'Delta', 'Epsillon',
     			'Zeta', 'Eta', 'Iota', 'Kappa', 'Lambda', 'Omicron', 'Pi', 'Rho',
@@ -166,10 +166,10 @@ function genStarName(){
     if (random()<0.2){ 
         name += ' ' + random(suffixes);
     }
-    /*
-    if (random()<0.3){ 
+    
+    if (random()<0.2){ 
         name += ' ' + random(numbers);
     }
-    */
+    
     return name;
 }
