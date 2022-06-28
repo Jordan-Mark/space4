@@ -22,12 +22,26 @@ class System {
 		this.name = name;
 	}
 
-	update(){
-		this.update_factions();
-		this.update_colonization();
+	getFaction() {
+		return this.faction;
 	}
 
-	update_factions(){
+	removeShip(shipID) {
+		removeFromArray(this.ships, shipID);
+		this.shipsChangedEvent();
+	}
+
+	addShip(shipID) {
+		this.ships.push(shipID);
+		this.shipsChangedEvent();
+    }
+
+	shipsChangedEvent() {
+		this.updateFactions();
+		this.updateColonization();
+    }
+
+	updateFactions(){
 		/* fetch list of local factions */
 		this.localFactions = [];
 		for (var i=0; i<this.ships.length; i++){
@@ -47,7 +61,7 @@ class System {
 		}
 	}
 
-	update_colonization(){
+	updateColonization(){
 		/* conquer system if only one faction's ships are present */
 		if (this.localFactions.length == 1){
 			if (this.localFactions[0] != this.faction){
@@ -151,10 +165,20 @@ class Ship {
 
 
 	}
-	travel(new_system){
+
+	getFaction() {
+		return this.faction;
+    }
+
+	travel(new_system) {
+
 		this.warpFrom = this.system;
 		this.warpTo = new_system;
-		removeFromArray(systems[this.system].ships, this.index);
+
+
+		systems[this.system].removeShip(this.index);
+
+
 		this.inWarp = true;
 		this.warpDistance = sqrt(distSqrd(systems[this.warpFrom].loc,
 										systems[this.warpTo].loc));
@@ -162,12 +186,12 @@ class Ship {
 		this.warpProgress=0;
 	}
 
-	finish_travel(){
+	finish_travel() {
+
 		this.system = this.warpTo;
 		this.warpTo = null;
 		this.warpFrom = null;
-		systems[this.system].ships.push(this.index);
-		systems[this.system].update();
+		systems[this.system].addShip(this.index);
 		this.inWarp=false;
 
 		// set ship coordinates to system coordinates

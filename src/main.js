@@ -135,7 +135,24 @@ function iterateShips(){
 			let r = random();
 			if (r < SHIP_RANDOM_WALK_CHANCE * (deltaTime/1000) * GLOBAL_TIME_FACTOR) {
 				//console.log(SHIP_RANDOM_WALK_CHANCE, r, (deltaTime/1000), GLOBAL_TIME_FACTOR);
-				ships[i].travel(random(systems[ships[i].system].near));
+
+				// flocking
+				let found = false;
+
+				let nearSystems = shuffle(systems[ships[i].system].near);
+				for (s = 0; s < nearSystems.length; s++) {
+					if (systems[nearSystems[s]].getFaction() == ships[i].getFaction()) {
+						//console.log(ships[i], systems[nearSystems[s]]);
+						if (random() < 0.75) {
+							ships[i].travel(nearSystems[s]);
+							found = true;
+                        }
+						break;
+                    }
+				}
+				if (!(found)) {
+					ships[i].travel(random(systems[ships[i].system].near));
+                }
 			}
 		}
 
