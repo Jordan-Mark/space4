@@ -1,8 +1,8 @@
 
 
-
 class Entity {
     /**
+     * 
      * abstract entity class for use in Registry.js
      * 
      */
@@ -23,5 +23,22 @@ class Entity {
 
     tick(world) {
 
+    }
+}
+
+class WorldEntity extends Entity {
+    /**
+     * 
+     * entity with world location
+     * 
+     * @param {any} loc
+     */
+
+    constructor(loc) {
+        this.loc = loc;
+    }
+
+    getLoc() {
+        return loc;
     }
 }
