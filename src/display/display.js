@@ -6,8 +6,8 @@ class Display {
      * 
      */
 
-    constructor(){
-
+    constructor(camera){
+        this.camera = camera;
     }
 
     draw(world){

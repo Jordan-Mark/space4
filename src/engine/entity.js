@@ -24,6 +24,10 @@ class Entity {
     tick(world) {
 
     }
+
+    draw(camera) {
+
+    }
 }
 
 class WorldEntity extends Entity {
@@ -42,4 +46,5 @@ class WorldEntity extends Entity {
     getLoc() {
         return loc;
     }
+
 }

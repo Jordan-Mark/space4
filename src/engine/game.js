@@ -21,9 +21,10 @@ class Game {
     }
 
     draw() {
-        this.display.draw(this.world);
         // create a black background
         background(0);
+
+        this.display.draw(this.world);
 
     }
 }
