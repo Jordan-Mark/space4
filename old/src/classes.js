@@ -20,6 +20,7 @@ class System {
 		this.ships = [];
 		this.near = [];
 		this.name = name;
+		this.localFactions = [];
 	}
 
 	getFaction() {
@@ -27,7 +28,7 @@ class System {
 	}
 
 	removeShip(shipID) {
-		removeFromArray(this.ships, shipID);
+		removeFromArr(this.ships, shipID);
 		this.shipsChangedEvent();
 	}
 

@@ -1,25 +1,17 @@
 
-console.log('world js');
-/*
-class World () {
 
+class World {
+    /**
+     * 
+     * class contains all internal simulation
+     * 
+     * 
+     * */
+    constructor() {
 
-    update() {
+    }
+
+    tick() {
 
     }
 }
-
-
-
-class Display (){
-
-
-    request(){
-
-    }
-
-    draw(){
-
-    }
-}
-*/

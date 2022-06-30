@@ -51,7 +51,7 @@ function getClosestObject (targetVector, arrayOfObjects) {
 }
 
 /* remove unique member of array by value */
-function removeFromArray(arr, value){
+function removeFromArr(arr, value){
 	for (var i=0; i<arr.length;i++){
 		if (arr[i]==value){
 			arr.splice(i, 1);
