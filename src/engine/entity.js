@@ -35,6 +35,7 @@ class WorldEntity extends Entity {
      */
 
     constructor(loc) {
+        super();
         this.loc = loc;
     }
 
