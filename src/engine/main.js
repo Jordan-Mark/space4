@@ -1,5 +1,5 @@
 
-
+// declaration
 var world;
 var display;
 var game;
@@ -10,7 +10,6 @@ function setup() {
     world = new World();
     display = new Display();
     game = new Game(world, display);
-
 }
 
 

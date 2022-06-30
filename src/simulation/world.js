@@ -7,6 +7,7 @@ class World {
      * 
      * 
      * */
+
     constructor() {
 
     }
