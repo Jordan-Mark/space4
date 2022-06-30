@@ -11,6 +11,8 @@ class Game {
      * @param {Display} display
      */
 
+    db = false;
+
     constructor(world, display) {
         this.world = world;
         this.display = display;
@@ -25,6 +27,20 @@ class Game {
         background(0);
 
         this.display.draw(this.world);
+
+        if (this.debug) {
+            this.drawDebug();
+        }
+
+    }
+
+    debug(b = true) {
+        this.db = b;
+    }
+
+    drawDebug() {
+
+        // write debug spaghetti code here 
 
     }
 }

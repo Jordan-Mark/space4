@@ -43,12 +43,12 @@ class Camera {
 		let maxY = this.yOffset + halfHeight / this.zoom;
 
 		// check bounds
-
 		if (worldC.x >= minX && worldC.x <= maxX) {
 			if (worldC.y >= minY && worldC.y <= maxY) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 }
