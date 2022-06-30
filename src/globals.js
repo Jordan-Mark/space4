@@ -23,12 +23,6 @@ WORLD_BOUNDS = { x: 5000, y: 5000 };
 
 
 
-
-
-
-
-
-
 NO_FACTION = new Faction('No Faction', { r: 100, g: 100, b: 100 }); 
 
 factions.push(new Faction('Red Faction', { r: 255, g: 0, b: 0 }));
@@ -49,13 +43,13 @@ SHIP_OTHER_FACTION_ATTRACTIVENESS = 0;
 
 
 // SYSTEM AI
-SYSTEM_SPAWN_SHIP_CHANCE = 1/30
+SYSTEM_SPAWN_SHIP_CHANCE = 1/30;
 BIRTH_CONTROL = 1;
 
 
 
 // global time factor
-GLOBAL_TIME_FACTOR = 3;
+GLOBAL_TIME_FACTOR = 1;
 
 
 
