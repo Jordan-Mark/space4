@@ -23,17 +23,19 @@ class BasicWorld extends World {
     globalTimeFactor = 1; // coefficient to all time dependent simulation elements
     dt = null; // adjusted deltaTime (seconds)
 
-    ships;
-    systems;
-    factions;
 
-    constructor() {
+    constructor(gridSize) {
 
         super();
 
+        // basic simulation classes
         this.ships = new Registry();
         this.systems = new Registry();
         this.factions = new Registry();
+
+        // helpful grid
+        this.grid = new Grid(gridSize);
+        this.map = new EntityMap(this.grid);
 
     }
 
