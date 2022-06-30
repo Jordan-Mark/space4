@@ -8,7 +8,7 @@ systems = [];
 ships = [];
 
 /* world generation parameters */
-N_SHIPS = 4;
+N_SHIPS = 20;
 
 /* poisson sampling parameters for constellation generation */
 WGEN_PS_MAX_DIST = 50; // maximum world distance between stars
@@ -29,13 +29,13 @@ WORLD_BOUNDS = { x: 5000, y: 5000 };
 
 
 
-NO_FACTION = new Faction('No Faction', { r: 100, g: 100, b: 100 }); 
+NO_FACTION = new Faction('No Faction', { r: 100, g: 100, b: 100 });
 
-factions.push(new Faction('Red Faction', { r: 255, g: 0, b: 0 }));
-factions.push(new Faction('Green Faction', { r: 0, g: 255, b: 0 }));
-factions.push(new Faction('Cyan Faction', { r: 0, g: 255, b: 255 }));
-factions.push(new Faction('Purple Faction', { r: 255, g: 0, b: 255 }));
-factions.push(new Faction('Yellow Faction', { r: 255, g: 255, b: 0 }));
+N_FACTIONS = 10;
+for (i = 0; i < N_FACTIONS; i++) {
+    factions.push(new Faction('Faction' + i.toString(), { r: Math.random() * 255, g: Math.random() * 255, b: Math.random()*255 }));
+}
+
 
 // SHIP AI
 
@@ -55,7 +55,7 @@ BIRTH_CONTROL = 1;
 
 
 // global time factor
-GLOBAL_TIME_FACTOR = 3;
+GLOBAL_TIME_FACTOR = 1;
 
 
 
