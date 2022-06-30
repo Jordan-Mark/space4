@@ -1,6 +1,6 @@
 
 
-class Display(){
+class Display {
     /**
      * class handles all drawing, interprets "world" object
      * 
