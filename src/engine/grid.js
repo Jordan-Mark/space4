@@ -1,74 +1,168 @@
+/*
+2-Dimensional Grid
 
+Abstract class that provides functionality for referencing positions.
+*/
 class Grid {
 
-  constructor (x, y){
-    this.size = {x:x, y:y};
-    this.dict = {};
-
-    // initialise grid with empty space.
-    for (var i_x=0; i_x<x; i_x++){
-      for (var i_y=0; i_y<y; i_y++){
-        const key = this.hash(i_x, i_y);
-        this.dict[key] = [];
-      }
+    constructor(grid_size) {
+        this.grid_size = grid_size;
     }
-  }
 
-  hash(x, y) {
-    /* converts a grid position vector into a string key for the internal dict */
-    const key = x.toString() + '.' + y.toString();
-    return key;
-  }
+    /* return true if the (grid) coords are within the bounds of the grid. */
+    inBounds(coords) {
 
-  copy () {
-    /* returns a deep copy of this grid */
-    return JSON.parse(JSON.stringify(this));
-  }
+        if (coords.x < 0 || coords.x >= this.grid_size.x) {
+            return false;
+        }
+        else if (coords.y < 0 || coords.y >= this.grid_size.y) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
-  get(x, y) {
-    /* gets the gridEntityList assigned to a position*/
-    const key = this.hash(x, y)
-    return this.dict[key];
+    /* get neighbouring position to a position, in range. (accounts for grid border) */
+    getNeighbours(coords, range = 1) {
+        var coordsList = [];
 
-  }
+        for (var x = -1 * range; x <= 1 * range; x++) {
+            for (var y = -1 * range; y <= 1 * range; y++) {
+                if (!(x == 0 && y == 0)) {
+                    var testPosition = { x: coords.x + x, y: coords.y + y };
+                    if (this.inBounds(testPosition)) {
+                        coordsList.push(testPosition);
+                    }
+                }
+            }
+        }
 
-  set(x, y, gridEntityList) {
-    /* set gridEntityList at position */
-    const key = this.hash(x, y);
-    this.dict[key] = gridEntityList;
-  }
+        return coordsList;
+    }
 
-  getSize(){
-    return this.size;
-  }
+    /* returns the manhattan distance between two grid locations */
+    getDistance(position1, position2) {
+        return abs(position1.x - position2.x) + abs(position1.y - position2.y);
+    }
+
+    getSize() {
+        return this.grid_size;
+    }
+
+    /* creates a unique ID for a position so it can be used as a key in this.tiles */
+    hash(position) {
+        return position.x + '.' + position.y;
+    }
+
+    /* creates a position interface {x, y} from a hash key. */
+    unhash(position_str) {
+        var pos = position_str.split('.')
+        return { x: parseInt(pos[0]), y: parseInt(pos[1]) };
+    }
+
+    copy() {
+        /* returns a deep copy of this grid */
+        return JSON.parse(JSON.stringify(this));
+    }
 
 }
 
-class GridEntity {
-  constructor () {
+/* 
+Tilemap
+Allows only one entity to be present per grid cell.
+*/
+class TileMap {
 
-  }
+    constructor(grid) {
+        this.grid = grid;
+        this.tiles = {};
+    }
+
+    /* set tile at given position */
+    setTile(position, tile) {
+        this.tiles[this.grid.hash(position)] = tile;
+        if (tile == null) {
+            delete this.tiles[this.grid.hash(position)];
+        }
+    }
+
+    /* remove tile at given position */
+    removeTile(position) {
+        delete this.tiles[this.grid.hash(position)];
+    }
+
+    /* return the tile object at position */
+    getTile(position) {
+        return this.tiles[this.grid.hash(position)];
+    }
+
+    /* return a list of all tile objects in the map */
+    getTiles() {
+        return Object.values(this.tiles)
+    }
+
+    /* return the dictionary of tiles */
+    getTileDict() {
+        return this.tiles;
+    }
 }
 
+/*
+2-Dimensional EntityMap
+Allows multiple entities to be present per grid cell
+*/
 
-class GridDisplay {
-  constructor (x1, y1, x2, y2, grid){
-    /*
-    x1, y1, x2, y2 are screen coordinates for the draw box
-    grid is a Grid object
-    */
+class EntityMap {
 
-    this.point1 = {x:x1, y:y1};
-    this.point2 = {x:x2, y:y2};
-    this.grid = grid;
+    constructor(grid) {
 
-  }
+        this.grid = grid;
 
-  draw (){
-    var size = this.grid.getSize();
-    var gridDisplayWidth = this.point2.x - this.point1.x;
-    var gridDisplayHeight = this.point2.y - this.point1.y;
-    var cellWidth = gridDisplayWidth / size.x;
-    var cellHeight = gridDisplayHeight / size.y;
-  }
+        // thanks to the ambiguity of javascript, this could be EntityID's, or Entities!
+        this.entities = {};
+    }
+
+    /* add entity (or id) to internal dictionary */
+    addEntity(position, entity) {
+
+        if (this.getEntities(position) == null) {
+            this.entities[this.grid.hash(position)] = [];
+        }
+        this.entities[this.grid.hash(position)].append(entity);
+    }
+
+    /* remove all entities from position */
+    removeAll(position) {
+        delete this.entities[this.grid.hash(position)];
+    }
+
+    /* remove a specific entity from a position */
+    removeEntity(position, entity) {
+        var entities = getEntities(position);
+        for (var i = 0; i < entities.length; i++) {
+            if (entity == entities[i]) {
+                entities.splice(i, i);
+                break;
+            }
+        }
+        if (entities.length == 0) {
+            this.removeAll(position);
+        }
+    }
+
+    /* return the entity at position */
+    getEntities(position) {
+        return this.entities[this.grid.hash(position)];
+    }
+
+    /* return a list of all entities in the map */
+    getAllEntities() {
+        return Object.values(this.entities)
+    }
+
+    /* return the dictionary of entities */
+    getEntityDict() {
+        return this.entities;
+    }
 }
