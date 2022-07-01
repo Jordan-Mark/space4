@@ -3,22 +3,22 @@
 class Entity {
     /**
      * 
-     * abstract entity class for use in Registry.js
+     * abstract entity class 
      * 
      */
 
-    id = null;
-
     constructor() {
-        // redundant
+
+        // create unique hash
+        this.id = uuidv4();
     }
 
-    assignId() {
-        this.id = id;
-    }
-
-    getId() {
+    getID() {
         return this.id;
+    }
+
+    begin(world) {
+        
     }
 
     tick(world) {
@@ -28,6 +28,12 @@ class Entity {
     draw(camera) {
 
     }
+
+    destroy(world) {
+        // this is the way to delete an object
+        world.remove(this.getID());
+    }
+ 
 }
 
 class WorldEntity extends Entity {

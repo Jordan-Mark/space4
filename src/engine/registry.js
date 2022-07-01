@@ -20,7 +20,7 @@ class Registry {
 
     add(entity) {
         var id = this.idCounter;;
-        idCounter++;
+        this.idCounter++;
         this.dict[id] = entity;
         return id;
     }

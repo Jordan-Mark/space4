@@ -23,6 +23,7 @@ class Game {
     }
 
     draw() {
+
         // create a black background
         background(0);
 

@@ -50,7 +50,7 @@ class Grid {
         return this.grid_size;
     }
 
-    /* creates a unique ID for a position so it can be used as a key in this.tiles */
+    /* creates a unique ID for a position so it can be used as a key */
     hash(position) {
         return position.x + '.' + position.y;
     }
