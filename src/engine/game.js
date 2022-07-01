@@ -29,7 +29,7 @@ class Game {
 
         this.display.draw(this.world);
 
-        if (this.debug) {
+        if (this.db) {
             this.drawDebug();
         }
 
