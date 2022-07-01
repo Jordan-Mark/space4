@@ -14,20 +14,20 @@ function setup() {
     SCREEN_X = window.innerWidth;
     SCREEN_Y = window.innerHeight;
 
-    /* camera parameters */
-    CAMERA_OFFSET = { x: 0, y: 0 };
-    CAMERA_ZOOM = 1;
-    CAMERA_ZOOM_SPEED = 0.001;
-    CAMERA_MOVE_SPEED = 0.1;
-    CAMERA_IN_MAX = 4;
-    CAMERA_OUT_MAX = 0.05;
-
     /* world parameters */
     WORLD_SIZE = { x: 5000, y: 5000 };
     WORLD_GRID_DIV = 10;
 
     /* simulation speed */
     GLOBAL_TIME_FACTOR = 1;
+
+    /* camera parameters */
+    CAMERA_OFFSET = { x: WORLD_SIZE.x/2, y: WORLD_SIZE.y/2 };
+    CAMERA_ZOOM = 0.2;
+    CAMERA_ZOOM_SPEED = 0.001;
+    CAMERA_MOVE_SPEED = 0.1;
+    CAMERA_IN_MAX = 4;
+    CAMERA_OUT_MAX = 0.05;
 
 
 
