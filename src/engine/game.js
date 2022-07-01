@@ -92,6 +92,23 @@ class Game {
 
         // write debug spaghetti code here 
 
+        let c = this.display.camera;
+
+        // draw world bounds
+        push();
+        fill(20);
+        let p1 = c.w2s({ x: 0, y: 0 });
+        let p2 = c.w2s({ x: this.world.size.x, y: this.world.size.y });
+        rectMode(CORNERS);
+        rect(p1.x, p1.y, p2.x, p2.y);
+        pop();
+
+        // get current grid
+        let world_mouse = c.s2w({ x: mouseX, y: mouseY });
+        let grid_pos = this.world.grid.getCell(world_mouse);
+
+
+        // debug text
         push();
         stroke(255);
         fill(255);
@@ -100,6 +117,9 @@ class Game {
         text('camera.zoom :  ' + this.display.camera.zoom.toFixed(2), 25, 25);
         text('camera.offset :  ' + this.display.camera.xOffset.toFixed(0) + ' , ' + this.display.camera.yOffset.toFixed(0), 25, 40);
         text('FPS:  ' + frameRate().toFixed(0), 25, 55);
+        text('screen mouse : ' + mouseX.toString() + ' , ' + mouseY.toString(), 25, 70);
+        text('world mouse : ' + world_mouse.x.toFixed(1) + ' , ' + world_mouse.y.toFixed(1), 25, 85);
+        text('mouse grid : ' + grid_pos.x.toString() + ' , ' + grid_pos.y.toString(), 25, 100);
         pop();
         push();
 

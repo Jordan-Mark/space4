@@ -35,9 +35,11 @@ class BasicWorld extends World {
         this.systems = [];
         this.factions = [];
 
-        // helpful grid
-        this.grid = new Grid(gridSize);
-        this.map = new EntityMap(this.grid);
+        // grid
+        let g = new Grid(gridSize);
+        let cell_w = size.x / gridSize;
+        let cell_h = size.y / gridSize;
+        this.grid = new WorldGrid(g, cell_w, cell_h);
 
     }
 

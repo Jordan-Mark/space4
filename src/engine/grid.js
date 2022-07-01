@@ -1,6 +1,4 @@
 /*
-2-Dimensional Grid
-
 Abstract class that provides functionality for referencing positions.
 */
 class Grid {
@@ -69,7 +67,6 @@ class Grid {
 }
 
 /* 
-Tilemap
 Allows only one entity to be present per grid cell.
 */
 class TileMap {
@@ -109,7 +106,6 @@ class TileMap {
 }
 
 /*
-2-Dimensional EntityMap
 Allows multiple entities to be present per grid cell
 */
 
@@ -164,5 +160,29 @@ class EntityMap {
     /* return the dictionary of entities */
     getEntityDict() {
         return this.entities;
+    }
+}
+
+/*
+Grid Extension Understands Size
+*/
+
+class WorldGrid extends EntityMap {
+
+    constructor(grid, cell_w, cell_h) {
+
+        super(grid);
+        this.cell_w = cell_w;
+        this.cell_h = cell_h;
+   
+    }
+
+    getCell(pos) {
+
+        let x = Math.floor(pos.x / this.cell_w);
+        let y = Math.floor(pos.y / this.cell_h);
+
+        return { x: x, y: y };
+
     }
 }
