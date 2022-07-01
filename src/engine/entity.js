@@ -30,7 +30,7 @@ class Entity {
     }
 
     destroy(world) {
-        // this is the way to delete an object
+        // destroy this object as a functioning entity (but not all references, necessarially);
         world.remove(this.getID());
     }
  

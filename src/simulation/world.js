@@ -47,8 +47,17 @@ class BasicWorld extends World {
         this.ents[ent.getID()] = ent;
     }
 
+    addFaction(faction) {
+        this.add(faction);
+        this.factions.push(faction);
+    }
+
     get(id) {
         return this.ents[id];
+    }
+
+    removeFaction(id) {
+        removeFromArr(this.factions, id);
     }
 
     remove(id) {
