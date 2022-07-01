@@ -13,7 +13,14 @@ class Camera {
 		this.moveSpeed = moveSpeed;
 		this.zoomSpeed = zoomSpeed;
 
+
 	}
+
+	report() {
+		console.log(this.xOffset);
+		console.log(this.yOffset);
+		console.log(this.zoom);
+    }
 
 	s2w(screenC) {
 		return {

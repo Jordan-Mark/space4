@@ -69,6 +69,7 @@ function mousePressed() {
 }
 
 function inputHandler(){
+
 	/*update camera zoom*/
 	var cameraDelta = 0;
 	if (keyIsDown(189)){

@@ -13,6 +13,37 @@ class Display {
     draw(world){
 
     }
+}
 
+class BasicDisplay extends Display {
+
+    constructor(camera, outMax, inMax) {
+
+        super(camera);
+        this.cameraOutMax = outMax;
+        this.cameraInMax = inMax;
+
+    }
+
+    draw(world) {
+        super.draw(world);
+    }
+
+    updateCameraZoom(zoomDelta) {
+
+        //console.log(this.camera.zoom, 1);
+        this.camera.zoom += this.camera.zoomSpeed * deltaTime * zoomDelta * this.camera.zoom;
+        //console.log(this.camera.zoom, 2);
+        this.camera.zoom = constrain(this.camera.zoom, this.cameraOutMax, this.cameraInMax);
+        //console.log(this.camera.zoom, 3);
+
+    }
+
+    updateCameraOffset(offsetDelta) {
+
+        var moveSpeed = this.camera.moveSpeed * (1 / this.camera.zoom);
+        this.camera.xOffset += moveSpeed * deltaTime * offsetDelta.x;
+        this.camera.yOffset += moveSpeed * deltaTime * offsetDelta.y;
+    }
 
 }
