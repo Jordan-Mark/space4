@@ -92,6 +92,7 @@ class Game {
 
         // write debug spaghetti code here 
 
+
         let c = this.display.camera;
 
         // draw world bounds

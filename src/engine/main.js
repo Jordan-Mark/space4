@@ -24,8 +24,10 @@ function setup() {
 
     /* world parameters */
     WORLD_SIZE = { x: 5000, y: 5000 };
+    WORLD_GRID_DIV = 10;
+
+    /* simulation speed */
     GLOBAL_TIME_FACTOR = 1;
-    WORLD_GRID_SIZE = 10;
 
 
 
@@ -35,10 +37,16 @@ function setup() {
     // birth p5.js
     createCanvas(SCREEN_X, SCREEN_Y);
 
-    // create main classes
+    // create world
+    let worldGenerator = new BasicWorldGenerator();
+    worldGenerator.create(WORLD_SIZE, WORLD_GRID_DIV);
+    world = worldGenerator.export();
+
+    // create display
     camera = new Camera(CAMERA_OFFSET.x, CAMERA_OFFSET.y, SCREEN_X, SCREEN_Y, CAMERA_ZOOM, CAMERA_ZOOM_SPEED, CAMERA_MOVE_SPEED);
-    world = new BasicWorld(WORLD_SIZE, WORLD_GRID_SIZE);
     display = new BasicDisplay(camera, CAMERA_OUT_MAX, CAMERA_IN_MAX);
+
+    // init game
     game = new Game(world, display);
 
     // set debug
