@@ -24,9 +24,11 @@ class BasicWorld extends World {
     dt = null; // adjusted deltaTime (seconds)
     ents = {};
 
-    constructor(gridSize) {
+    constructor(size, gridSize) {
 
         super();
+
+        this.size = size;
 
         // basic simulation classes
         this.ships = [];

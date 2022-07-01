@@ -20,6 +20,7 @@ function setup() {
     CAMERA_MOVE_SPEED = 0.1;
 
     /* world parameters */
+    WORLD_SIZE = { x: 5000, y: 5000 };
     GLOBAL_TIME_FACTOR = 1;
     WORLD_GRID_SIZE = 10;
 
@@ -33,7 +34,7 @@ function setup() {
 
     // create main classes
     camera = new Camera(CAMERA_OFFSET.x, CAMERA_OFFSET.y, SCREEN_X, SCREEN_Y, CAMERA_ZOOM, CAMERA_ZOOM_SPEED, CAMERA_MOVE_SPEED);
-    world = new BasicWorld(WORLD_GRID_SIZE);
+    world = new BasicWorld(WORLD_SIZE, WORLD_GRID_SIZE);
     display = new Display(camera);
     game = new Game(world, display);
 
