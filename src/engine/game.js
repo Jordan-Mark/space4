@@ -12,6 +12,8 @@ class Game {
      */
 
     db = false;
+    mouseWheelEvent = null;
+    mouseWheelZoomFactor = 3;
 
     constructor(world, display) {
         this.world = world;
@@ -35,6 +37,10 @@ class Game {
 
     }
 
+    mouseWheelHandler(event) {
+        this.mouseWheelEvent = event;
+    }
+
     cameraZoomInput() {
 
         var zoomDelta = 0;
@@ -47,6 +53,12 @@ class Game {
         // zoom in
         if (keyIsDown(16) && keyIsDown(187)) {
             zoomDelta += +1;
+        }
+
+        /* check for mousewheel */
+        if (this.mouseWheelEvent) {
+            zoomDelta = Math.sign(this.mouseWheelEvent.delta) * this.mouseWheelZoomFactor;
+            this.mouseWheelEvent = null;
         }
 
         return zoomDelta;
@@ -80,6 +92,7 @@ class Game {
 
         this.display.updateCameraZoom(this.cameraZoomInput());
         this.display.updateCameraOffset(this.cameraOffsetInput());
+
 
    }
 

@@ -60,6 +60,11 @@ function setup() {
     world.setGlobalTimeFactor(GLOBAL_TIME_FACTOR);
 }
 
+function mouseWheel(event) {
+    game.mouseWheelHandler(event);
+}
+
+
 function update() {
     game.tick();
 }
