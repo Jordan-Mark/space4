@@ -27,7 +27,6 @@ class BasicWorldGenerator extends WorldGenerator {
 
     createFactions(n_factions) {
 
-        console.log(n_factions);
         
         for (var i = 0; i < n_factions; i++) {
             this.world.addFaction(new Faction('Faction' + i.toString(), { r: Math.random() * 255, g: Math.random() * 255, b: Math.random() * 255 }))

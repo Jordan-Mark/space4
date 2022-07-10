@@ -75,7 +75,7 @@ class BasicWorld extends World {
     tick() {
         this.preTick();
         super.tick();
-        for (ent of Object.values(this.ents)) {
+        for (var ent of Object.values(this.ents)) {
             ent.tick(this);
         }
     }
