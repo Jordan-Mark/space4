@@ -8,12 +8,12 @@ class Grid {
     }
 
     /* return true if the (grid) coords are within the bounds of the grid. */
-    inBounds(coords) {
+    inBounds(gridPosition) {
 
-        if (coords.x < 0 || coords.x >= this.grid_size.x) {
+        if (gridPosition.x < 0 || gridPosition.x >= this.grid_size.x) {
             return false;
         }
-        else if (coords.y < 0 || coords.y >= this.grid_size.y) {
+        else if (gridPosition.y < 0 || gridPosition.y >= this.grid_size.y) {
             return false;
         }
         else {
@@ -22,21 +22,41 @@ class Grid {
     }
 
     /* get neighbouring position to a position, in range. (accounts for grid border) */
-    getNeighbours(coords, range = 1) {
+    getNeighbours(gridPosition, range = 1) {
         var coordsList = [];
 
         for (var x = -1 * range; x <= 1 * range; x++) {
             for (var y = -1 * range; y <= 1 * range; y++) {
                 if (!(x == 0 && y == 0)) {
-                    var testPosition = { x: coords.x + x, y: coords.y + y };
-                    if (this.inBounds(testPosition)) {
-                        coordsList.push(testPosition);
-                    }
+                    var testPosition = { x: gridPosition.x + x, y: gridPosition.y + y };
+                    coordsList.push(testPosition);
                 }
             }
         }
 
         return coordsList;
+    }
+
+    // get neighbours x axis only
+    getNx(gridPosition, range) {
+        var coordsList = [];
+        for (var x = -1 * range; x <= 1 * range; x++) {
+            if (!(x == 0)) {
+                coordsList.push({ x: gridPosition.x + x, y: gridPosition.y });
+            }
+        }
+        return coordsList
+    }
+
+    // get neighbours y axis only
+    getNy(gridPosition, range) {
+        var coordsList = [];
+        for (var y = -1 * range; y <= 1 * range; y++) {
+            if (!(y == 0)) {
+                coordsList.push({ x: gridPosition.x, y: gridPosition.y + y });
+            }
+        }
+        return coordsList
     }
 
     /* returns the manhattan distance between two grid locations */
@@ -120,22 +140,22 @@ class EntityMap {
     }
 
     /* add entity (or id) to internal dictionary */
-    addEntity(position, entity) {
+    addEntity(gridPosition, entity) {
 
-        if (this.getEntities(position) == null) {
-            this.entities[this.grid.hash(position)] = [];
+        if (this.getEntities(gridPosition) == null) {
+            this.entities[this.grid.hash(gridPosition)] = [];
         }
-        this.entities[this.grid.hash(position)].append(entity);
+        this.entities[this.grid.hash(gridPosition)].append(entity);
     }
 
     /* remove all entities from position */
-    removeAll(position) {
-        delete this.entities[this.grid.hash(position)];
+    removeAll(gridPosition) {
+        delete this.entities[this.grid.hash(gridPosition)];
     }
 
     /* remove a specific entity from a position */
-    removeEntity(position, entity) {
-        var entities = getEntities(position);
+    removeEntity(gridPosition, entity) {
+        var entities = getEntities(gridPosition);
         for (var i = 0; i < entities.length; i++) {
             if (entity == entities[i]) {
                 entities.splice(i, i);
@@ -143,13 +163,13 @@ class EntityMap {
             }
         }
         if (entities.length == 0) {
-            this.removeAll(position);
+            this.removeAll(gridPosition);
         }
     }
 
     /* return the entity at position */
-    getEntities(position) {
-        return this.entities[this.grid.hash(position)];
+    getEntities(gridPosition) {
+        return this.entities[this.grid.hash(gridPosition)];
     }
 
     /* return a list of all entities in the map */
@@ -169,20 +189,34 @@ Grid Extension Understands Size
 
 class WorldGrid extends EntityMap {
 
-    constructor(grid, cell_w, cell_h) {
+    constructor(grid, cell_size) {
 
         super(grid);
-        this.cell_w = cell_w;
-        this.cell_h = cell_h;
+        this.cell_size = cell_size;
    
     }
 
     getCell(pos) {
 
-        let x = Math.floor(pos.x / this.cell_w);
-        let y = Math.floor(pos.y / this.cell_h);
+        let x = Math.floor(pos.x / this.cell_size);
+        let y = Math.floor(pos.y / this.cell_size);
 
         return { x: x, y: y };
+
+    }
+
+    getGridsInR(pos, r) {
+
+        // unoptimised for pos position in grid
+
+        var origin = this.getCell(pos);
+        var checks = Math.ceil(r / this.cell_size);
+
+        var grids = [];
+        grids.push(origin);
+        grids = grids.concat(this.grid.getNeighbours(origin, checks));
+
+        return grids;
 
     }
 }

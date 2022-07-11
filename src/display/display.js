@@ -27,6 +27,10 @@ class BasicDisplay extends Display {
 
     draw(world) {
         super.draw(world);
+        
+        for (var ent of world.getEntities()) {
+            ent.draw(this.camera);
+        }
     }
 
     updateCameraZoom(zoomDelta) {

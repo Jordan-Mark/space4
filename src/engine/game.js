@@ -29,10 +29,16 @@ class Game {
         // create a black background
         background(0);
 
+        
+
+        if (this.db) {
+            this.drawDebugUnderlay();
+        }
+
         this.display.draw(this.world);
 
         if (this.db) {
-            this.drawDebug();
+            this.drawDebugOverlay();
         }
 
     }
@@ -101,26 +107,55 @@ class Game {
         this.db = b;
     }
 
-    drawDebug() {
-
-        // write debug spaghetti code here 
-
+    drawDebugUnderlay() {
 
         let c = this.display.camera;
 
         // draw world bounds
         push();
-        fill(20);
+        fill(10);
         let p1 = c.w2s({ x: 0, y: 0 });
         let p2 = c.w2s({ x: this.world.size.x, y: this.world.size.y });
         rectMode(CORNERS);
         rect(p1.x, p1.y, p2.x, p2.y);
         pop();
 
+    }
+
+    drawDebugOverlay() {
+
+        // write debug spaghetti code here 
+
+        let c = this.display.camera;
+
+
         // get current grid
         let world_mouse = c.s2w({ x: mouseX, y: mouseY });
         let grid_pos = this.world.grid.getCell(world_mouse);
 
+
+
+        // draw mouse radius
+        var r = 300;
+        push();
+        fill(0, 0, 0, 0);
+        strokeWeight(1);
+        stroke(255);
+        let d = r*2
+        ellipse(mouseX, mouseY, d * this.display.camera.zoom);
+        var grids = this.world.grid.getGridsInR(world_mouse, r);
+        console.log(grids);
+
+        for (var grid of grids) {
+            let worldx = grid.x * this.world.grid.cell_size;
+            let worldy = grid.y * this.world.grid.cell_size;
+            let screenp = c.w2s({ x: worldx, y: worldy });
+
+            rectMode(CORNERS);
+            rect(screenp.x, screenp.y, screenp.x + this.world.grid.cell_size*c.zoom, screenp.y + this.world.grid.cell_size*c.zoom);
+
+        }
+        pop();
 
         // debug text
         push();

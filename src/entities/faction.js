@@ -18,6 +18,7 @@ class Faction extends Entity {
 		fill(this.colour.r, this.colour.g, this.colour.b);
 	}
 
+
 	destroy(world) {
 		super.destroy(world);
 		world.removeFaction(this.id);
