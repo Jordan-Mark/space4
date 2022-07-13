@@ -216,6 +216,33 @@ class WorldGrid extends EntityMap {
         grids.push(origin);
         grids = grids.concat(this.grid.getNeighbours(origin, checks));
 
+        // circle rect intersection test
+        for (var i=0; i<grids.length; i++){
+
+            var grid = grids[i];
+
+            // get grid bounding box
+            var grid_minx = grid.x * this.cell_size;
+            var grid_miny = grid.y * this.cell_size;
+            var grid_maxx = grid_minx + this.cell_size;
+            var grid_maxy = grid_miny + this.cell_size;
+
+            // get closest point to circle's centre
+            var nearest_x = Math.max(grid_minx, Math.min(pos.x, grid_maxx));
+            var nearest_y = Math.max(grid_miny, Math.min(pos.y, grid_maxy));
+
+            // get distance
+            var delta_x = pos.x - nearest_x;
+            var delta_y = pos.y - nearest_y;
+
+            var intersect = (delta_x * delta_x + delta_y * delta_y) < (r * r);
+
+            if (!(intersect)){
+                grids.splice(i, 1)
+                i--;
+            }
+        }
+
         return grids;
 
     }

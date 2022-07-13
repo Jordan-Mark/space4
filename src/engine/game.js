@@ -144,8 +144,9 @@ class Game {
         let d = r*2
         ellipse(mouseX, mouseY, d * this.display.camera.zoom);
         var grids = this.world.grid.getGridsInR(world_mouse, r);
-        console.log(grids);
 
+        
+        // draw grid
         for (var grid of grids) {
             let worldx = grid.x * this.world.grid.cell_size;
             let worldy = grid.y * this.world.grid.cell_size;
