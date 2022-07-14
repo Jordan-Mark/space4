@@ -18,6 +18,10 @@ class Faction extends Entity {
 		fill(this.colour.r, this.colour.g, this.colour.b);
 	}
 
+	getColour(){
+		return this.colour
+	}
+
 
 	destroy(world) {
 		super.destroy(world);

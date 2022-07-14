@@ -19,6 +19,7 @@ class Display {
 class DrawRequest {
 
     // abstract class
+    cb = 0;
 
     constructor (z = 0){
         this.z = z;
@@ -28,9 +29,11 @@ class DrawRequest {
 
 class DiamondDrawRequest extends DrawRequest {
 
-    constructor(screenPos, size, colour, z){
+    cb = BasicDisplay.drawDiamonds;
+
+    constructor(pos, size, colour, z){
         super(z);
-        this.screenPos = screenPos;
+        this.pos = pos; // screen position only
         this.size = size;
         this.colour = colour;
     }
@@ -67,20 +70,54 @@ class BasicDisplay extends Display {
 
     drawQueue(requests){
 
-        // arrange queue
+        var diamondDrawRequests = [];
 
+        // order lists
         for (var i = 0; i < requests.length; i++){
-            // draw item
+
+            if (requests[i] instanceof DiamondDrawRequest){
+                diamondDrawRequests.push(requests[i]);
+            }
         }
 
+        // execute lists
+        this.drawDiamonds(diamondDrawRequests);
+
     }
 
-    queueDiamond(screenPos, size, colour){
 
+    drawDiamond(pos /*screen*/, size, colour, z=0){
+        this.requestQueue.push(new DiamondDrawRequest(pos, size, colour, z));
     }
 
-    drawDiamonds () {
-        // actual drawing will occour in this function
+
+    drawDiamonds (requests) {
+        // draw a batch of unscaled diamonds
+
+        push();
+        noStroke();
+
+        if (requests.length > 0){
+            beginShape(QUADS);
+        }
+
+        for (var i = 0; i < requests.length; i++){
+
+            var req = requests[i];
+            fill(req.colour.r, req.colour.g, req.colour.b);
+
+            vertex(req.pos.x, req.pos.y-req.size);
+            vertex(req.pos.x-req.size, req.pos.y);
+            vertex(req.pos.x, req.pos.y+req.size);
+            vertex(req.pos.x+req.size, req.pos.y);
+
+        }
+
+        if (requests.length > 0){
+            endShape(CLOSE);
+        }
+
+        pop();
     }
 
     updateCameraZoom(zoomDelta) {
