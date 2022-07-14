@@ -4,9 +4,10 @@ class Star extends WorldEntity {
 
 	diamondDrawSize = 4;
 
-    constructor(loc, faction) {
+    constructor(loc, faction, name) {
 		super(loc);
 		this.faction = faction;
+		this.name = name;
     }
 
     draw(camera) {
@@ -33,6 +34,10 @@ class Star extends WorldEntity {
 		endShape(CLOSE);
 		pop();
 
+	}
+	
+	getName(){
+		return this.name;
 	}
 
 
