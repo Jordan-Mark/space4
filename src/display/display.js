@@ -15,7 +15,33 @@ class Display {
     }
 }
 
+
+class DrawRequest {
+
+    // abstract class
+
+    constructor (z = 0){
+        this.z = z;
+    }
+
+}
+
+class DiamondDrawRequest extends DrawRequest {
+
+    constructor(screenPos, size, colour, z){
+        super(z);
+        this.screenPos = screenPos;
+        this.size = size;
+        this.colour = colour;
+    }
+}
+
+
+
 class BasicDisplay extends Display {
+
+
+    requestQueue = [];
 
     constructor(camera, outMax, inMax) {
 
@@ -26,11 +52,35 @@ class BasicDisplay extends Display {
     }
 
     draw(world) {
+
+        this.requestQueue = [];
+
         super.draw(world);
-        
+
         for (var ent of world.getEntities()) {
-            ent.draw(this.camera);
+            ent.draw(this);
         }
+
+        this.drawQueue(this.requestQueue);
+
+    }
+
+    drawQueue(requests){
+
+        // arrange queue
+
+        for (var i = 0; i < requests.length; i++){
+            // draw item
+        }
+
+    }
+
+    queueDiamond(screenPos, size, colour){
+
+    }
+
+    drawDiamonds () {
+        // actual drawing will occour in this function
     }
 
     updateCameraZoom(zoomDelta) {

@@ -10,8 +10,8 @@ class Star extends WorldEntity {
 		this.name = name;
     }
 
-    draw(camera) {
-		super.draw();
+    draw(display) {
+		super.draw(display);
 		this.draw_diamond(this.diamondDrawSize);
     }
 
@@ -22,7 +22,7 @@ class Star extends WorldEntity {
 		push();
 		this.faction.fStroke();
 		this.faction.fFill();
-		var adj = camera.w2s(this.getPos());
+		var adj = display.camera.w2s(this.getPos());
 		translate(adj.x, adj.y);
 
 		//scale(camera.zoom);
