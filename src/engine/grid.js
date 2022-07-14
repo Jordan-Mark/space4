@@ -140,12 +140,13 @@ class EntityMap {
     }
 
     /* add entity (or id) to internal dictionary */
-    addEntity(gridPosition, entity) {
+    addEntity(gridPosition, id) {
 
-        if (this.getEntities(gridPosition) == null) {
-            this.entities[this.grid.hash(gridPosition)] = [];
-        }
-        this.entities[this.grid.hash(gridPosition)].append(entity);
+        var hash = this.grid.hash(gridPosition);
+        var entsPresent = this.getEntities(gridPosition);
+        entsPresent.push(id);
+        this.entities[hash] = entsPresent;
+
     }
 
     /* remove all entities from position */
@@ -169,7 +170,17 @@ class EntityMap {
 
     /* return the entity at position */
     getEntities(gridPosition) {
-        return this.entities[this.grid.hash(gridPosition)];
+        var hash = this.grid.hash(gridPosition);
+        var ents = this.entities[hash];
+
+        if (ents == undefined){
+            return [];
+        }
+        else {
+            return ents;
+        }
+
+
     }
 
     /* return a list of all entities in the map */
@@ -181,6 +192,17 @@ class EntityMap {
     getEntityDict() {
         return this.entities;
     }
+
+    /* get entities across multiple grids */
+    getEntsInGrids(grids){
+        var ents = [];
+        for (var grid of grids){
+            var ents_in_grid = this.getEntities(grid);
+            ents = ents.concat(ents_in_grid);
+        }
+        return (ents);
+    }
+
 }
 
 /*
@@ -196,6 +218,7 @@ class WorldGrid extends EntityMap {
    
     }
 
+    /* get cell from world position */
     getCell(pos) {
 
         let x = Math.floor(pos.x / this.cell_size);
@@ -205,9 +228,9 @@ class WorldGrid extends EntityMap {
 
     }
 
+    /* get grids colliding with circle created with r */
     getGridsInR(pos, r) {
 
-        // unoptimised for pos position in grid
 
         var origin = this.getCell(pos);
         var checks = Math.ceil(r / this.cell_size);
@@ -244,6 +267,6 @@ class WorldGrid extends EntityMap {
         }
 
         return grids;
-
     }
+
 }

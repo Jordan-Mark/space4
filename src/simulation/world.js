@@ -49,7 +49,28 @@ class BasicWorld extends World {
 
     add(ent) {
         this.ents[ent.getID()] = ent;
+
+        // if WorldEntity (aka has transform), add to grid
+        if (ent instanceof WorldEntity){
+            this.grid.addEntity(this.grid.getCell(ent.pos), ent.getID());
+        }
+
     }
+
+    // get entity ids in radius
+    getEntsInR(pos, r){
+
+        var entsInGrids = this.grid.getEntsInGrids(this.grid.getGridsInR(pos, r));
+        var finalEnts = [];
+
+        for (var id of entsInGrids){
+            if (r * r > distSqrd(pos, this.ents[id].getPos())){
+                finalEnts.push(id);
+            }
+        }
+        return finalEnts;
+    }
+
 
     addFaction(faction) {
         this.add(faction);
@@ -82,6 +103,9 @@ class BasicWorld extends World {
     }
 
     remove(id) {
+        // TODO : should entities hold their own grid position?
+        var grid_position = this.grid.getCell(this.ents[id].getPos());
+        this.grid.removeEntity(grid_position, id);
         delete this.ents[id];
     }
 

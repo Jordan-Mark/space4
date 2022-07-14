@@ -16,10 +16,13 @@ function setup() {
 
     /* world parameters */
     WORLD_SIZE = { x: 5000, y: 5000 };
-    WORLD_GRID_DIV = 200;
+    WORLD_GRID_DIV = 10;
 
     /* factions */
     N_FACTIONS = 5;
+
+    /* stars */
+    N_STARS = 100;
 
     /* simulation speed */
     GLOBAL_TIME_FACTOR = 1;
@@ -44,7 +47,7 @@ function setup() {
     let worldGenerator = new BasicWorldGenerator();
     worldGenerator.create(WORLD_SIZE, WORLD_GRID_DIV);
     worldGenerator.createFactions(N_FACTIONS);
-    worldGenerator.createStars(100);
+    worldGenerator.createStars(N_STARS);
     world = worldGenerator.export();
 
     // create display

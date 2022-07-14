@@ -136,7 +136,7 @@ class Game {
 
 
         // draw mouse radius
-        var r = 300;
+        var r = 150;
         push();
         fill(0, 0, 0, 0);
         strokeWeight(1);
@@ -145,7 +145,6 @@ class Game {
         ellipse(mouseX, mouseY, d * this.display.camera.zoom);
         var grids = this.world.grid.getGridsInR(world_mouse, r);
 
-        
         // draw grid
         for (var grid of grids) {
             let worldx = grid.x * this.world.grid.cell_size;

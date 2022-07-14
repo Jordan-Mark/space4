@@ -21,7 +21,7 @@ class Star extends WorldEntity {
 		push();
 		this.faction.fStroke();
 		this.faction.fFill();
-		var adj = camera.w2s(this.loc);
+		var adj = camera.w2s(this.getPos());
 		translate(adj.x, adj.y);
 
 		//scale(camera.zoom);

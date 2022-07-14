@@ -41,16 +41,16 @@ class WorldEntity extends Entity {
      * 
      * entity with world location
      * 
-     * @param {any} loc
+     * @param {any} pos
      */
 
-    constructor(loc) {
+    constructor(pos) {
         super();
-        this.loc = loc;
+        this.pos = pos;
     }
 
-    getLoc() {
-        return loc;
+    getPos() {
+        return this.pos;
     }
 
 }
