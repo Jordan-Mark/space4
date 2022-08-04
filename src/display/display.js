@@ -99,6 +99,7 @@ class BasicDisplay extends Display {
 
         if (requests.length > 0){
             beginShape(QUADS);
+        }
 
             for (var i = 0; i < requests.length; i++){
 
@@ -109,9 +110,13 @@ class BasicDisplay extends Display {
                 vertex(req.pos.x-req.size, req.pos.y);
                 vertex(req.pos.x, req.pos.y+req.size);
                 vertex(req.pos.x+req.size, req.pos.y);
+
             }
+
+        if (requests.length > 0){
             endShape(CLOSE);
         }
+
         pop();
     }
 
