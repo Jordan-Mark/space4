@@ -18,9 +18,6 @@ class Display {
 
 class DrawRequest {
 
-    // abstract class
-    cb = 0;
-
     constructor (z = 0){
         this.z = z;
     }
@@ -28,8 +25,6 @@ class DrawRequest {
 }
 
 class DiamondDrawRequest extends DrawRequest {
-
-    cb = BasicDisplay.drawDiamonds;
 
     constructor(pos, size, colour, z){
         super(z);
@@ -44,7 +39,7 @@ class DiamondDrawRequest extends DrawRequest {
 class BasicDisplay extends Display {
 
 
-    requestQueue = [];
+    requestQueue = {};
 
     constructor(camera, outMax, inMax) {
 
@@ -56,8 +51,7 @@ class BasicDisplay extends Display {
 
     draw(world) {
 
-        this.requestQueue = [];
-
+        this.resetQueue();
         super.draw(world);
 
         for (var ent of world.getEntities()) {
@@ -68,7 +62,20 @@ class BasicDisplay extends Display {
 
     }
 
+    resetQueue () {
+        this.requestQueue = {};
+    }
+
     drawQueue(requests){
+
+
+        for (var i=0; i<requests.length; i++){
+            let ar = Object.keys(this.requestQueue)[i].split('-')
+            let name = ar[0];
+            let z = ar[1];
+            // i stopped coding here because im sleepy
+        }
+
 
         var diamondDrawRequests = [];
 
@@ -85,9 +92,22 @@ class BasicDisplay extends Display {
 
     }
 
+    queue(request){
+
+        let z = request.z;
+        let name = request.constructor.name;
+
+        let key = name + '-' + z.toString();
+
+        if (this.requestQueue[key] === undefined){
+            this.requestQueue[key] = [];
+        }
+        this.requestQueue.push(request);
+
+    }
 
     drawDiamond(pos /*screen*/, size, colour, z=0){
-        this.requestQueue.push(new DiamondDrawRequest(pos, size, colour, z));
+        this.queue(new DiamondDrawRequest(pos, size, colour, z));
     }
 
 
