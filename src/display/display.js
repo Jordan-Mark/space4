@@ -99,24 +99,19 @@ class BasicDisplay extends Display {
 
         if (requests.length > 0){
             beginShape(QUADS);
-        }
 
-        for (var i = 0; i < requests.length; i++){
+            for (var i = 0; i < requests.length; i++){
 
-            var req = requests[i];
-            fill(req.colour.r, req.colour.g, req.colour.b);
+                var req = requests[i];
+                fill(req.colour.r, req.colour.g, req.colour.b);
 
-            vertex(req.pos.x, req.pos.y-req.size);
-            vertex(req.pos.x-req.size, req.pos.y);
-            vertex(req.pos.x, req.pos.y+req.size);
-            vertex(req.pos.x+req.size, req.pos.y);
-
-        }
-
-        if (requests.length > 0){
+                vertex(req.pos.x, req.pos.y-req.size);
+                vertex(req.pos.x-req.size, req.pos.y);
+                vertex(req.pos.x, req.pos.y+req.size);
+                vertex(req.pos.x+req.size, req.pos.y);
+            }
             endShape(CLOSE);
         }
-
         pop();
     }
 
