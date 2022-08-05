@@ -69,40 +69,37 @@ class BasicDisplay extends Display {
     drawQueue(requests){
 
 
-        for (var i=0; i<requests.length; i++){
-            let ar = Object.keys(this.requestQueue)[i].split('-')
-            let name = ar[0];
-            let z = ar[1];
-            // i stopped coding here because im sleepy
-        }
+        for (var z of Object.keys(this.requestQueue)){
+            var z_requests = this.requestQueue[z];
+            var structured_requests = {};
 
+            // create structured list of requests per z level
+            for (var request of z_requests){
+                var name = request.constructor.name;
+                structured_requests[name] === undefined ? structured_requests[name] = [request] : structured_requests[name].push(request);
+            }
 
-        var diamondDrawRequests = [];
-
-        // order lists
-        for (var i = 0; i < requests.length; i++){
-
-            if (requests[i] instanceof DiamondDrawRequest){
-                diamondDrawRequests.push(requests[i]);
+            // render requests
+            for (var request_type of Object.keys(structured_requests)){
+                if (request_type == "DiamondDrawRequest"){
+                    this.drawDiamonds(structured_requests[request_type]);
+                }
+                else {
+                    throw "unknown draw request";
+                }
             }
         }
-
-        // execute lists
-        this.drawDiamonds(diamondDrawRequests);
-
     }
 
     queue(request){
 
         let z = request.z;
-        let name = request.constructor.name;
-
-        let key = name + '-' + z.toString();
+        let key = z;
 
         if (this.requestQueue[key] === undefined){
             this.requestQueue[key] = [];
         }
-        this.requestQueue.push(request);
+        this.requestQueue[key].push(request);
 
     }
 
