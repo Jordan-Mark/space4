@@ -5,7 +5,7 @@ class WorldGenerator {
     constructor () {
     }
 
-    create() {
+    create(size, gridSize) {
         this.size = size;
         this.gridSize = gridSize;
         this.world = new World();
@@ -22,6 +22,8 @@ class BasicWorldGenerator extends WorldGenerator {
     STAR_MAX_DIST = 50;
     WGEN_PS_BUFFER = 0;
     WGEN_PS_N_SAMPLES_BEFORE_REJECTION = 2; // redundant????
+    MIN_STARS = 150; // try and create a world with at least this many stars
+    MIN_STARS_TIMEOUT = 3 // if there has been x attempts to create a world with at least MIN_STARS, give up
 
     create(size, gridSize) {
         this.size = size;
@@ -29,7 +31,7 @@ class BasicWorldGenerator extends WorldGenerator {
         this.world = new BasicWorld(size, gridSize);
     }
     
-    createStars(n_stars) {
+    createStars() {
         // create some test stars
         /*
         for (var i = 0; i < n_stars; i++) {
@@ -39,7 +41,20 @@ class BasicWorldGenerator extends WorldGenerator {
 
         // create system objects
 
-        var pos_vectors = this.genPoints(this.STAR_MAX_DIST, this.size.x, this.size.y, this.WGEN_PS_BUFFER, this.WGEN_PS_N_SAMPLES_BEFORE_REJECTION);
+        var valid_world = false;
+
+        for (var i = 0; i < this.MIN_STARS_TIMEOUT; i++) {
+            var pos_vectors = this.genPoints(this.STAR_MAX_DIST, this.size.x, this.size.y, this.WGEN_PS_BUFFER, this.WGEN_PS_N_SAMPLES_BEFORE_REJECTION);
+            if (pos_vectors.length >= this.MIN_STARS) {
+                valid_world = true;
+                break;
+            }
+            console.log("failed to generate world with suffient stars, retrying ...");
+        }
+
+        if (!valid_world) {
+            console.log("failed to generate world with ", this.MIN_STARS, " n of stars after", this.MIN_STARS_TIMEOUT, "attempts" );
+        }
 
         for (var i=0; i<pos_vectors.length; i++){
             this.world.addStar(new Star({ x: pos_vectors[i].x, y: pos_vectors[i].y }, random(this.world.getFactions()), name=this.genStarName()));
