@@ -21,30 +21,23 @@ class BasicWorldGenerator extends WorldGenerator {
 
     STAR_MAX_DIST = 50;
     WGEN_PS_BUFFER = 0;
-    WGEN_PS_N_SAMPLES_BEFORE_REJECTION = 2; // redundant????
     MIN_STARS = 150; // try and create a world with at least this many stars
     MIN_STARS_TIMEOUT = 3 // if there has been x attempts to create a world with at least MIN_STARS, give up
 
+    /* initiate empty world */
     create(size, gridSize) {
         this.size = size;
         this.gridSize = gridSize;
         this.world = new BasicWorld(size, gridSize);
     }
-    
-    createStars() {
-        // create some test stars
-        /*
-        for (var i = 0; i < n_stars; i++) {
-            this.world.addStar(new Star({ x: random(this.size.x), y: random(this.size.y) }, random(this.world.getFactions())));
-        }
-        */
 
-        // create system objects
+    /* populate world with stars */
+    createStars() {
 
         var valid_world = false;
 
         for (var i = 0; i < this.MIN_STARS_TIMEOUT; i++) {
-            var pos_vectors = this.genPoints(this.STAR_MAX_DIST, this.size.x, this.size.y, this.WGEN_PS_BUFFER, this.WGEN_PS_N_SAMPLES_BEFORE_REJECTION);
+            var pos_vectors = this.genPoints(this.STAR_MAX_DIST, this.size.x, this.size.y, this.WGEN_PS_BUFFER);
             if (pos_vectors.length >= this.MIN_STARS) {
                 valid_world = true;
                 break;
@@ -62,8 +55,8 @@ class BasicWorldGenerator extends WorldGenerator {
 
     }
 
-    /* poisson disc sampling algorithm */
-    genPoints(radius, max_x, max_y, buffer = 10, nsbr = 30){
+    /* implementation of poisson disc sampling algorithm */
+    genPoints(radius, max_x, max_y, buffer = 10){
 
 
         /* create a grid */
@@ -126,8 +119,6 @@ class BasicWorldGenerator extends WorldGenerator {
         }
         return points;
     }
-
-
 
     /* helper function for generatePoints() */
     isValid(candidate, max_x, max_y, cellSize, points, grid, radius, buffer){
@@ -201,3 +192,7 @@ class BasicWorldGenerator extends WorldGenerator {
     }
 
 }
+
+
+
+
