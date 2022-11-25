@@ -125,13 +125,25 @@ class Game {
     drawDebugOverlay() {
 
         // write debug spaghetti code here 
-
         let c = this.display.camera;
 
 
         // get current grid
         let world_mouse = c.s2w({ x: mouseX, y: mouseY });
         let grid_pos = this.world.grid.getCell(world_mouse);
+
+        // debug connections
+        for (var starID of this.world.getStars()) {
+            var star = this.world.get(starID);
+            for (var conID of star.getConnections()) {
+                var con = this.world.get(conID);
+                stroke(70);
+                const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
+                const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
+                line(s1.x, s1.y, s2.x, s2.y);
+            }
+        }
+
 
 
 

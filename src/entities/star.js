@@ -20,6 +20,10 @@ class Star extends WorldEntity {
 
 	addCon(starID) {
 		this.connections.push(starID);
+	}
+
+	getConnections() {
+		return this.connections;
     }
 
 	draw_diamond(size) {

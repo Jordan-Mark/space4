@@ -108,7 +108,7 @@ class BasicWorldGenerator extends WorldGenerator {
             let nsbr = noise(spawnCentre.x * noiseScale, spawnCentre.y * noiseScale) * 1.5 + gradient;
 
             nsbr = Math.round(nsbr);
-            nsbr = 1;
+ 
 
             // nsbr 1 fails quickly
             // nsbr 2 sometimes fails
