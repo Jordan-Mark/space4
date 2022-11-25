@@ -45,6 +45,7 @@ function setup() {
     worldGenerator.create(WORLD_SIZE, WORLD_GRID_DIV);
     worldGenerator.createFactions(N_FACTIONS);
     worldGenerator.createStars();
+    worldGenerator.connectStars();
     world = worldGenerator.export();
 
     // create display

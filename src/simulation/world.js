@@ -89,9 +89,13 @@ class BasicWorld extends World {
         return this.factions;
     }
 
+    getStars() {
+        return this.stars;
+    }
+
     addStar(star) {
         this.add(star);
-        this.stars.push(star);
+        this.stars.push(star.getID());
     }
 
     removeStar(id) {

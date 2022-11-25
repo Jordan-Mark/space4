@@ -53,7 +53,25 @@ class BasicWorldGenerator extends WorldGenerator {
             this.world.addStar(new Star({ x: pos_vectors[i].x, y: pos_vectors[i].y }, random(this.world.getFactions()), name=this.genStarName()));
         }
 
+        console.log("present world generated w/", this.world.getStars().length, "stars.");
     }
+
+    /* calculate connections for all stars */
+    connectStars() {
+
+        for (var starID of this.world.getStars()) {
+            var star = this.world.get(starID);
+            var nearbyEnts = this.world.getEntsInR(star.pos, this.STAR_MAX_DIST*2);
+            for (var entID of nearbyEnts) {
+                if (this.world.getStars().includes(entID) && entID != starID) {
+                    star.addCon(entID);
+                }
+            }
+            console.log(star);
+        }
+    }
+
+
 
     /* implementation of poisson disc sampling algorithm */
     genPoints(radius, max_x, max_y, buffer = 10){
@@ -90,6 +108,7 @@ class BasicWorldGenerator extends WorldGenerator {
             let nsbr = noise(spawnCentre.x * noiseScale, spawnCentre.y * noiseScale) * 1.5 + gradient;
 
             nsbr = Math.round(nsbr);
+            nsbr = 1;
 
             // nsbr 1 fails quickly
             // nsbr 2 sometimes fails

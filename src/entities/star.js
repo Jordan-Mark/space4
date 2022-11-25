@@ -8,6 +8,7 @@ class Star extends WorldEntity {
 		super(loc);
 		this.faction = faction;
 		this.name = name;
+		this.connections = []; // should be a list of starIDs
     }
 
     draw(display) {
@@ -17,6 +18,9 @@ class Star extends WorldEntity {
 		//this.draw_diamond(this.diamondDrawSize);
     }
 
+	addCon(starID) {
+		this.connections.push(starID);
+    }
 
 	draw_diamond(size) {
 
