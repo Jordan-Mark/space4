@@ -34,6 +34,20 @@ class DiamondDrawRequest extends DrawRequest {
     }
 }
 
+class LineDrawRequest extends DrawRequest {
+
+    constructor(pos1, pos2, weight, colour, z) {
+        super(z);
+        this.pos1 = pos1;
+        this.pos2 = pos2;
+        this.weight = weight;
+        this.colour = colour;
+    }
+
+}
+
+
+
 
 
 class BasicDisplay extends Display {
@@ -66,23 +80,33 @@ class BasicDisplay extends Display {
         this.requestQueue = {};
     }
 
-    drawQueue(requests){
+    drawQueue(requests) {
 
+        console.log(this.requestQueue);
+        console.log(Object.keys(this.requestQueue));
+        console.log(this.requestQueue[1]);
 
-        for (var z of Object.keys(this.requestQueue)){
+        for (var z of Object.keys(this.requestQueue)) {
+
             var z_requests = this.requestQueue[z];
             var structured_requests = {};
+
+
 
             // create structured list of requests per z level
             for (var request of z_requests){
                 var name = request.constructor.name;
-                structured_requests[name] === undefined ? structured_requests[name] = [request] : structured_requests[name].push(request);
+
+                structured_requests[name] === undefined ? structured_requests[name] = [request] : structured_requests[name].push(request); // add to that type-list if exists, else create new category.
             }
 
             // render requests
             for (var request_type of Object.keys(structured_requests)){
-                if (request_type == "DiamondDrawRequest"){
+                if (request_type == "DiamondDrawRequest") {
                     this.drawDiamonds(structured_requests[request_type]);
+                }
+                else if (request_type == "LineDrawRequest") {
+                    this.drawLines(structured_requests[request_type]);
                 }
                 else {
                     throw "unknown draw request";
@@ -91,15 +115,15 @@ class BasicDisplay extends Display {
         }
     }
 
-    queue(request){
+    queue(request) {
+
 
         let z = request.z;
-        let key = z;
 
-        if (this.requestQueue[key] === undefined){
-            this.requestQueue[key] = [];
+        if (this.requestQueue[z] === undefined){
+            this.requestQueue[z] = [];
         }
-        this.requestQueue[key].push(request);
+        this.requestQueue[z].push(request);
 
     }
 
@@ -107,16 +131,18 @@ class BasicDisplay extends Display {
         this.queue(new DiamondDrawRequest(pos, size, colour, z));
     }
 
+    drawLine(pos1, pos2, weight, colour, z = 0) {
+        this.queue(new LineDrawRequest(pos1, pos2, weight, colour, z));
+    }
 
+    /*draw a batch of unscaled diamonds*/
     drawDiamonds (requests) {
-        // draw a batch of unscaled diamonds
 
         push();
         noStroke();
 
         if (requests.length > 0){
             beginShape(QUADS);
-        }
 
             for (var i = 0; i < requests.length; i++){
 
@@ -130,11 +156,35 @@ class BasicDisplay extends Display {
 
             }
 
-        if (requests.length > 0){
             endShape(CLOSE);
         }
 
         pop();
+    }
+
+    /*draw a batch of lines*/
+    drawLines(requests) {
+
+        push()
+
+        if (requests.length > 0) {
+
+            beginShape(LINES);
+
+            for (var i = 0; i < requests.length; i++) {
+
+                var req = requests[i];
+
+                stroke(req.colour.r, req.colour.g, req.colour.b);
+                strokeWeight(req.weight);
+
+                vertex(req.pos1.x, req.pos1.y);
+                vertex(req.pos2.x, req.pos2.y);
+
+            }
+
+            endShape();
+        }
     }
 
     updateCameraZoom(zoomDelta) {

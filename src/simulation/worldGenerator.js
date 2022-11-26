@@ -67,7 +67,6 @@ class BasicWorldGenerator extends WorldGenerator {
                     star.addCon(entID);
                 }
             }
-            console.log(star);
         }
     }
 

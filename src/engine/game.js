@@ -137,10 +137,9 @@ class Game {
             var star = this.world.get(starID);
             for (var conID of star.getConnections()) {
                 var con = this.world.get(conID);
-                stroke(70);
                 const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
                 const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
-                line(s1.x, s1.y, s2.x, s2.y);
+                this.display.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
             }
         }
 
