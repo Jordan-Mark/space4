@@ -82,15 +82,14 @@ class BasicDisplay extends Display {
 
     drawQueue(requests) {
 
-        console.log(this.requestQueue);
-        console.log(Object.keys(this.requestQueue));
-        console.log(this.requestQueue[1]);
+        console.log(requests);
+        console.log(Object.keys(requests));
+        console.log(requests[1]);
 
-        for (var z of Object.keys(this.requestQueue)) {
+        for (var z of Object.keys(requests)) {
 
-            var z_requests = this.requestQueue[z];
+            var z_requests = requests[z];
             var structured_requests = {};
-
 
 
             // create structured list of requests per z level
