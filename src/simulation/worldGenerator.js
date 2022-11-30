@@ -50,7 +50,7 @@ class BasicWorldGenerator extends WorldGenerator {
         }
 
         for (var i=0; i<pos_vectors.length; i++){
-            this.world.addStar(new Star({ x: pos_vectors[i].x, y: pos_vectors[i].y }, random(this.world.getFactions()), name=this.genStarName()));
+            this.world.addStar(new Star({ x: pos_vectors[i].x, y: pos_vectors[i].y }, this.world.get(random(this.world.getFactions())), name=this.genStarName()));
         }
 
         console.log("present world generated w/", this.world.getStars().length, "stars.");

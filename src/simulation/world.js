@@ -4,7 +4,7 @@ class World {
     /**
      * 
      * class contains all internal simulation
-     * 
+     * "model" part of this code
      * 
      * */
 
@@ -74,21 +74,24 @@ class BasicWorld extends World {
 
     addFaction(faction) {
         this.add(faction);
-        this.factions.push(faction);
+        this.factions.push(faction.getID());
     }
 
     get(id) {
         return this.ents[id];
     }
 
+    /* returns all entity OBJECTS */
     getEntities() {
         return Object.values(this.ents);
     }
 
+    /* return all faction IDs */
     getFactions() {
         return this.factions;
     }
 
+    /* return all star IDs */
     getStars() {
         return this.stars;
     }

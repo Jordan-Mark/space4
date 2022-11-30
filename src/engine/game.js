@@ -30,7 +30,6 @@ class Game {
         background(0);
 
         
-
         if (this.db) {
             this.drawDebugUnderlay();
         }
@@ -111,9 +110,10 @@ class Game {
 
         let c = this.display.camera;
 
-        // draw world bounds
+        // draw max world bounds
         push();
         fill(10);
+        stroke(100);
         let p1 = c.w2s({ x: 0, y: 0 });
         let p2 = c.w2s({ x: this.world.size.x, y: this.world.size.y });
         rectMode(CORNERS);
@@ -144,16 +144,11 @@ class Game {
         }
 
 
-
-
-        // draw mouse radius
+        // draw grid mouse search patters
         var r = 150;
         push();
         fill(0, 0, 0, 0);
         strokeWeight(1);
-        stroke(255);
-        let d = r*2
-        ellipse(mouseX, mouseY, d * this.display.camera.zoom);
         var grids = this.world.grid.getGridsInR(world_mouse, r);
 
         // draw grid
@@ -162,13 +157,21 @@ class Game {
             let worldy = grid.y * this.world.grid.cell_size;
             let screenp = c.w2s({ x: worldx, y: worldy });
 
+            stroke(75);
             rectMode(CORNERS);
             rect(screenp.x, screenp.y, screenp.x + this.world.grid.cell_size*c.zoom, screenp.y + this.world.grid.cell_size*c.zoom);
 
         }
+
+        // draw mouse radius
+        stroke(255);
+        let d = r*2
+        ellipse(mouseX, mouseY, d * this.display.camera.zoom);
+
+
         pop();
 
-        // debug text
+        // debug text in top left of screen 
         push();
         stroke(255);
         fill(255);

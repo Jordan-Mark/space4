@@ -3,6 +3,7 @@
 class Display {
     /**
      * class handles all drawing, interprets "world" object
+     * also is a container for the camera
      * 
      */
 
@@ -48,12 +49,11 @@ class LineDrawRequest extends DrawRequest {
 
 
 
-
-
 class BasicDisplay extends Display {
 
+    logTimeout = 0; // attribute used for debugging
 
-    requestQueue = {};
+    requestQueue = {}; // should contain a list of all requests categorised by Z level
 
     constructor(camera, outMax, inMax) {
 
@@ -72,7 +72,7 @@ class BasicDisplay extends Display {
             ent.draw(this);
         }
 
-        this.drawQueue(this.requestQueue);
+        this.drawQueue();
 
     }
 
@@ -80,17 +80,21 @@ class BasicDisplay extends Display {
         this.requestQueue = {};
     }
 
-    drawQueue(requests) {
+    drawQueue() {
 
-        console.log(requests);
-        console.log(Object.keys(requests));
-        console.log(requests[1]);
+      
 
-        for (var z of Object.keys(requests)) {
+        for (var z in this.requestQueue) {
 
-            var z_requests = requests[z];
+            var z_requests = this.requestQueue[z];
             var structured_requests = {};
+     
+            if (this.logTimeout < 30){
+                this.logTimeout++; 
+                // put debug code here
+                console.log('drawQueue()', JSON.parse(JSON.stringify(this.requestQueue)));
 
+            }
 
             // create structured list of requests per z level
             for (var request of z_requests){
@@ -115,15 +119,24 @@ class BasicDisplay extends Display {
     }
 
     queue(request) {
-
-
         let z = request.z;
 
+        // create a new z list if not already present
         if (this.requestQueue[z] === undefined){
             this.requestQueue[z] = [];
         }
         this.requestQueue[z].push(request);
 
+    
+        // DEBUG check if z=1 requests are successfully being added (they are, here at least)
+        if (this.logTimeout < 30 && z===1){
+            console.log('z submitted:', z);
+            console.log('queue()', JSON.parse(JSON.stringify(this.requestQueue)));
+            this.logTimeout++;      
+        }
+        
+
+        
     }
 
     drawDiamond(pos /*screen*/, size, colour, z=0){
@@ -184,6 +197,8 @@ class BasicDisplay extends Display {
 
             endShape();
         }
+
+        pop();
     }
 
     updateCameraZoom(zoomDelta) {
