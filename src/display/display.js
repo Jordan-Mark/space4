@@ -78,7 +78,7 @@ class BasicDisplay extends Display {
         }
 
         // draw star connections 
-        this.drawConnections(world);
+        //this.drawConnections(world);
 
         this.drawQueue();
         this.resetQueue();
@@ -225,7 +225,6 @@ class BasicDisplay extends Display {
 
     drawConnections(world) {
 
-        //console.log("drawConnections() call");
 
         let c = this.camera;
 
@@ -251,6 +250,7 @@ class BasicDisplay extends Display {
         //console.log('stars drawn', drawn.length);
         //console.log('potential connections excluded', excluded);
     }
+
 
     drawDebugUnderlay(world) {
 
