@@ -78,7 +78,7 @@ class BasicDisplay extends Display {
         }
 
         // draw star connections 
-        //this.drawConnections(world);
+        this.drawConnections(world);
 
         this.drawQueue();
         this.resetQueue();
@@ -184,6 +184,8 @@ class BasicDisplay extends Display {
 
         push()
 
+
+
         if (requests.length > 0) {
 
             beginShape(LINES);
@@ -191,9 +193,9 @@ class BasicDisplay extends Display {
             for (var i = 0; i < requests.length; i++) {
 
                 var req = requests[i];
-
                 stroke(req.colour.r, req.colour.g, req.colour.b);
                 strokeWeight(req.weight);
+
 
                 vertex(req.pos1.x, req.pos1.y);
                 vertex(req.pos2.x, req.pos2.y);
@@ -225,31 +227,57 @@ class BasicDisplay extends Display {
 
     drawConnections(world) {
 
+        var fin = []; // drawn stars
 
         let c = this.camera;
+        for (var starID of world.getStars()) {
 
-        var drawn = [];
-        var excluded = 0;
+            var star = world.get(starID);
+            fin.push(starID);
 
+            for (var conID of star.getConnections()) {
+
+                // check for doubles
+                if (!(fin.includes(conID))) {
+                    var con = world.get(conID);
+
+                    // frustrum cull stars
+                    if (c.inBounds(star.getPos()) || c.inBounds(con.getPos())) {
+
+                        const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
+                        const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
+
+                        this.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
+
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+        /*
         // debug connections
         for (var starID of world.getStars()) {
             var star = world.get(starID);
             for (var conID of star.getConnections()) {
-                if (!(drawn.includes(conID))) {
+                //if (!(drawn.includes(conID))) {
                     var con = world.get(conID);
                     const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
                     const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
                     this.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
-                    drawn.push(starID);
-                }
-                else {
-                    excluded++;
-                }
+                 //   drawn.push(starID);
+                //}
+                //else {
+                //    excluded++;
+                //}
             }
         }
         //console.log('stars drawn', drawn.length);
         //console.log('potential connections excluded', excluded);
-    }
+        */
 
 
     drawDebugUnderlay(world) {
