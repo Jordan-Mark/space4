@@ -65,6 +65,7 @@ class BasicDisplay extends Display {
 
     draw(world) {
 
+        this.resetQueue();
         super.draw(world);
 
         for (var ent of world.getEntities()) {
@@ -109,7 +110,6 @@ class BasicDisplay extends Display {
                 }
                 else if (request_type == "LineDrawRequest") {
                     this.drawLines(structured_requests[request_type]);
-                    console.log('?');
                 }
                 else {
                     throw "unknown draw request";
@@ -129,12 +129,13 @@ class BasicDisplay extends Display {
 
     
         // DEBUG check if z=1 requests are successfully being added (they are, here at least)
+        /*
         if (this.logTimeout < 30 && z===1){
             console.log('z submitted:', z);
             console.log('queue()', JSON.parse(JSON.stringify(this.requestQueue)));
             this.logTimeout++;      
         }
-        
+        */
 
         
     }

@@ -29,6 +29,7 @@ class Game {
         // create a black background
         background(0);
 
+
         
         if (this.db) {
             this.drawDebugUnderlay();
@@ -40,7 +41,6 @@ class Game {
             this.drawDebugOverlay();
         }
 
-        this.display.resetQueue();
 
     }
 
@@ -122,6 +122,20 @@ class Game {
         rect(p1.x, p1.y, p2.x, p2.y);
         pop();
 
+        // debug connections
+        for (var starID of this.world.getStars()) {
+            var star = this.world.get(starID);
+            for (var conID of star.getConnections()) {
+                var con = this.world.get(conID);
+                const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
+                const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
+                this.display.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
+            }
+        }
+
+
+
+
     }
 
     drawDebugOverlay() {
@@ -133,17 +147,6 @@ class Game {
         // get current grid
         let world_mouse = c.s2w({ x: mouseX, y: mouseY });
         let grid_pos = this.world.grid.getCell(world_mouse);
-
-        // debug connections
-        for (var starID of this.world.getStars()) {
-            var star = this.world.get(starID);
-            for (var conID of star.getConnections()) {
-                var con = this.world.get(conID);
-                const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
-                const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
-                this.display.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
-            }
-        }
 
 
         // draw grid mouse search patters

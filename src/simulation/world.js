@@ -77,6 +77,11 @@ class BasicWorld extends World {
         this.factions.push(faction.getID());
     }
 
+    addStar(star) {
+        this.add(star);
+        this.stars.push(star.getID());
+    }
+
     get(id) {
         return this.ents[id];
     }
@@ -96,19 +101,22 @@ class BasicWorld extends World {
         return this.stars;
     }
 
-    addStar(star) {
-        this.add(star);
-        this.stars.push(star.getID());
-    }
-
+    /* remove from star list (does not destroy all references, use this.remove) */
     removeStar(id) {
         removeFromArr(this.stars, id);
     }
 
+    /* remove from faction list (does not destroy all references, use this.remove) */
     removeFaction(id) {
         removeFromArr(this.factions, id);
     }
 
+    /* returns seconds since last frame (adjusted for this.globalTimeFactor) */
+    deltaTime() {
+        return this.dt;
+    }
+
+    /* destroy all references to an entity in this */
     remove(id) {
         // TODO : should entities hold their own grid position?
         var grid_position = this.grid.getCell(this.ents[id].getPos());
@@ -120,6 +128,7 @@ class BasicWorld extends World {
         this.globalTimeFactor = timeFactor;
     }
 
+    /* executes in the loop before tick */
     preTick() {
         this.dt = (deltaTime / 1000) * this.globalTimeFactor; // this leaves us with "seconds*" since last frame (*adjusted for globalTimeFactor)
     }
