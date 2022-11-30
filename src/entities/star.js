@@ -13,7 +13,7 @@ class Star extends WorldEntity {
 
     draw(display) {
 		super.draw(display);
-		display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 0);
+		display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 2);
 		
 		//this.draw_diamond(this.diamondDrawSize);
     }

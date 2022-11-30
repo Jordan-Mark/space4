@@ -11,7 +11,7 @@ class Display {
         this.camera = camera;
     }
 
-    draw(world){
+    draw(world, debug=false){
 
     }
 }
@@ -63,16 +63,28 @@ class BasicDisplay extends Display {
 
     }
 
-    draw(world) {
+    draw(world, debug = false) {
 
-        this.resetQueue();
+        // create a black background
+        background(0);
+
+        // debug (1/2)
+        this.drawDebugUnderlay(world);
+
+        // main entity draw loop
         super.draw(world);
-
         for (var ent of world.getEntities()) {
             ent.draw(this);
         }
 
+        // draw star connections 
+        this.drawConnections(world);
+
         this.drawQueue();
+        this.resetQueue();
+
+        // debug (2/2)
+        this.drawDebugOverlay(world);
 
     }
 
@@ -80,21 +92,13 @@ class BasicDisplay extends Display {
         this.requestQueue = {};
     }
 
+    /* TODO: currently does Z order by alphanumeric sort, need to make numeric sort */
     drawQueue() {
-
-      
 
         for (var z in this.requestQueue) {
 
             var z_requests = this.requestQueue[z];
             var structured_requests = {};
-     
-            if (this.logTimeout < 30){
-                this.logTimeout++; 
-                // put debug code here
-                console.log('drawQueue()', JSON.parse(JSON.stringify(this.requestQueue)));
-
-            }
 
             // create structured list of requests per z level
             for (var request of z_requests){
@@ -217,6 +221,109 @@ class BasicDisplay extends Display {
         var moveSpeed = this.camera.moveSpeed * (1 / this.camera.zoom);
         this.camera.xOffset += moveSpeed * deltaTime * offsetDelta.x;
         this.camera.yOffset += moveSpeed * deltaTime * offsetDelta.y;
+    }
+
+    drawConnections(world) {
+
+        //console.log("drawConnections() call");
+
+        let c = this.camera;
+
+        var drawn = [];
+        var excluded = 0;
+
+        // debug connections
+        for (var starID of world.getStars()) {
+            var star = world.get(starID);
+            for (var conID of star.getConnections()) {
+                if (!(drawn.includes(conID))) {
+                    var con = world.get(conID);
+                    const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
+                    const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
+                    this.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
+                    drawn.push(starID);
+                }
+                else {
+                    excluded++;
+                }
+            }
+        }
+        //console.log('stars drawn', drawn.length);
+        //console.log('potential connections excluded', excluded);
+    }
+
+    drawDebugUnderlay(world) {
+
+        let c = this.camera;
+
+        // draw max world bounds
+        push();
+        fill(10);
+        stroke(100);
+        let p1 = c.w2s({ x: 0, y: 0 });
+        let p2 = c.w2s({ x: world.size.x, y: world.size.y });
+        rectMode(CORNERS);
+        rect(p1.x, p1.y, p2.x, p2.y);
+        pop();
+
+        
+    }
+
+    drawDebugOverlay(world) {
+
+        // write debug spaghetti code here 
+        let c = this.camera;
+
+
+        // get current grid
+        let world_mouse = c.s2w({ x: mouseX, y: mouseY });
+        let grid_pos = world.grid.getCell(world_mouse);
+
+
+        // draw grid mouse search patters
+        var r = 150;
+        push();
+        fill(0, 0, 0, 0);
+        strokeWeight(1);
+        var grids = world.grid.getGridsInR(world_mouse, r);
+
+        // draw grid
+        for (var grid of grids) {
+            let worldx = grid.x * world.grid.cell_size;
+            let worldy = grid.y * world.grid.cell_size;
+            let screenp = c.w2s({ x: worldx, y: worldy });
+
+            stroke(75);
+            rectMode(CORNERS);
+            rect(screenp.x, screenp.y, screenp.x + world.grid.cell_size * c.zoom, screenp.y + world.grid.cell_size * c.zoom);
+
+        }
+
+        // draw mouse radius
+        stroke(255);
+        let d = r * 2
+        ellipse(mouseX, mouseY, d * this.camera.zoom);
+
+
+        pop();
+
+        // debug text in top left of screen 
+        push();
+        stroke(255);
+        fill(255);
+        noStroke();
+        textFont('Georgia');
+        text('camera.zoom :  ' + this.camera.zoom.toFixed(2), 25, 25);
+        text('camera.offset :  ' + this.camera.xOffset.toFixed(0) + ' , ' + this.camera.yOffset.toFixed(0), 25, 40);
+        text('FPS:  ' + frameRate().toFixed(0), 25, 55);
+        text('screen mouse : ' + mouseX.toString() + ' , ' + mouseY.toString(), 25, 70);
+        text('world mouse : ' + world_mouse.x.toFixed(1) + ' , ' + world_mouse.y.toFixed(1), 25, 85);
+        text('mouse grid : ' + grid_pos.x.toString() + ' , ' + grid_pos.y.toString(), 25, 100);
+        pop();
+        push();
+
+
+
     }
 
 }
