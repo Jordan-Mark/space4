@@ -40,6 +40,8 @@ class Game {
             this.drawDebugOverlay();
         }
 
+        this.display.resetQueue();
+
     }
 
     mouseWheelHandler(event) {

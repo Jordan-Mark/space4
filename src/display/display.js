@@ -3,7 +3,7 @@
 class Display {
     /**
      * class handles all drawing, interprets "world" object
-     * also is a container for the camera
+     * also interfaces between the game and camera
      * 
      */
 
@@ -65,7 +65,6 @@ class BasicDisplay extends Display {
 
     draw(world) {
 
-        this.resetQueue();
         super.draw(world);
 
         for (var ent of world.getEntities()) {
@@ -110,6 +109,7 @@ class BasicDisplay extends Display {
                 }
                 else if (request_type == "LineDrawRequest") {
                     this.drawLines(structured_requests[request_type]);
+                    console.log('?');
                 }
                 else {
                     throw "unknown draw request";
