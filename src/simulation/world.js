@@ -35,6 +35,7 @@ class BasicWorld extends World {
         this.ships = [];
         this.stars = [];
         this.factions = [];
+        this.connections = [];
 
         // grid
         let g = new Grid(n_grids);
@@ -77,6 +78,11 @@ class BasicWorld extends World {
         this.factions.push(faction.getID());
     }
 
+    addConnection(connection){
+        this.add(connection);
+        this.connections.push(connection.getID());
+    }
+
     addStar(star) {
         this.add(star);
         this.stars.push(star.getID());
@@ -96,6 +102,10 @@ class BasicWorld extends World {
         return this.factions;
     }
 
+    getConnections() {
+        return this.connections;
+    }
+
     /* return all star IDs */
     getStars() {
         return this.stars;
@@ -104,6 +114,11 @@ class BasicWorld extends World {
     /* remove from star list (does not destroy all references, use this.remove) */
     removeStar(id) {
         removeFromArr(this.stars, id);
+    }
+
+    /* as above */
+    removeConnections(id){
+        removeFromArr(this.connections, id);
     }
 
     /* remove from faction list (does not destroy all references, use this.remove) */

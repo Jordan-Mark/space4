@@ -2,7 +2,6 @@
 var game;
 
 
-
 function setup() {
 
     /* GAME PARAMETERS */
@@ -65,7 +64,6 @@ function setup() {
 function mouseWheel(event) {
     game.mouseWheelHandler(event);
 }
-
 
 function update() {
     game.tick();
