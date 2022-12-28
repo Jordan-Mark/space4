@@ -206,16 +206,25 @@ class BasicDisplay extends Display {
         if (requests.length > 0) {
 
             beginShape(LINES);
+            var previous_weight = null;
 
             for (var i = 0; i < requests.length; i++) {
 
                 var req = requests[i];
-                stroke(req.colour.r, req.colour.g, req.colour.b);
-                strokeWeight(req.weight);
 
+                // p5 cannot handle strokeweight changes mid shape
+                if (previous_weight != req.weight){
+                    endShape();
+                    stroke(req.weight);
+                    beginShape(LINES)
+                }
+
+                stroke(req.colour.r, req.colour.g, req.colour.b);
 
                 vertex(req.pos1.x, req.pos1.y);
                 vertex(req.pos2.x, req.pos2.y);
+
+                previous_weight = req.weight;
 
             }
 

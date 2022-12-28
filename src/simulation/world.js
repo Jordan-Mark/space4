@@ -36,6 +36,8 @@ class BasicWorld extends World {
         this.stars = [];
         this.factions = [];
         this.connections = [];
+
+        // to fetch connection objs from star ids reference
         this.connectionsDict = {};
 
         // grid
@@ -94,6 +96,10 @@ class BasicWorld extends World {
         return this.ents[id];
     }
 
+    getConnection(star1ID, star2ID){
+        return this.connectionsDict(constKey(star1ID, star2ID));
+    }
+
     /* returns all entity OBJECTS */
     getEntities() {
         return Object.values(this.ents);
@@ -118,8 +124,10 @@ class BasicWorld extends World {
         removeFromArr(this.stars, id);
     }
 
-    /* as above */
+    /* as above. also removes from connectionsdict */
     removeConnection(id){
+        const obj = this.get(id);
+        delete this.connectionsDict[constKey(obj.s1, obj.s2)];
         removeFromArr(this.connections, id);
     }
 
