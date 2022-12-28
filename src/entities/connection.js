@@ -16,6 +16,6 @@ class Connection extends Entity {
         const s2p = c.w2s({ x: this.s2.pos.x, y: this.s2.pos.y });
 
         display.drawLine(s1p, s2p, 1, { r: 70, g: 70, b: 70 }, 1);
-
+3
     }
 }
