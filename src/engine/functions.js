@@ -91,9 +91,9 @@ function lerpVector(c1, c2, t) {
 /* creates a unique string key from two strings & the order of the strings is irrelevant */
 function constKey(str1, str2) {
 	if (str1.localeCompare(str2) > 0){
-		return str1 + '_' + str2;
+		return str1 + ' PAIRED WITH ' + str2;
 	}
 	else {
-		return str2 + '_' + str1;
+		return str2 + ' PAIRED WITH ' + str1;
 	}
 }

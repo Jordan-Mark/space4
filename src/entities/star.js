@@ -55,10 +55,56 @@ class Star extends WorldEntity {
 		this.highlight({r:255, g:0, b:0});
 		world.get(targetID).highlight({r:0, g:255, b:0});
 
-		var activePaths = [];
+		var activeStars = [this.getID()];
 		var checked = [];
+		var steps = 0;
+		var smallsteps = 0;
 
-		for (var i=0; i<100; i++){
+		while (steps<200){
+
+			steps++;
+
+			for (var i=0; i<activeStars.length; i++){
+				console.log(world.get(activeStars[i]));
+
+				// check
+				if (activeStars[i]==targetID){
+					return;
+				}
+				else {
+
+					// highlight checked star
+					if (activeStars[i] != this._id){
+						world.get(activeStars[i]).highlight();
+					}
+
+					// add neighbours to active list
+					if (!(checked.includes(activeStars[i]))){
+						activeStars = activeStars.concat(world.get(activeStars[i]).getNearby());				
+					}
+
+					// remove from active list
+					checked.push(activeStars[i]);
+					activeStars.splice(i, 1);
+					i--;
+				}
+
+				smallsteps++;
+				if (smallsteps > 100){
+					break;
+				}
+			}
+		}
+	}
+}
+
+		/*
+		for (var steps=0; steps<100; steps++){
+
+			steps ++;
+
+
+
 
 			var nearby = this.getNearby();
 			for (var j=0; j<nearby.length; j++){
@@ -80,13 +126,8 @@ class Star extends WorldEntity {
 			}
 
 		}
-	}
+		*/
 
-
-
-
-
-}
 		/*
 
 		var old_frontier = [this.id];
