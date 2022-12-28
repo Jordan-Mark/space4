@@ -29,5 +29,10 @@ class Star extends WorldEntity {
 		return this.name;
 	}
 
+	/* a* search algorithm */
+	pathTo(world, targetID){
+
+
+	}
 
 }

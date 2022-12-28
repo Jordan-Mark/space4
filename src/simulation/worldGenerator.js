@@ -75,8 +75,8 @@ class BasicWorldGenerator extends WorldGenerator {
                     }
                 }
             }
+            connections_made.push(starID);
         }
-        connections_made.push(starID);
     }
 
 
