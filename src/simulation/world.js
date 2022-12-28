@@ -82,7 +82,7 @@ class BasicWorld extends World {
     addConnection(connection){
         this.add(connection);
         this.connections.push(connection.getID());
-        this.connectionsDict[connection.s1]
+        this.connectionsDict[constKey(connection.s1, connection.s2)] = connection.getID();
     }
 
     addStar(star) {
@@ -119,7 +119,7 @@ class BasicWorld extends World {
     }
 
     /* as above */
-    removeConnections(id){
+    removeConnection(id){
         removeFromArr(this.connections, id);
     }
 

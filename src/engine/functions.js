@@ -1,4 +1,21 @@
+/*
+				 ZZZ
+				zzz
+				zz
+				z
+           __..--''``---....___   _..._    __
+ /// //_.-'    .-/";  `        ``<._  ``.''_ `. / // /
+///_.-' _..--.'_    \                    `( ) ) // //
+/ (_..-' // (< _     ;_..__               ; `' / /// /
+ / // // //  `-._,_)' // / ``--...____..-' /// / //	 /
+/  // // // // // // // / // // // // // // // ///   / 
+//  /										   //    /
+//  /										   //    /
+//  / 				shh ... it's sleeping	   //	
+//  / 										   //
+// 											   //
 
+*/
 
 /* squared distance function */
 function distSqrd(c1, c2) {
@@ -71,9 +88,9 @@ function lerpVector(c1, c2, t) {
 	return { x: c1.x * (1 - t) + c2.x * t, y: c1.y * (1 - t) + c2.y * t };
 }
 
-/* consistent key functions. creates a string key from two strings, so the order of the strings is irrelevant */
+/* creates a unique string key from two strings & the order of the strings is irrelevant */
 function constKey(str1, str2) {
-	if (str1.localeCompare(st2) > 0){
+	if (str1.localeCompare(str2) > 0){
 		return str1 + '_' + str2;
 	}
 	else {
