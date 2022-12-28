@@ -250,6 +250,7 @@ class BasicDisplay extends Display {
 
     drawDebugOverlay(world) {
 
+
         // write debug spaghetti code here 
         let c = this.camera;
 
@@ -258,7 +259,7 @@ class BasicDisplay extends Display {
         let world_mouse = c.s2w({ x: mouseX, y: mouseY });
         let grid_pos = world.grid.getCell(world_mouse);
 
-
+        /*
         // draw grid mouse search patters
         var r = 150;
         push();
@@ -282,9 +283,8 @@ class BasicDisplay extends Display {
         stroke(255);
         let d = r * 2
         ellipse(mouseX, mouseY, d * this.camera.zoom);
-
-
         pop();
+        */
 
         // debug text in top left of screen 
         push();
