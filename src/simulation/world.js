@@ -101,7 +101,9 @@ class BasicWorld extends World {
     }
 
     getConnection(star1ID, star2ID){
-        return this.connectionsDict(constKey(star1ID, star2ID));
+        console.log(constKey(star1ID, star2ID));
+        console.log(this.connectionsDict);
+        return this.connectionsDict[constKey(star1ID, star2ID)];
     }
 
     /* returns all entity OBJECTS */

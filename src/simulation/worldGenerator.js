@@ -21,7 +21,7 @@ class BasicWorldGenerator extends WorldGenerator {
 
     STAR_MAX_DIST = 50;
     WGEN_PS_BUFFER = 0;
-    MIN_STARS = 50; // try and create a world with at least this many stars
+    MIN_STARS = 10; // try and create a world with at least this many stars
     MAX_STARS = 350;
     MIN_STARS_TIMEOUT = 3 // if there has been x attempts to create a world with at least MIN_STARS, give up
 

@@ -10,7 +10,7 @@ class Connection extends Entity {
         this.s1 = s1; 
         this.s2 = s2; 
 
-        this.highlight = false;
+        this.highlighted = false;
     }
 
     draw(display) {
@@ -24,11 +24,15 @@ class Connection extends Entity {
         const s1sp = c.w2s(s1wp);
         const s2sp = c.w2s(s2wp);
 
-        if (this.highlight){
+        if (this.highlighted){
             display.drawLine(s1sp, s2sp, 1, this.highlightStroke, 1);
         }
         else {
             display.drawLine(s1sp, s2sp, 1, this.defaultStroke, 1);
         }
+    }
+
+    highlight(){
+        this.highlighted = true;
     }
 }
