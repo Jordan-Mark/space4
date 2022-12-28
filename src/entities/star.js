@@ -15,6 +15,7 @@ class Star extends WorldEntity {
 		this.connections = [];
 		this.highlighted = false;
 		this.highlightColour = this.defaultStarHighlightColour;
+		this.displayNumber = null;
     }
 
 	highlight(colour = this.starHighlightColour){
@@ -25,6 +26,16 @@ class Star extends WorldEntity {
     draw(display) {
 		super.draw(display);
 
+		if (this.displayNumber){
+			var scpos = display.camera.w2s(this.getPos());
+			push();
+			stroke (255);
+			fill (255);
+			text(this.displayNumber.toString(), scpos.x+5, scpos.y+5);
+			pop();
+		}
+
+
 		if (this.highlighted){
 			display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 2, this.starHighlightWeight, this.highlightColour);
 		}
@@ -32,6 +43,10 @@ class Star extends WorldEntity {
 			display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 2, this.defaultStrokeWeight);
 		}	
     }
+
+	displayN(number){
+		this.displayNumber = number;
+	}
 
 	// TODO fix this
 	addCon(starID) {
@@ -61,7 +76,6 @@ class Star extends WorldEntity {
 		var smallsteps = 0;
 
 		while (steps<200){
-
 			steps++;
 
 			for (var i=0; i<activeStars.length; i++){
@@ -76,6 +90,7 @@ class Star extends WorldEntity {
 					// highlight checked star
 					if (activeStars[i] != this._id){
 						world.get(activeStars[i]).highlight();
+						world.get(activeStars[i]).displayN(steps);
 					}
 
 					// add neighbours to active list
