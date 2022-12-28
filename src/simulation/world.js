@@ -92,6 +92,10 @@ class BasicWorld extends World {
         this.stars.push(star.getID());
     }
 
+    highlight(path){
+        // TODO
+    }
+
     get(id) {
         return this.ents[id];
     }

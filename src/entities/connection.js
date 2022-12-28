@@ -1,6 +1,7 @@
 class Connection extends Entity {
 
     defaultStroke = { r: 70, g: 70, b: 70 };
+    highlightStroke = {r: 255, g: 255, b: 255};
 
     constructor(s1, s2){
         super();
@@ -8,6 +9,8 @@ class Connection extends Entity {
         //objects
         this.s1 = s1; 
         this.s2 = s2; 
+
+        this.highlight = false;
     }
 
     draw(display) {
@@ -21,7 +24,11 @@ class Connection extends Entity {
         const s1sp = c.w2s(s1wp);
         const s2sp = c.w2s(s2wp);
 
-        display.drawLine(s1sp, s2sp, 1, this.defaultStroke, 1);
-3
+        if (this.highlight){
+            display.drawLine(s1sp, s2sp, 1, this.highlightStroke, 1);
+        }
+        else {
+            display.drawLine(s1sp, s2sp, 1, this.defaultStroke, 1);
+        }
     }
 }
