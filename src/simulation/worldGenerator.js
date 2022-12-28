@@ -70,7 +70,7 @@ class BasicWorldGenerator extends WorldGenerator {
                     if (this.world.getStars().includes(entID) && entID != starID) {
                         var ent = this.world.get(entID);
                         star.addCon(entID);
-                        var connection = new Connection (star, ent);
+                        var connection = new Connection (starID, entID);
                         this.world.addConnection(connection);
                     }
                 }

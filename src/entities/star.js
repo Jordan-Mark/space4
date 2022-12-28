@@ -25,10 +25,13 @@ class Star extends WorldEntity {
 		}	
     }
 
+	// returns other stars, not connection objects
+	// TODO fix this
 	addCon(starID) {
 		this.connections.push(starID);
 	}
 
+	// returns other stars, not connection objects
 	getConnections() {
 		return this.connections;
     }

@@ -36,6 +36,7 @@ class BasicWorld extends World {
         this.stars = [];
         this.factions = [];
         this.connections = [];
+        this.connectionsDict = {};
 
         // grid
         let g = new Grid(n_grids);
@@ -81,6 +82,7 @@ class BasicWorld extends World {
     addConnection(connection){
         this.add(connection);
         this.connections.push(connection.getID());
+        this.connectionsDict[connection.s1]
     }
 
     addStar(star) {
