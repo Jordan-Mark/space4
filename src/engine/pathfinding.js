@@ -2,6 +2,7 @@ class Path {
 
     constructor(orderedNodeList){
         this.orderedNodeList = orderedNodeList;
+        this.length = this.orderedNodeList.length;
     }
 
 

@@ -27,11 +27,13 @@ class DrawRequest {
 
 class DiamondDrawRequest extends DrawRequest {
 
-    constructor(pos, size, colour, z){
+    constructor(pos, size, colour, z, weight, strokeColour){
         super(z);
         this.pos = pos; // screen position only
         this.size = size;
         this.colour = colour;
+        this.weight = weight;
+        this.strokeColour = strokeColour;
     }
 }
 
@@ -146,8 +148,8 @@ class BasicDisplay extends Display {
         
     }
 
-    drawDiamond(pos /*screen*/, size, colour, z=0){
-        this.queue(new DiamondDrawRequest(pos, size, colour, z));
+    drawDiamond(pos /*screen*/, size, colour, z=0, weight=0, strokeColour={r:255, g:255, b:255}){
+        this.queue(new DiamondDrawRequest(pos, size, colour, z, weight, strokeColour));
     }
 
     drawLine(pos1, pos2, weight, colour, z = 0) {
@@ -158,24 +160,37 @@ class BasicDisplay extends Display {
     drawDiamonds (requests) {
 
         push();
-        noStroke();
+        
 
         if (requests.length > 0){
+
             beginShape(QUADS);
+            var previous_weight = null;
 
             for (var i = 0; i < requests.length; i++){
 
                 var req = requests[i];
+                
+                // p5 cannot handle strokeweight changes mid shape
+                if (previous_weight != req.weight || previous_weight != null){
+                    endShape();
+                    strokeWeight(req.weight);
+                    beginShape(QUADS);
+                }
+
                 fill(req.colour.r, req.colour.g, req.colour.b);
+                stroke(req.strokeColour.r, req.strokeColour.g, req.strokeColour.b);
 
                 vertex(req.pos.x, req.pos.y-req.size);
                 vertex(req.pos.x-req.size, req.pos.y);
                 vertex(req.pos.x, req.pos.y+req.size);
                 vertex(req.pos.x+req.size, req.pos.y);
 
+                previous_weight = req.weight;
+
             }
 
-            endShape(CLOSE);
+            endShape();
         }
 
         pop();
@@ -226,10 +241,6 @@ class BasicDisplay extends Display {
         this.camera.xOffset += moveSpeed * deltaTime * offsetDelta.x;
         this.camera.yOffset += moveSpeed * deltaTime * offsetDelta.y;
     }
-
-
-  
-
 
     drawDebugUnderlay(world) {
 
