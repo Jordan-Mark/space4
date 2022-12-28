@@ -10,7 +10,8 @@ class Star extends WorldEntity {
 		super(loc);
 		this.faction = faction;
 		this.name = name;
-		this.connections = []; // should be a list of starIDs
+		this.nearby = []; // should be a list of starIDs
+		this.connections = [];
 		this.highlight = false;
     }
 
@@ -25,15 +26,14 @@ class Star extends WorldEntity {
 		}	
     }
 
-	// returns other stars, not connection objects
 	// TODO fix this
 	addCon(starID) {
-		this.connections.push(starID);
+		this.nearby.push(starID);
 	}
 
-	// returns other stars, not connection objects
-	getConnections() {
-		return this.connections;
+	// returns other star ids
+	getNearby() {
+		return this.nearby;
     }
 	
 	getName(){
