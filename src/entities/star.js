@@ -66,10 +66,8 @@ class Star extends WorldEntity {
 	bfs(targetID){
 
 		var world = game.world;
-
 		this.highlight({r:255, g:0, b:0});
 		world.get(targetID).highlight({r:0, g:255, b:0});
-
 		var activeStars = [this.getID()];
 		var checked = [];
 		var steps = 0;
@@ -79,7 +77,6 @@ class Star extends WorldEntity {
 		while (true) {
 
 			steps++;
-
 			console.log ("step:", steps);
 
 			if (steps>400){
@@ -87,24 +84,22 @@ class Star extends WorldEntity {
 			}
 
 			var testStar = activeStars[0];
-
 			console.log ('star:', world.get(testStar).getName());
 
 			// check
 			if (testStar==targetID){
 				console.log('PATH FOUND');
-				
 				var path = [];
-				// build path object
-				var x = testStar
 
+				// build and return path
+				var x = testStar
 				while(pathmap[x]){
 					path.push(x);
 					console.log('x:', x, "pathmap[x]", pathmap[x]);
 					world.get(world.getConnection(x, pathmap[x])).highlight();
 					x = pathmap[x];
 				}
-
+				path.push(pathmap[x]);
 				return new Path(path);
 
 			}
