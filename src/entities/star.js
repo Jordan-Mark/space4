@@ -63,7 +63,7 @@ class Star extends WorldEntity {
 	}
 
 	/* a* search algorithm, basic, length=value */
-	pathTo(starlist, targetID){
+	bfs(targetID){
 
 		var world = game.world;
 
@@ -73,7 +73,8 @@ class Star extends WorldEntity {
 		var activeStars = [this.getID()];
 		var checked = [];
 		var steps = 0;
-
+		var pathmap = {}; // keys: starids, entries: root ids
+		pathmap[this.getID()]= false; // set origin  
 
 		while (true) {
 
@@ -81,7 +82,7 @@ class Star extends WorldEntity {
 
 			console.log ("step:", steps);
 
-			if (steps>200){
+			if (steps>400){
 				break;
 			}
 
@@ -91,7 +92,21 @@ class Star extends WorldEntity {
 
 			// check
 			if (testStar==targetID){
-				return "PATH FOUND";
+				console.log('PATH FOUND');
+				
+				var path = [];
+				// build path object
+				var x = testStar
+
+				while(pathmap[x]){
+					path.push(x);
+					console.log('x:', x, "pathmap[x]", pathmap[x]);
+					world.get(world.getConnection(x, pathmap[x])).highlight();
+					x = pathmap[x];
+				}
+
+				return new Path(path);
+
 			}
 			else {
 				// highlight checked star
@@ -107,6 +122,7 @@ class Star extends WorldEntity {
 					if (!(activeStars.includes(near))){
 						if (!(checked.includes(near))){
 							activeStars.push(near);
+							pathmap[near]=testStar;
 						}
 					}
 				}
@@ -121,76 +137,3 @@ class Star extends WorldEntity {
 		}
 	}
 }
-
-		/*
-		for (var steps=0; steps<100; steps++){
-
-			steps ++;
-
-
-
-
-			var nearby = this.getNearby();
-			for (var j=0; j<nearby.length; j++){
-				var starID = nearby[j];
-				const path = [starID];
-				const heuristic = manhattan(world.get(starID).getPos(), world.get(targetID).getPos());
-				activePaths.push([path, heuristic]);
-	
-				if (starID==targetID){
-					return new Path(path);
-				}
-
-				checked.push(starID);
-				world.get(starID).highlight();
-				var c = world.getConnection(this.getID(), starID);
-				console.log(world.get(c));
-				world.get(c).highlight();
-				
-			}
-
-		}
-		*/
-
-		/*
-
-		var old_frontier = [this.id];
-		var new_frontier;
-		var activePaths = [];
-		
-		for (var i=0; i<10000; i++) {
-
-			for (var pair of oldActivePaths){
-
-				activePaths = [];
-				new_frontier = [];
-				const oldPath = pair[0];
-				const oldValue = pair[1];
-				for (var near of world.get(oldPath[oldPath.length-1]).getNearby()){
-					if (i==0){
-						console.log(world.get(oldPath[oldPath.length-1]).getNearby());
-					}
-					if (!(old_frontier.includes(near))){
-						
-						var st = world.get(near);
-						st.highlight();
-
-						var path = structuredClone(oldPath);
-						path.push(near);
-
-						const heuristic = manhattan(world.get(near).getPos(), world.get(targetID).getPos());
-	
-						if (near == targetID){
-							return new Path(path);
-						}
-	
-						new_frontier.push(near);
-						activePaths.push([path, heuristic]);
-					}
-				}
-				old_frontier = new_frontier;
-			}
-			oldActivePaths = activePaths;
-		}
-	}
-	*/
