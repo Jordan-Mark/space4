@@ -73,42 +73,51 @@ class Star extends WorldEntity {
 		var activeStars = [this.getID()];
 		var checked = [];
 		var steps = 0;
-		var smallsteps = 0;
 
-		while (steps<200){
+
+		while (true) {
+
 			steps++;
 
-			for (var i=0; i<activeStars.length; i++){
-				console.log(world.get(activeStars[i]));
+			console.log ("step:", steps);
 
-				// check
-				if (activeStars[i]==targetID){
-					return;
-				}
-				else {
-
-					// highlight checked star
-					if (activeStars[i] != this._id){
-						world.get(activeStars[i]).highlight();
-						world.get(activeStars[i]).displayN(steps);
-					}
-
-					// add neighbours to active list
-					if (!(checked.includes(activeStars[i]))){
-						activeStars = activeStars.concat(world.get(activeStars[i]).getNearby());				
-					}
-
-					// remove from active list
-					checked.push(activeStars[i]);
-					activeStars.splice(i, 1);
-					i--;
-				}
-
-				smallsteps++;
-				if (smallsteps > 100){
-					break;
-				}
+			if (steps>200){
+				break;
 			}
+
+			var testStar = activeStars[0];
+
+			console.log ('star:', world.get(testStar).getName());
+
+			// check
+			if (testStar==targetID){
+				return "PATH FOUND";
+			}
+			else {
+				// highlight checked star
+				if (testStar != this._id){
+					world.get(testStar).highlight();
+					world.get(testStar).displayN(steps);
+				}
+
+				// add neighbours to active list
+				var nearby = world.get(testStar).getNearby();
+				console.log('nearby:', nearby.length);
+				for (var near of nearby){
+					if (!(activeStars.includes(near))){
+						if (!(checked.includes(near))){
+							activeStars.push(near);
+						}
+					}
+				}
+
+				// remove tested star from active list, add to checked list
+				checked.push(testStar);
+				activeStars.splice(0, 1);
+
+			}
+			console.log('active list:', activeStars.length);
+			console.log('checked: ', checked.length);
 		}
 	}
 }
