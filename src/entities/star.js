@@ -148,23 +148,46 @@ class Star extends WorldEntity {
 		var came_from = {};
 		came_from[this._id] = null;
 		var current;
+
+
 	
 		while (!(frontier.empty())) {
+
+
 			current = frontier.get();
+
+			// early exit
+			/*
+			if (current==targetID){
+				break;
+			}
+			*/
+			
+
 			for (var next of world.get(current).getNearby()){
 				if (!(next in came_from)){
 					frontier.put(next);
 					came_from[next] = current;
 				}
 			}
+
 		}
 
+
+		// build path
 		var current = targetID;
 		var path = [];
-
+		var s = 0;
 		while (current != this.getID()){
+			console.log(s);
+			s++;
+
 			path.push(current);
 			current = came_from[current];
+	
+			if (s>1000){
+				debugger;
+			}
 		}
 		path.push(this.getID()); // optional
 		path.reverse(); // optional
