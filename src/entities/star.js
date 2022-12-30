@@ -63,6 +63,7 @@ class Star extends WorldEntity {
 	}
 
 	/* a* search algorithm, basic, length=value */
+	/*
 	bfs(targetID){
 
 		var world = game.world;
@@ -79,8 +80,14 @@ class Star extends WorldEntity {
 			steps++;
 			console.log ("step:", steps);
 
+			// break in case of error
 			if (steps>400){
 				break;
+			}
+
+			// no path
+			if (activeStars.length < 1){
+				return false;
 			}
 
 			var testStar = activeStars[0];
@@ -131,4 +138,54 @@ class Star extends WorldEntity {
 			console.log('checked: ', checked.length);
 		}
 	}
+	*/
+
+	bfs(targetID){
+
+		var world = game.world;
+		var frontier = new PathQueue();
+		frontier.put(this.getID());
+		var came_from = {};
+		came_from[this._id] = null;
+		var current;
+	
+		while (!(frontier.empty())) {
+			current = frontier.get();
+			for (var next of world.get(current).getNearby()){
+				if (!(next in came_from)){
+					frontier.put(next);
+					came_from[next] = current;
+				}
+			}
+		}
+
+		var current = targetID;
+		var path = [];
+
+		while (current != this.getID()){
+			path.push(current);
+			current = came_from[current];
+		}
+		path.push(this.getID()); // optional
+		path.reverse(); // optional
+
+		return new Path(path);
+
+
+	}
+
+	djikstra(targetID){
+
+		// priority queue of frontier stars
+		// came from dictionary
+
+
+
+	}
+
+	a_star(targetID){
+		throw ('not implemented');
+	}
+
+
 }
