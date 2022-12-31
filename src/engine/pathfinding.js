@@ -28,6 +28,8 @@ class PathQueue {
     }
 
     put (starID) {  
+
+
         this._q.push(starID);
 
     }
@@ -47,7 +49,20 @@ class PathQueue {
 class PathPriorityQueue extends PathQueue {
 
     put (starID, cost){
-        this._q.splice(0, 0, [starID, cost]);
+
+        if (this.empty()){
+            this._q.push([starID, cost]);
+        }
+        else {
+            for (var i=0; i<this._q.length; i++){
+                if (this._q[i][1] < cost){
+                    this._q.splice(i, 0, [starID, cost]);
+                    break;
+                }
+            }
+            this._q.push([starID, cost]);
+        }
+
     }
 
     get(){

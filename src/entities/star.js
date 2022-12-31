@@ -138,34 +138,33 @@ class Star extends WorldEntity {
 				break;
 			}
 
-			debugger;
 
 			for (var next of world.get(current).getNearby()){
 				new_cost = cost_so_far[current] + world.get(world.getConnection(current, next)).getCost();
-				if (!next in cost_so_far || new_cost < cost_so_far[next]){
+				if (!(next in cost_so_far) || new_cost < cost_so_far[next]){
 					cost_so_far[next] = new_cost;
 					var priority = new_cost;
 					frontier.put(next, priority);
 					came_from[next] = current;
+					 console.log('?');
 				}
 
 			}
 		}
 
-		// build path
+		// build pathn
 		var current = targetID;
 		var path = [];
 		var s = 0;
 		while (current != this.getID()){
-			console.log(s);
 			s++;
 
 			path.push(current);
 			current = came_from[current];
 	
 			if (s>1000){
-				throw new Error('over ' + s.toString() + ' steps forming path. path issue?');
 				debugger;
+				throw new Error('over ' + s.toString() + ' steps forming path. path issue?');
 			}
 		}
 		path.push(this.getID()); // optional
