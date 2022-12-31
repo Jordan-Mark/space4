@@ -44,6 +44,21 @@ class PathQueue {
 
 }
 
+class PathPriorityQueue extends PathQueue {
+
+    put (starID, cost){
+        this._q.splice(0, 0, [starID, cost]);
+    }
+
+    get(){
+        const r = this._q[0];
+        this._q.splice(0, 1);
+        return r[0]; 
+    }
+
+}
+
+
 class PathSet {
     constructor (){
         this.l = [];

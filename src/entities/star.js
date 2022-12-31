@@ -62,86 +62,10 @@ class Star extends WorldEntity {
 		return this.name;
 	}
 
-	/* a* search algorithm, basic, length=value */
-	/*
-	bfs(targetID){
-
-		var world = game.world;
-		this.highlight({r:255, g:0, b:0});
-		world.get(targetID).highlight({r:0, g:255, b:0});
-		var activeStars = [this.getID()];
-		var checked = [];
-		var steps = 0;
-		var pathmap = {}; // keys: starids, entries: root ids
-		pathmap[this.getID()]= false; // set origin  
-
-		while (true) {
-
-			steps++;
-			console.log ("step:", steps);
-
-			// break in case of error
-			if (steps>400){
-				break;
-			}
-
-			// no path
-			if (activeStars.length < 1){
-				return false;
-			}
-
-			var testStar = activeStars[0];
-			console.log ('star:', world.get(testStar).getName());
-
-			// check
-			if (testStar==targetID){
-				console.log('PATH FOUND');
-				var path = [];
-
-				// build and return path
-				var x = testStar
-				while(pathmap[x]){
-					path.push(x);
-					console.log('x:', x, "pathmap[x]", pathmap[x]);
-					world.get(world.getConnection(x, pathmap[x])).highlight();
-					x = pathmap[x];
-				}
-				path.push(pathmap[x]);
-				return new Path(path);
-
-			}
-			else {
-				// highlight checked star
-				if (testStar != this._id){
-					world.get(testStar).highlight();
-					world.get(testStar).displayN(steps);
-				}
-
-				// add neighbours to active list
-				var nearby = world.get(testStar).getNearby();
-				console.log('nearby:', nearby.length);
-				for (var near of nearby){
-					if (!(activeStars.includes(near))){
-						if (!(checked.includes(near))){
-							activeStars.push(near);
-							pathmap[near]=testStar;
-						}
-					}
-				}
-
-				// remove tested star from active list, add to checked list
-				checked.push(testStar);
-				activeStars.splice(0, 1);
-
-			}
-			console.log('active list:', activeStars.length);
-			console.log('checked: ', checked.length);
-		}
-	}
-	*/
 
 	bfs(targetID){
 
+		// seed lists
 		var world = game.world;
 		var frontier = new PathQueue();
 		frontier.put(this.getID());
@@ -149,21 +73,16 @@ class Star extends WorldEntity {
 		came_from[this._id] = null;
 		var current;
 
-
-	
 		while (!(frontier.empty())) {
-
 
 			current = frontier.get();
 
 			// early exit
-			/*
 			if (current==targetID){
 				break;
 			}
-			*/
 			
-
+			// mark node as checked, build new frontier.
 			for (var next of world.get(current).getNearby()){
 				if (!(next in came_from)){
 					frontier.put(next);
@@ -186,6 +105,7 @@ class Star extends WorldEntity {
 			current = came_from[current];
 	
 			if (s>1000){
+				throw ('over ' + s.toString(), + ' steps forming path. path issue?')
 				debugger;
 			}
 		}
@@ -199,10 +119,59 @@ class Star extends WorldEntity {
 
 	djikstra(targetID){
 
-		// priority queue of frontier stars
-		// came from dictionary
+		// seed lists
+		var world = game.world;
+		var frontier = new PathPriorityQueue();
+		frontier.put(this.getID(), 0);
+		var came_from = {};
+		var cost_so_far = {};
+		came_from[this.getID()] = null;
+		cost_so_far[this.getID()] = 0;
+		var current;
+		var new_cost;
 
+		while (!frontier.empty()){
+			current = frontier.get();
 
+			// early exit
+			if (current == targetID){
+				break;
+			}
+
+			debugger;
+
+			for (var next of world.get(current).getNearby()){
+				new_cost = cost_so_far[current] + world.get(world.getConnection(current, next)).getCost();
+				if (!next in cost_so_far || new_cost < cost_so_far[next]){
+					cost_so_far[next] = new_cost;
+					var priority = new_cost;
+					frontier.put(next, priority);
+					came_from[next] = current;
+				}
+
+			}
+		}
+
+		// build path
+		var current = targetID;
+		var path = [];
+		var s = 0;
+		while (current != this.getID()){
+			console.log(s);
+			s++;
+
+			path.push(current);
+			current = came_from[current];
+	
+			if (s>1000){
+				throw new Error('over ' + s.toString() + ' steps forming path. path issue?');
+				debugger;
+			}
+		}
+		path.push(this.getID()); // optional
+		path.reverse(); // optional
+
+		return new Path(path);
 
 	}
 

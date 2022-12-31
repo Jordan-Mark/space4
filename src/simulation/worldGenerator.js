@@ -65,7 +65,7 @@ class BasicWorldGenerator extends WorldGenerator {
         for (var starID of this.world.getStars()) {
             var star = this.world.get(starID);
             var nearbyEnts = this.world.getEntsInR(star.pos, this.STAR_MAX_DIST*2);
-            for (var entID of nearbyEnts) {
+            for (var entID of nearbyEnts) { // todo make this and the next line more efficient. seems unnessercary or the wrong order or smthn.
                 if (!(connections_made.includes(entID))){
                     if (this.world.getStars().includes(entID) && entID != starID) {
                         var ent = this.world.get(entID);
