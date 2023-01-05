@@ -66,9 +66,7 @@ class PathPriorityQueue extends PathQueue {
     }
 
     get(){
-        const r = this._q[0];
-        this._q.splice(0, 1);
-        return r[0]; 
+        return this._q.pop(); 
     }
 
 }
