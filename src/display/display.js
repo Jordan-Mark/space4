@@ -244,8 +244,8 @@ class BasicDisplay extends Display {
                     // frustrum cull stars
                     if (c.inBounds(star.getPos()) || c.inBounds(con.getPos())) {
 
-                        const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
-                        const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
+                        const s1 = c.w2s(star.getPos());
+                        const s2 = c.w2s(con.getPos());
 
                         this.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
 
