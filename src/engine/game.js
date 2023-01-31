@@ -89,7 +89,7 @@ class Game {
     }
 
 
-    debug(b = true) {
+    debug(b) {
         this.db = b;
     }
 

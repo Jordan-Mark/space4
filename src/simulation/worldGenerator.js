@@ -21,7 +21,8 @@ class BasicWorldGenerator extends WorldGenerator {
 
     STAR_MAX_DIST = 50;
     WGEN_PS_BUFFER = 0;
-    MIN_STARS = 150; // try and create a world with at least this many stars
+    MIN_STARS = 10; // try and create a world with at least this many stars
+    MAX_STARS = 350;
     MIN_STARS_TIMEOUT = 3 // if there has been x attempts to create a world with at least MIN_STARS, give up
 
     /* initiate empty world */
@@ -50,7 +51,7 @@ class BasicWorldGenerator extends WorldGenerator {
         }
 
         for (var i=0; i<pos_vectors.length; i++){
-            this.world.addStar(new Star({ x: pos_vectors[i].x, y: pos_vectors[i].y }, this.world.get(random(this.world.getFactions())), name=this.genStarName()));
+            this.world.addStar(new Star({ x: pos_vectors[i].x, y: pos_vectors[i].y }, /*this.world.get(random(this.world.getFactions()))*/ this.world.NO_FACTION, name=this.genStarName()));
         }
 
         console.log("present world generated w/", this.world.getStars().length, "stars.");
@@ -59,14 +60,23 @@ class BasicWorldGenerator extends WorldGenerator {
     /* calculate connections for all stars */
     connectStars() {
 
+        var connections_made = []; // list of stars [id] with connections already made for them
+
         for (var starID of this.world.getStars()) {
             var star = this.world.get(starID);
             var nearbyEnts = this.world.getEntsInR(star.pos, this.STAR_MAX_DIST*2);
-            for (var entID of nearbyEnts) {
-                if (this.world.getStars().includes(entID) && entID != starID) {
-                    star.addCon(entID);
+            for (var entID of nearbyEnts) { // todo make this and the next line more efficient. seems unnessercary or the wrong order or smthn.
+                if (!(connections_made.includes(entID))){
+                    if (this.world.getStars().includes(entID) && entID != starID) {
+                        var ent = this.world.get(entID);
+                        ent.addCon(starID);
+                        star.addCon(entID);
+                        var connection = new Connection (starID, entID);
+                        this.world.addConnection(connection);
+                    }
                 }
             }
+            connections_made.push(starID);
         }
     }
 
@@ -133,6 +143,10 @@ class BasicWorldGenerator extends WorldGenerator {
             /* remove exhausted spawnpoints */
             if (!candidateAccepted){
                 spawnPoints.splice(spawnIndex, 1);
+            }
+
+            if (points.length >= this.MAX_STARS){
+                break;
             }
         }
         return points;

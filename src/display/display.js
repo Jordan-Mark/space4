@@ -27,11 +27,13 @@ class DrawRequest {
 
 class DiamondDrawRequest extends DrawRequest {
 
-    constructor(pos, size, colour, z){
+    constructor(pos, size, colour, z, weight, strokeColour){
         super(z);
         this.pos = pos; // screen position only
         this.size = size;
         this.colour = colour;
+        this.weight = weight;
+        this.strokeColour = strokeColour;
     }
 }
 
@@ -69,7 +71,10 @@ class BasicDisplay extends Display {
         background(0);
 
         // debug (1/2)
-        this.drawDebugUnderlay(world);
+        if (debug){
+            this.drawDebugUnderlay(world);
+        }
+
 
         // main entity draw loop
         super.draw(world);
@@ -77,15 +82,14 @@ class BasicDisplay extends Display {
             ent.draw(this);
         }
 
-        // draw star connections 
-        this.drawConnections(world);
-
+        // draw queue
         this.drawQueue();
         this.resetQueue();
 
         // debug (2/2)
-        this.drawDebugOverlay(world);
-
+        if (debug){
+            this.drawDebugOverlay(world);
+        }
     }
 
     resetQueue () {
@@ -144,8 +148,8 @@ class BasicDisplay extends Display {
         
     }
 
-    drawDiamond(pos /*screen*/, size, colour, z=0){
-        this.queue(new DiamondDrawRequest(pos, size, colour, z));
+    drawDiamond(pos /*screen*/, size, colour, z=0, weight=0, strokeColour={r:255, g:255, b:255}){
+        this.queue(new DiamondDrawRequest(pos, size, colour, z, weight, strokeColour));
     }
 
     drawLine(pos1, pos2, weight, colour, z = 0) {
@@ -156,24 +160,37 @@ class BasicDisplay extends Display {
     drawDiamonds (requests) {
 
         push();
-        noStroke();
+        
 
         if (requests.length > 0){
+
             beginShape(QUADS);
+            var previous_weight = null;
 
             for (var i = 0; i < requests.length; i++){
 
                 var req = requests[i];
+                
+                // p5 cannot handle strokeweight changes mid shape
+                if (previous_weight != req.weight || previous_weight != null){
+                    endShape();
+                    strokeWeight(req.weight);
+                    beginShape(QUADS);
+                }
+
                 fill(req.colour.r, req.colour.g, req.colour.b);
+                stroke(req.strokeColour.r, req.strokeColour.g, req.strokeColour.b);
 
                 vertex(req.pos.x, req.pos.y-req.size);
                 vertex(req.pos.x-req.size, req.pos.y);
                 vertex(req.pos.x, req.pos.y+req.size);
                 vertex(req.pos.x+req.size, req.pos.y);
 
+                previous_weight = req.weight;
+
             }
 
-            endShape(CLOSE);
+            endShape();
         }
 
         pop();
@@ -189,16 +206,25 @@ class BasicDisplay extends Display {
         if (requests.length > 0) {
 
             beginShape(LINES);
+            var previous_weight = null;
 
             for (var i = 0; i < requests.length; i++) {
 
                 var req = requests[i];
-                stroke(req.colour.r, req.colour.g, req.colour.b);
-                strokeWeight(req.weight);
 
+                // p5 cannot handle strokeweight changes mid shape
+                if (previous_weight != req.weight){
+                    endShape();
+                    stroke(req.weight);
+                    beginShape(LINES)
+                }
+
+                stroke(req.colour.r, req.colour.g, req.colour.b);
 
                 vertex(req.pos1.x, req.pos1.y);
                 vertex(req.pos2.x, req.pos2.y);
+
+                previous_weight = req.weight;
 
             }
 
@@ -225,61 +251,6 @@ class BasicDisplay extends Display {
         this.camera.yOffset += moveSpeed * deltaTime * offsetDelta.y;
     }
 
-    drawConnections(world) {
-
-        var fin = []; // drawn stars
-
-        let c = this.camera;
-        for (var starID of world.getStars()) {
-
-            var star = world.get(starID);
-            fin.push(starID);
-
-            for (var conID of star.getConnections()) {
-
-                // check for doubles
-                if (!(fin.includes(conID))) {
-                    var con = world.get(conID);
-
-                    // frustrum cull stars
-                    if (c.inBounds(star.getPos()) || c.inBounds(con.getPos())) {
-
-                        const s1 = c.w2s(star.getPos());
-                        const s2 = c.w2s(con.getPos());
-
-                        this.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
-
-                    }
-                }
-            }
-        }
-    }
-
-
-
-
-        /*
-        // debug connections
-        for (var starID of world.getStars()) {
-            var star = world.get(starID);
-            for (var conID of star.getConnections()) {
-                //if (!(drawn.includes(conID))) {
-                    var con = world.get(conID);
-                    const s1 = c.w2s({ x: star.pos.x, y: star.pos.y });
-                    const s2 = c.w2s({ x: con.pos.x, y: con.pos.y });
-                    this.drawLine(s1, s2, 1, { r: 70, g: 70, b: 70 }, 1);
-                 //   drawn.push(starID);
-                //}
-                //else {
-                //    excluded++;
-                //}
-            }
-        }
-        //console.log('stars drawn', drawn.length);
-        //console.log('potential connections excluded', excluded);
-        */
-
-
     drawDebugUnderlay(world) {
 
         let c = this.camera;
@@ -299,6 +270,7 @@ class BasicDisplay extends Display {
 
     drawDebugOverlay(world) {
 
+
         // write debug spaghetti code here 
         let c = this.camera;
 
@@ -307,7 +279,7 @@ class BasicDisplay extends Display {
         let world_mouse = c.s2w({ x: mouseX, y: mouseY });
         let grid_pos = world.grid.getCell(world_mouse);
 
-
+        /*
         // draw grid mouse search patters
         var r = 150;
         push();
@@ -331,9 +303,8 @@ class BasicDisplay extends Display {
         stroke(255);
         let d = r * 2
         ellipse(mouseX, mouseY, d * this.camera.zoom);
-
-
         pop();
+        */
 
         // debug text in top left of screen 
         push();

@@ -1,8 +1,30 @@
+/*
+				 ZZZ
+				zzz
+				zz
+				z
+           __..--''``---....___   _..._    __
+ /// //_.-'    .-/";  `        ``<._  ``.''_ `. / // /
+///_.-' _..--.'_    \                    `( ) ) // //
+/ (_..-' // (< _     ;_..__               ; `' / /// /
+ / // // //  `-._,_)' // / ``--...____..-' /// / //	 /
+/  // // // // // // // / // // // // // // // ///   / 
+//  /										   //    /
+//  /										   //    /
+//  / 				shh ... it's sleeping	   //	
+//  / 										   //
+// 											   //
 
+*/
 
 /* squared distance function */
 function distSqrd(c1, c2) {
 	return abs(pow(c2.x - c1.x, 2) + pow(c2.y - c1.y, 2));
+}
+
+/* manhattan distance function */
+function manhattan(c1, c2){
+	return abs(c2.x-c1.x) + abs(c2.y-c1.y);
 }
 
 /* return shuffled array */
@@ -64,4 +86,14 @@ function removeFromArr(arr, value) {
 /* lerp vector function */
 function lerpVector(c1, c2, t) {
 	return { x: c1.x * (1 - t) + c2.x * t, y: c1.y * (1 - t) + c2.y * t };
+}
+
+/* creates a unique string key from two strings & the order of the strings is irrelevant */
+function constKey(str1, str2) {
+	if (str1.localeCompare(str2) > 0){
+		return str1 + ' PAIRED WITH ' + str2;
+	}
+	else {
+		return str2 + ' PAIRED WITH ' + str1;
+	}
 }

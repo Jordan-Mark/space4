@@ -35,6 +35,10 @@ class BasicWorld extends World {
         this.ships = [];
         this.stars = [];
         this.factions = [];
+        this.connections = [];
+
+        // to fetch connection objs from star ids reference
+        this.connectionsDict = {};
 
         // grid
         let g = new Grid(n_grids);
@@ -77,13 +81,27 @@ class BasicWorld extends World {
         this.factions.push(faction.getID());
     }
 
+    addConnection(connection){
+        this.add(connection);
+        this.connections.push(connection.getID());
+        this.connectionsDict[constKey(connection.s1, connection.s2)] = connection.getID();
+    }
+
     addStar(star) {
         this.add(star);
         this.stars.push(star.getID());
     }
 
+    highlight(path){
+        // TODO
+    }
+
     get(id) {
         return this.ents[id];
+    }
+
+    getConnection(star1ID, star2ID){
+        return this.connectionsDict[constKey(star1ID, star2ID)];
     }
 
     /* returns all entity OBJECTS */
@@ -96,6 +114,10 @@ class BasicWorld extends World {
         return this.factions;
     }
 
+    getConnections() {
+        return this.connections;
+    }
+
     /* return all star IDs */
     getStars() {
         return this.stars;
@@ -104,6 +126,13 @@ class BasicWorld extends World {
     /* remove from star list (does not destroy all references, use this.remove) */
     removeStar(id) {
         removeFromArr(this.stars, id);
+    }
+
+    /* as above. also removes from connectionsdict */
+    removeConnection(id){
+        const obj = this.get(id);
+        delete this.connectionsDict[constKey(obj.s1, obj.s2)];
+        removeFromArr(this.connections, id);
     }
 
     /* remove from faction list (does not destroy all references, use this.remove) */

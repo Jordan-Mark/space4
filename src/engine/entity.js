@@ -10,11 +10,11 @@ class Entity {
     constructor() {
 
         // create unique hash
-        this.id = uuidv4();
+        this._id = uuidv4();
     }
 
     getID() {
-        return this.id;
+        return this._id;
     }
 
     begin(world) {
@@ -25,7 +25,7 @@ class Entity {
 
     }
 
-    draw(camera) {
+    draw(display) {
 
     }
 
