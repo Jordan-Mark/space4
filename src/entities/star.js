@@ -139,7 +139,7 @@ class Star extends WorldEntity {
 			}
 
 
-			debugger;
+			//debugger;
 			for (var next of world.get(current).getNearby()){
 				new_cost = cost_so_far[current] + world.get(world.getConnection(current, next)).getCost();
 				if (!(next in cost_so_far) || new_cost < cost_so_far[next]){

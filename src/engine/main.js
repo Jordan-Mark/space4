@@ -58,6 +58,15 @@ function setup() {
 
     // set globalTimeFactor
     world.setGlobalTimeFactor(GLOBAL_TIME_FACTOR);
+
+    testPathing();
+}
+
+function testPathing() {
+    var world = game.world;
+    var s1 = world.stars[0];
+    var s2 = world.stars[100];
+    game.world.get(s1).djikstra(s2).highlight(); 
 }
 
 function mouseWheel(event) {
