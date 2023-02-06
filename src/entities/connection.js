@@ -14,8 +14,8 @@ class Connection extends Entity {
 
         //pathfinding
 
-        if (random(5) < 1) {
-            this.baseCost = 99;
+        if (random(4) < 3) {
+            this.baseCost = round(random(2, 20));
         }
         else {
             this.baseCost = 1;
