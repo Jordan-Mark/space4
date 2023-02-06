@@ -32,7 +32,6 @@ function setup() {
     var CAMERA_OUT_MAX = 0.05;
 
 
-
     /* GAME INITIALISATION */
 
     // birth p5.js
@@ -64,9 +63,10 @@ function setup() {
 
 function testPathing() {
     var world = game.world;
-    var s1 = world.stars[0];
-    var s2 = world.stars[100];
-    game.world.get(s1).djikstra(s2).highlight(); 
+    var s1 = world.stars[75];
+    var s2 = world.stars[150];
+    var p = game.world.get(s1).djikstra(s2);
+    p.highlight();
 }
 
 function mouseWheel(event) {

@@ -15,7 +15,9 @@ class Star extends WorldEntity {
 		this.connections = [];
 		this.highlighted = false;
 		this.highlightColour = this.defaultStarHighlightColour;
+
 		this.displayNumber = null;
+
     }
 
 	highlight(colour = this.starHighlightColour){
@@ -116,7 +118,14 @@ class Star extends WorldEntity {
 
 
 	}
+	/*
+    djikstra(targetID) {
 
+    }
+	*/
+
+
+	
 	djikstra(targetID){
 
 		// seed lists

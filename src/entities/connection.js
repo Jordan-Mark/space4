@@ -13,10 +13,17 @@ class Connection extends Entity {
         this.s2 = s2; 
 
         //pathfinding
-        this.baseCost = 1;
+
+        if (random(5) < 1) {
+            this.baseCost = 99;
+        }
+        else {
+            this.baseCost = 1;
+        }
 
         // display
         this.highlighted = false;
+
     }
 
     draw(display) {
@@ -37,6 +44,16 @@ class Connection extends Entity {
         else {
             display.drawLine(s1sp, s2sp, 1, this.defaultStroke, 1);
         }
+
+        // draw cost
+        const sCentre = lerpVector(s1sp, s2sp, 0.5);
+        push();
+        fill(255);
+        text(this.getCost().toString(), sCentre.x, sCentre.y);
+        pop();
+
+
+
     }
 
     highlight(){
