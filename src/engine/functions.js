@@ -22,6 +22,10 @@ function distSqrd(c1, c2) {
 	return abs(pow(c2.x - c1.x, 2) + pow(c2.y - c1.y, 2));
 }
 
+function distance(c1, c2) {
+	return Math.sqrt(distSqrd(c1, c2));
+}
+
 /* manhattan distance function */
 function manhattan(c1, c2){
 	return abs(c2.x-c1.x) + abs(c2.y-c1.y);
