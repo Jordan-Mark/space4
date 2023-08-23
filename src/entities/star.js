@@ -15,7 +15,9 @@ class Star extends WorldEntity {
 		this.connections = [];
 		this.highlighted = false;
 		this.highlightColour = this.defaultStarHighlightColour;
+
 		this.displayNumber = null;
+
     }
 
 	highlight(colour = this.starHighlightColour){
@@ -139,7 +141,7 @@ class Star extends WorldEntity {
 			}
 
 
-			debugger;
+			//debugger;
 			for (var next of world.get(current).getNearby()){
 				new_cost = cost_so_far[current] + world.get(world.getConnection(current, next)).getCost();
 				if (!(next in cost_so_far) || new_cost < cost_so_far[next]){
@@ -153,7 +155,7 @@ class Star extends WorldEntity {
 			}
 		}
 
-		// build pathn
+		// build path
 		var current = targetID;
 		var path = [];
 		var s = 0;
@@ -175,8 +177,58 @@ class Star extends WorldEntity {
 
 	}
 
+	greedy_best_first(targetID) {
+
+		var priority;
+		var world = game.world;
+		var frontier = new PathPriorityQueue();
+		frontier.put(this.getID(), 0);
+		var came_from = {};
+		came_from[this.getID()] = null;
+
+
+		while (!frontier.empty()) {
+			current = frontier.get()[0];
+
+			if (current == targetID) {
+				break;
+			}
+
+			for (var next of world.get(current).getNearby()) {
+				if (!(next in came_from)) {
+					priority = distance(world.get(this.getID()).getPos(), world.get(next).getPos());
+					console.log(priority);
+					frontier.put(next, priority);
+					came_from[next] = current;
+				}
+			}
+		}
+
+		// build path
+		var current = targetID;
+		var path = [];
+		var s = 0;
+		while (current != this.getID()) {
+			s++;
+
+			path.push(current);
+			current = came_from[current];
+
+			if (s > 1000) {
+				debugger;
+				throw new Error('over ' + s.toString() + ' steps forming path. path issue?');
+			}
+		}
+		path.push(this.getID()); // optional
+		path.reverse(); // optional
+
+		return new Path(path);
+	}
+
 	a_star(targetID){
-		throw ('not implemented');
+
+		throw new Error('a* not implemented');
+
 	}
 
 
