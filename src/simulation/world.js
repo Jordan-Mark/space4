@@ -123,6 +123,11 @@ class BasicWorld extends World {
         return this.stars;
     }
 
+    getStarCount() {
+        return this.stars.length;
+    }
+
+
     /* remove from star list (does not destroy all references, use this.remove) */
     removeStar(id) {
         removeFromArr(this.stars, id);

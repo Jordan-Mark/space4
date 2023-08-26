@@ -25,6 +25,10 @@ class Star extends WorldEntity {
 		this.highlightColour = colour;
 	}
 
+	unHighlight(){
+		this.highlighted=false;
+	}
+
     draw(display) {
 		super.draw(display);
 
@@ -149,7 +153,6 @@ class Star extends WorldEntity {
 					var priority = new_cost;
 					frontier.put(next, priority);
 					came_from[next] = current;
-					 console.log('?');
 				}
 
 			}
@@ -225,11 +228,63 @@ class Star extends WorldEntity {
 		return new Path(path);
 	}
 
+	/*
 	a_star(targetID){
 
 		throw new Error('a* not implemented');
 
-	}
+	}*/
 
 
+    a_star_search(targetID) {
+        const world = game.world;
+        const startID = this.getID();
+
+        const frontier = new PathPriorityQueue();
+        frontier.put(startID, 0);
+
+        const cameFrom = {};
+        const costSoFar = {};
+        cameFrom[startID] = null;
+        costSoFar[startID] = 0;
+
+        while (!frontier.empty()) {
+            const current = frontier.get()[0];
+
+            if (current === targetID) {
+                break;
+            }
+
+            for (const next of world.get(current).getNearby()) {
+                const newCost = costSoFar[current] + world.get(world.getConnection(current, next)).getCost();
+                if (!(next in costSoFar) || newCost < costSoFar[next]) {
+                    costSoFar[next] = newCost;
+                    const priority = newCost + this.heuristic(next, targetID); // A* heuristic
+                    frontier.put(next, priority);
+                    cameFrom[next] = current;
+                }
+            }
+        }
+
+        // Build path
+        const path = this.reconstructPath(cameFrom, targetID);
+        return new Path(path);
+    }
+
+    heuristic(nodeA, nodeB) {
+        // Basic Manhattan distance as the heuristic
+        const posA = game.world.get(nodeA).getPos();
+        const posB = game.world.get(nodeB).getPos();
+        return Math.abs(posA.x - posB.x) + Math.abs(posA.y - posB.y);
+    }
+
+    reconstructPath(cameFrom, current) {
+        const path = [];
+        while (current !== null) {
+            path.push(current);
+            current = cameFrom[current];
+        }
+        path.reverse();
+        return path;
+    }
 }

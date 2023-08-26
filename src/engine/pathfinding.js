@@ -5,12 +5,12 @@ class Path {
         this.length = this.nodes.length;
     }
 
-    highlight(){
+    highlight(color={r:255, g:255, b:255}){
 
         for (var i=0; i<this.nodes.length; i++){
 
             // highlight stars
-            game.world.get(this.nodes[i]).highlight();
+            game.world.get(this.nodes[i]).highlight(color);
 
             // highlight connections
             if (i+1 in this.nodes){

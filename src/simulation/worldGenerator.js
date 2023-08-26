@@ -71,6 +71,7 @@ class BasicWorldGenerator extends WorldGenerator {
                         var ent = this.world.get(entID);
                         ent.addCon(starID);
                         star.addCon(entID);
+
                         var connection = new Connection (starID, entID);
                         this.world.addConnection(connection);
                     }

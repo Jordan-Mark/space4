@@ -1,4 +1,3 @@
-
 var game;
 
 
@@ -58,15 +57,27 @@ function setup() {
     // set globalTimeFactor
     world.setGlobalTimeFactor(GLOBAL_TIME_FACTOR);
 
-    testPathing();
 }
 
 function testPathing() {
     var world = game.world;
-    var s1 = world.stars[75];
-    var s2 = world.stars[150];
-    var p = game.world.get(s1).greedy_best_first(s2);
+
+    // unhighlight all stars
+    for (var starID of world.getStars()){
+        world.get(starID).unHighlight()
+    }
+
+    // unhighlight all stars
+    for (var connectionID of world.getConnections()){
+        world.get(connectionID).unHighlight()
+    }
+
+
+    var s1 = world.stars[Math.floor(random(world.getStarCount()))];
+    var s2 = world.stars[Math.floor(random(world.getStarCount()))];
+    var p = game.world.get(s1).djikstra(s2);
     p.highlight();
+
 }
 
 function mouseWheel(event) {
@@ -75,6 +86,7 @@ function mouseWheel(event) {
 
 function update() {
     game.tick();
+    testPathing();
 }
 
 function draw() {

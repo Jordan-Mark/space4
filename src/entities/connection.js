@@ -13,9 +13,8 @@ class Connection extends Entity {
         this.s2 = s2; 
 
         //pathfinding
-
-        if (false) {
-            this.baseCost = round(random(5, 15));
+        if (true) {
+            this.baseCost = Math.floor(random(1, 6))
         }
         else {
             this.baseCost = 1;
@@ -46,11 +45,12 @@ class Connection extends Entity {
         }
 
         // draw cost
+        /*
         const sCentre = lerpVector(s1sp, s2sp, 0.5);
         push();
         fill(255);
         text(this.getCost().toString(), sCentre.x, sCentre.y);
-        pop();
+        pop();*/
 
 
 
@@ -58,6 +58,10 @@ class Connection extends Entity {
 
     highlight(){
         this.highlighted = true;
+    }
+
+    unHighlight(){
+        this.highlighted = false;
     }
 
     getCost(entityID=null){ // cost for entity travelling (might be affected by factions, or ship type idk), if none, give base cost.
