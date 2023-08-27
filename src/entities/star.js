@@ -79,7 +79,7 @@ class Star extends WorldEntity {
 		came_from[this._id] = null;
 		var current;
 
-		while (!(frontier.empty())) {
+		while (!(frontier.isEmpty())) {
 
 			current = frontier.get();
 
@@ -136,7 +136,7 @@ class Star extends WorldEntity {
 		var current;
 		var new_cost;
 
-		while (!frontier.empty()){
+		while (!frontier.isEmpty()){
 			current = frontier.get()[0];
 
 			// early exit
@@ -190,7 +190,7 @@ class Star extends WorldEntity {
 		came_from[this.getID()] = null;
 
 
-		while (!frontier.empty()) {
+		while (!frontier.isEmpty()) {
 			current = frontier.get()[0];
 
 			if (current == targetID) {
@@ -248,7 +248,7 @@ class Star extends WorldEntity {
         cameFrom[startID] = null;
         costSoFar[startID] = 0;
 
-        while (!frontier.empty()) {
+        while (!frontier.isEmpty()) {
             const current = frontier.get()[0];
 
             if (current === targetID) {

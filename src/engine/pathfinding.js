@@ -37,7 +37,7 @@ class PathQueue {
         return r;
     }
     
-    empty(){
+    isEmpty(){
         return (this._q.length == 0);
     }
 
@@ -50,7 +50,7 @@ class PathPriorityQueue extends PathQueue {
 
 
         // if the array is empty, add the first item
-        if (this.empty()){
+        if (this.isEmpty()){
             this._q.push([starID, cost]);
         }
 

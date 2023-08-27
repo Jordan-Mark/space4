@@ -22,7 +22,7 @@ class BasicWorldGenerator extends WorldGenerator {
     STAR_MAX_DIST = 50;
     WGEN_PS_BUFFER = 0;
     MIN_STARS = 10; // try and create a world with at least this many stars
-    MAX_STARS = 350;
+    MAX_STARS = 20;
     MIN_STARS_TIMEOUT = 3 // if there has been x attempts to create a world with at least MIN_STARS, give up
 
     /* initiate empty world */
@@ -69,9 +69,9 @@ class BasicWorldGenerator extends WorldGenerator {
                 if (!(connections_made.includes(entID))){
                     if (this.world.getStars().includes(entID) && entID != starID) {
                         var ent = this.world.get(entID);
+                        
                         ent.addCon(starID);
                         star.addCon(entID);
-
                         var connection = new Connection (starID, entID);
                         this.world.addConnection(connection);
                     }

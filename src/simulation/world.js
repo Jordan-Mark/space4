@@ -1,5 +1,4 @@
 
-
 class World {
     /**
      * 
@@ -31,6 +30,11 @@ class BasicWorld extends World {
 
         this.size = size;
 
+        // grid
+        let g = new Grid(n_grids);
+        let cellSize = Math.min(size.x, size.y) / n_grids;
+        this.grid = new WorldGrid(g, cellSize);
+
         // basic simulation classes
         this.ships = [];
         this.stars = [];
@@ -40,14 +44,14 @@ class BasicWorld extends World {
         // to fetch connection objs from star ids reference
         this.connectionsDict = {};
 
-        // grid
-        let g = new Grid(n_grids);
-        let cellSize = Math.min(size.x, size.y) / n_grids;
+        // assistant classes for game logic
+        this.nearbyStarHighlightManager = new NearbyStarHighlightManager();
+        this.add(this.nearbyStarHighlightManager);
 
-        this.grid = new WorldGrid(g, cellSize);
 
         // no faction
         this.NO_FACTION = new Faction('NO FACTION', { r: 100, g: 100, b: 100 });
+        // this.add(this.NO_FACTION)?
 
     }
 
@@ -90,10 +94,6 @@ class BasicWorld extends World {
     addStar(star) {
         this.add(star);
         this.stars.push(star.getID());
-    }
-
-    highlight(path){
-        // TODO
     }
 
     get(id) {
@@ -174,6 +174,17 @@ class BasicWorld extends World {
             ent.tick(this);
         }
     }
+
+    /* star highlight mechanics */
+    highlightNearbyStar(){
+        this.nearbyStarHighlightManager.start();
+    }
+
+    unHighlightNearbyStar(){
+        this.nearbyStarHighlightManager.stop();
+    }
+
+
 
 
 }

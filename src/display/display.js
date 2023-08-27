@@ -79,6 +79,7 @@ class BasicDisplay extends Display {
         // main entity draw loop
         super.draw(world);
         for (var ent of world.getEntities()) {
+            // ideally these entities are adding requests to the drawQueue
             ent.draw(this);
         }
 
@@ -305,6 +306,15 @@ class BasicDisplay extends Display {
         ellipse(mouseX, mouseY, d * this.camera.zoom);
         pop();
         */
+
+        // draw a debug radius for star searching
+        push();
+        stroke(255);
+        fill(0,0,0,0)
+        var d = 20*2;
+        ellipse(mouseX, mouseY, d * this.camera.zoom);
+        pop();
+
 
         // debug text in top left of screen 
         push();

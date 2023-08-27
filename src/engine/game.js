@@ -12,7 +12,10 @@ class Game {
      * @param {Display} display
      */
 
+    // debug
     db = false;
+
+    // mouse wheel vars
     mouseWheelEvent = null;
     mouseWheelZoomFactor = 3;
 
@@ -80,12 +83,29 @@ class Game {
 
     inputHandler() {
 
-        // this.display.camera.report();
-
+        /* update camera zoom and offset based on key input */
         this.display.updateCameraZoom(this.cameraZoomInput());
         this.display.updateCameraOffset(this.cameraOffsetInput());
+        // this.display.camera.report();
+
+        /* set game attribute for "highlight" */
 
 
+
+    }
+
+    keyPressedHandler(kc /*key code*/){
+
+        if (kc==72) { // 72 = 'h'
+            this.world.highlightNearbyStar();
+        }
+    }
+
+    keyReleasedHandler(kc /*key code*/){
+
+        if (kc==72) { // 72 = 'h'
+            this.world.unHighlightNearbyStar();
+        }
     }
 
 

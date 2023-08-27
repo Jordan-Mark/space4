@@ -59,6 +59,7 @@ function setup() {
 
 }
 
+/* debug function */
 function testPathing() {
     var world = game.world;
 
@@ -86,8 +87,17 @@ function mouseWheel(event) {
 
 function update() {
     game.tick();
-    testPathing();
 }
+function keyPressed(){
+    game.keyPressedHandler(keyCode);
+    return false // prevent any default browser behaviour
+}
+
+function keyReleased(){
+    game.keyReleasedHandler(keyCode);
+    return false // prevent any default broswer behaviour
+}
+
 
 function draw() {
     update();
