@@ -4,7 +4,7 @@ class Star extends WorldEntity {
 
 	diamondDrawSize = 4;
 	starHighlightWeight = 1;
-	defaultStarHighlightColour = {r:255, g:255, b:255}
+	defaultStarHighlightColour = {r:255, g:255, b:255, a:255}
 	defaultStrokeWeight = 0;
 
     constructor(loc, faction, name) {
@@ -20,7 +20,7 @@ class Star extends WorldEntity {
 
     }
 
-	highlight(colour = this.starHighlightColour){
+	highlight(colour = this.defaultStarHighlightColour){
 		this.highlighted = true;
 		this.highlightColour = colour;
 	}
@@ -43,11 +43,16 @@ class Star extends WorldEntity {
 
 
 		if (this.highlighted){
-			display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 2, this.starHighlightWeight, this.highlightColour);
+			var screenpos = display.camera.w2s(this.getPos());
+
+			display.drawDiamond(screenpos, this.diamondDrawSize, this.faction.getColour(), 2, this.starHighlightWeight, this.highlightColour);
+			display.drawText({x:screenpos.x, y:screenpos.y-8}, this.name, this.highlightColour, 10, 3, CENTER);
 		}
 		else {
 			display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 2, this.defaultStrokeWeight);
 		}	
+
+
     }
 
 	displayN(number){

@@ -1,6 +1,6 @@
 class NearbyStarHighlightManager extends Entity {
 
-    WORLD_SEARCH_RADIUS = 20;
+    WORLD_SEARCH_RADIUS = 50;
 
     constructor() {
         super();

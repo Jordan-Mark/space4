@@ -46,9 +46,19 @@ class LineDrawRequest extends DrawRequest {
         this.weight = weight;
         this.colour = colour;
     }
-
 }
 
+class TextDrawRequest extends DrawRequest {
+
+    constructor(pos, text, colour, size, z, align=CENTER) {
+        super(z);
+        this.pos=pos;
+        this.text=text;
+        this.size=size;
+        this.colour=colour;
+        this.align=align;
+    }
+}
 
 
 class BasicDisplay extends Display {
@@ -120,6 +130,9 @@ class BasicDisplay extends Display {
                 else if (request_type == "LineDrawRequest") {
                     this.drawLines(structured_requests[request_type]);
                 }
+                else if (request_type == "TextDrawRequest"){
+                    this.drawTexts(structured_requests[request_type])
+                }
                 else {
                     throw "unknown draw request";
                 }
@@ -153,8 +166,12 @@ class BasicDisplay extends Display {
         this.queue(new DiamondDrawRequest(pos, size, colour, z, weight, strokeColour));
     }
 
-    drawLine(pos1, pos2, weight, colour, z = 0) {
+    drawLine(pos1, pos2, weight, colour, z=0) {
         this.queue(new LineDrawRequest(pos1, pos2, weight, colour, z));
+    }
+
+    drawText(pos, text, colour, size, z=0, align=CENTER){
+        this.queue(new TextDrawRequest(pos, text, colour, size, z, align));
     }
 
     /*draw a batch of unscaled diamonds*/
@@ -202,8 +219,6 @@ class BasicDisplay extends Display {
 
         push()
 
-
-
         if (requests.length > 0) {
 
             beginShape(LINES);
@@ -234,6 +249,25 @@ class BasicDisplay extends Display {
 
         pop();
     }
+
+    /* draw texts */
+    drawTexts(requests){
+
+        if (requests.length > 0) {
+            push();
+            for (var i = 0; i < requests.length; i++) {
+                var req = requests[i];
+                textAlign(req.align);
+                textSize(req.size);
+                strokeWeight(req.weight);
+                fill(req.colour.r, req.colour.g, req.colour.b, req.colour.a);
+                text(req.text, req.pos.x, req.pos.y);
+            }
+            pop();
+        }
+    }
+
+
 
     updateCameraZoom(zoomDelta) {
 
