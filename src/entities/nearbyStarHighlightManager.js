@@ -16,6 +16,10 @@ class NearbyStarHighlightManager extends Entity {
         this.active = false;
     }
 
+    getStar(){
+        return this.star; // id
+    }
+
     tick(world) {
         super.tick()
 
