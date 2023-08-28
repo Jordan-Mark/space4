@@ -22,8 +22,10 @@ class BasicWorldGenerator extends WorldGenerator {
     STAR_MAX_DIST = 50;
     WGEN_PS_BUFFER = 0;
     MIN_STARS = 10; // try and create a world with at least this many stars
-    MAX_STARS = 20;
+    MAX_STARS = 10;
     MIN_STARS_TIMEOUT = 3 // if there has been x attempts to create a world with at least MIN_STARS, give up
+
+    starNamesTaken = [];
 
     /* initiate empty world */
     create(size, gridSize) {
@@ -183,7 +185,7 @@ class BasicWorldGenerator extends WorldGenerator {
 
     /* generates names for stars */
     genStarName(){
-        /* this function returns a realistic sounding planet name */
+
         var starNames = ['Andromeda','Antlia','Apus','Aquarius','Aquila','Ara','Aries','Auriga','Boötes',
                     'Caelum','Camelopardalis','Cancer','Canes Venatici','Canis Superior','Canis Inferior',
                     'Capricornus','Carina','Cassiopeia','Centaurus','Cepheus','Cetus','Chamaeleon','Circinus',
@@ -202,16 +204,19 @@ class BasicWorldGenerator extends WorldGenerator {
 
         var numbers = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII',
                     'XIV', 'XV', 'XVI'];
-        var name = random(starNames);
-        if (random()<0.2){ 
-            name += ' ' + random(suffixes);
+
+        var chanceOfSuffix = 0.2;
+        var chanceOfNumber = 0.2;
+        var nameNotFound = true;
+        while (nameNotFound){
+            var suffix = random() < chanceOfSuffix ? ' ' + suffixes[Math.floor(random(suffixes.length))] : ''; 
+            var number = random() < chanceOfNumber ? ' ' + numbers[Math.floor(random(numbers.length))] : ''; 
+            var starName = starNames[Math.floor(random(starNames.length))] + suffix + number;
+            if (!this.starNamesTaken.includes(starName)){
+                this.starNamesTaken.push(starName);
+                return starName;
+            }
         }
-        
-        if (random()<0.2){ 
-            name += ' ' + random(numbers);
-        }
-        
-        return name;
     }
 
     createFactions(n_factions) {
