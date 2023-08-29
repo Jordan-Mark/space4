@@ -11,14 +11,22 @@ class Star extends WorldEntity {
 		super(loc);
 		this.faction = faction;
 		this.name = name;
+		this.population = 0;
 		this.nearby = []; // should be a list of starIDs
 		this.connections = [];
 		this.highlighted = false;
 		this.highlightColour = this.defaultStarHighlightColour;
-
 		this.displayNumber = null;
 
     }
+
+	setPopulation(population){
+		this.population=population;
+	}
+
+	getPopulation(){
+		return this.population;
+	}
 
 	highlight(colour = this.defaultStarHighlightColour){
 		this.highlighted = true;
@@ -32,6 +40,8 @@ class Star extends WorldEntity {
     draw(display) {
 		super.draw(display);
 
+		/* display a number to the right of the star */
+		/*
 		if (this.displayNumber){
 			var scpos = display.camera.w2s(this.getPos());
 			push();
@@ -40,6 +50,7 @@ class Star extends WorldEntity {
 			text(this.displayNumber.toString(), scpos.x+5, scpos.y+5);
 			pop();
 		}
+		*/
 
 
 		if (this.highlighted){
@@ -47,6 +58,8 @@ class Star extends WorldEntity {
 
 			display.drawDiamond(screenpos, this.diamondDrawSize, this.faction.getColour(), 2, this.starHighlightWeight, this.highlightColour);
 			display.drawText({x:screenpos.x, y:screenpos.y-8}, this.name, this.highlightColour, 10, 3, CENTER);
+			display.drawText({x:screenpos.x, y:screenpos.y+16}, this.faction.getName(), this.highlightColour, 10, 3, CENTER);
+			display.drawText({x:screenpos.x, y:screenpos.y+28}, this.getPopulation().toString() + 'K', this.highlightColour, 10, 3, CENTER);
 		}
 		else {
 			display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 2, this.defaultStrokeWeight);

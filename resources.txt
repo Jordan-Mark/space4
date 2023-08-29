@@ -1,0 +1,12 @@
+
+populations in (thousands), populations can have TASKS
+
+1st Stage:
+produce ships (takes iron);
+produce iron
+
+2nd Stage:
+produce ships (takes iron);
+produce iron
+produce infrastructure
+provide substinence (all populations require sustenance)

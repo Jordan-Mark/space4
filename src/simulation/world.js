@@ -51,7 +51,7 @@ class BasicWorld extends World {
 
         // no faction
         this.NO_FACTION = new Faction('NO FACTION', { r: 100, g: 100, b: 100 });
-        // this.add(this.NO_FACTION)?
+        //this.add(this.NO_FACTION);
 
     }
 
