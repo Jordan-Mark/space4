@@ -4,3 +4,9 @@
     margin: 0px;
     overflow: hidden;
 }
+
+#sketchContainer {
+    border: 14px solid red;
+    width: 50%;
+    height: 50%;
+}

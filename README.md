@@ -3,9 +3,11 @@
 
 todo:
 bring camera key controls into standardized event system
-build another system
+come up with a resize solution
+build ui paragraph system?
 
 working on:
+
 
 done:
 build active "events" system (note: keypress)

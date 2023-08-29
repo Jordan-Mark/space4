@@ -9,8 +9,8 @@ function setup() {
     var GAME_DEBUG = true;
 
     /* display parameters */
-    var SCREEN_X = window.innerWidth;
-    var SCREEN_Y = window.innerHeight;
+    var SCREEN_X = document.getElementById('sketchContainer').clientWidth; //window.innerWidth;
+    var SCREEN_Y = document.getElementById('sketchContainer').clientHeight; //window.innerHeight;
 
     /* world parameters */
     var WORLD_SIZE = { x: 5000, y: 5000 };
@@ -34,7 +34,9 @@ function setup() {
     /* GAME INITIALISATION */
 
     // birth p5.js
-    createCanvas(SCREEN_X, SCREEN_Y);
+    var canvas = createCanvas(SCREEN_X, SCREEN_Y);
+    canvas.parent('sketchContainer'); // assign sketch to html div #sketchContainer
+
 
     // create world
     let worldGenerator = new BasicWorldGenerator();

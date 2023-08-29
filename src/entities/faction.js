@@ -8,7 +8,6 @@ class Faction extends Entity {
 		this.colour = colour;
 		this.ships = ships;
 		this.systems = systems;
-		
 		this.patron=patron;
 		this.clients=clients;
 	}
