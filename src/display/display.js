@@ -73,6 +73,7 @@ class BasicDisplay extends Display {
         this.cameraOutMax = outMax;
         this.cameraInMax = inMax;
 
+
     }
 
     draw(world, debug = false) {
@@ -350,6 +351,7 @@ class BasicDisplay extends Display {
         ellipse(mouseX, mouseY, d * this.camera.zoom);
         pop();
         */
+
 
 
         // debug text in top left of screen 
