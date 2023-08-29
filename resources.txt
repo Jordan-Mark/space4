@@ -1,6 +1,10 @@
 
 populations in (thousands), populations can have TASKS
 
+populations have loyalty to a faction (might have factions within factions soon)
+populations have standard_of_life ?
+
+
 1st Stage:
 produce ships (takes iron);
 produce iron
@@ -10,3 +14,8 @@ produce ships (takes iron);
 produce iron
 produce infrastructure
 provide substinence (all populations require sustenance)
+
+
+HISTORY simulation
+well, there are entities
+history events are associated with entities (?);

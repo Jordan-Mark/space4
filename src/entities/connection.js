@@ -1,4 +1,4 @@
-class Connection extends Entity {
+class Connection extends GameObject {
 
     defaultStroke = { r: 70, g: 70, b: 70 };
     highlightStroke = {r: 255, g: 255, b: 255};

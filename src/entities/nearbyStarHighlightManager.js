@@ -1,4 +1,4 @@
-class NearbyStarHighlightManager extends Entity {
+class NearbyStarHighlightManager extends GameScript {
 
     WORLD_SEARCH_RADIUS = 50;
 

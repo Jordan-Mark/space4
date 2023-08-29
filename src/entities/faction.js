@@ -1,6 +1,6 @@
 
 
-class Faction extends Entity {
+class Faction extends GameObject {
 
 	constructor(name, colour, ships = [], systems = [], clients =[], patron=null) {
 		super();

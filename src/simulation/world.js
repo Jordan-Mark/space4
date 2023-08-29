@@ -21,7 +21,7 @@ class BasicWorld extends World {
 
     globalTimeFactor = 1; // coefficient to all time dependent simulation elements
     dt = null; // adjusted deltaTime (seconds)
-    ents = {};
+    gameObjects = {};
     
 
     constructor(size, n_grids) {
@@ -56,7 +56,7 @@ class BasicWorld extends World {
     }
 
     add(ent) {
-        this.ents[ent.getID()] = ent;
+        this.gameObjects[ent.getID()] = ent;
 
         // if WorldEntity (aka has transform), add to grid
         if (ent instanceof WorldEntity){
@@ -72,7 +72,7 @@ class BasicWorld extends World {
         var finalEnts = [];
 
         for (var id of entsInGrids){
-            if (r * r > distSqrd(pos, this.ents[id].getPos())){
+            if (r * r > distSqrd(pos, this.gameObjects[id].getPos())){
                 finalEnts.push(id);
             }
         }
@@ -97,7 +97,7 @@ class BasicWorld extends World {
     }
 
     get(id) {
-        return this.ents[id];
+        return this.gameObjects[id];
     }
 
     getConnection(star1ID, star2ID){
@@ -106,7 +106,7 @@ class BasicWorld extends World {
 
     /* returns all entity OBJECTS */
     getEntities() {
-        return Object.values(this.ents);
+        return Object.values(this.gameObjects);
     }
 
     /* return all faction IDs */
@@ -153,9 +153,9 @@ class BasicWorld extends World {
     /* destroy all references to an entity in this */
     remove(id) {
         // TODO : should entities hold their own grid position?
-        var grid_position = this.grid.getCell(this.ents[id].getPos());
+        var grid_position = this.grid.getCell(this.gameObjects[id].getPos());
         this.grid.removeEntity(grid_position, id);
-        delete this.ents[id];
+        delete this.gameObjects[id];
     }
 
     setGlobalTimeFactor(timeFactor) {
@@ -170,7 +170,7 @@ class BasicWorld extends World {
     tick() {
         this.preTick();
         super.tick();
-        for (var ent of Object.values(this.ents)) {
+        for (var ent of Object.values(this.gameObjects)) {
             ent.tick(this);
         }
     }

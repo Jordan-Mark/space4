@@ -1,6 +1,7 @@
 
 
-class Entity {
+// all gameobjects methods are called by game -> world -> update();
+class GameObject {
     /**
      * 
      * abstract entity class 
@@ -33,9 +34,17 @@ class Entity {
         // destroy this object as a functioning entity (but not all references, necessarially);
         world.remove(this.getID());
     }
- 
 }
 
+// gamescripts provide functionality without being part of the simulation.
+class GameScript extends GameObject {
+}
+
+// entities are simulation objects without a transform
+class Entity extends GameObject {
+}
+
+// worldentities are simulation objects with a transform
 class WorldEntity extends Entity {
     /**
      * 
@@ -52,5 +61,4 @@ class WorldEntity extends Entity {
     getPos() {
         return this.pos;
     }
-
 }
