@@ -2,11 +2,28 @@
     border: 0px;
     padding: 0px;
     margin: 0px;
+    box-sizing: border-box;
     overflow: hidden;
 }
 
+body {
+    height:100%;
+    width:100%;
+    background-color: grey;
+}
+
 #sketchContainer {
-    border: 14px solid red;
-    width: 50%;
-    height: 50%;
+    border-right: 1px solid white;
+    width: 75%;
+    height: 100%;
+    float: left;
+}
+#paragraphDisplay {
+    width: 25%;
+    height: 100%;
+    background-color: #202324;
+    float: right;
+    color: white;
+    text-align: centre;
+
 }
