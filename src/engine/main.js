@@ -31,6 +31,8 @@ function setup() {
     var CAMERA_OUT_MAX = 0.05;
 
 
+
+
     /* GAME INITIALISATION */
 
     // birth p5.js
@@ -48,7 +50,7 @@ function setup() {
 
     // create display
     var camera = new Camera(CAMERA_OFFSET.x, CAMERA_OFFSET.y, SCREEN_X, SCREEN_Y, CAMERA_ZOOM, CAMERA_ZOOM_SPEED, CAMERA_MOVE_SPEED);
-    var display = new BasicDisplay(camera, CAMERA_OUT_MAX, CAMERA_IN_MAX);
+    var display = new IntermediateDisplay(camera, CAMERA_OUT_MAX, CAMERA_IN_MAX, document.getElementById('paragraphDisplay'));
 
     // init game
     game = new Game(world, display);

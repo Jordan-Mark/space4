@@ -19,3 +19,5 @@ provide substinence (all populations require sustenance)
 HISTORY simulation
 well, there are entities
 history events are associated with entities (?);
+
+    -- ecs would help here

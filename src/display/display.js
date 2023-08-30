@@ -374,3 +374,12 @@ class BasicDisplay extends Display {
     }
 
 }
+
+class IntermediateDisplay extends BasicDisplay {
+
+    constructor(camera, outMax, inMax, htmlDisplayElement){
+        super(camera, outMax, inMax)
+        this.htmlDisplayElement = htmlDisplayElement;
+        this.htmlDisplayElement.innerHTML = "it works!";
+    }
+}
