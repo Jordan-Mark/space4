@@ -315,14 +315,25 @@ class BasicDisplay extends Display {
         let world_mouse = c.s2w({ x: mouseX, y: mouseY });
         let grid_pos = world.grid.getCell(world_mouse);
 
+
         /*
+        // draw mouse radius
+        stroke(255);
+        let d = r * 2
+        ellipse(mouseX, mouseY, d * this.camera.zoom);
+        pop();
+        */
+
+
+
         // draw grid mouse search patters
-        var r = 150;
+        var r = game.world.nearbyStarHighlightManager.WORLD_SEARCH_RADIUS;
         push();
         fill(0, 0, 0, 0);
         strokeWeight(1);
         var grids = world.grid.getGridsInR(world_mouse, r);
-
+        
+        
         // draw grid
         for (var grid of grids) {
             let worldx = grid.x * world.grid.cell_size;
@@ -335,22 +346,16 @@ class BasicDisplay extends Display {
 
         }
 
-        // draw mouse radius
-        stroke(255);
-        let d = r * 2
-        ellipse(mouseX, mouseY, d * this.camera.zoom);
-        pop();
-        */
-
         // draw a debug radius for star searching
-        /*
+
         push();
         stroke(255);
         fill(0,0,0,0)
-        var d = 20*2;
+        var d = game.world.nearbyStarHighlightManager.WORLD_SEARCH_RADIUS*2;
         ellipse(mouseX, mouseY, d * this.camera.zoom);
         pop();
-        */
+
+        
 
 
 
@@ -373,16 +378,4 @@ class BasicDisplay extends Display {
 
     }
 
-}
-
-class IntermediateDisplay extends BasicDisplay {
-
-    constructor(camera, outMax, inMax, htmlDisplayElement){
-        super(camera, outMax, inMax)
-        this.htmlDisplayElement = htmlDisplayElement;
-    }
-
-    setParagraph(html){
-        this.htmlDisplayElement.innerHTML = "html!";
-    }
 }

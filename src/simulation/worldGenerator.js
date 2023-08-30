@@ -102,15 +102,15 @@ class BasicWorldGenerator extends WorldGenerator {
         var points = [];
         var spawnPoints = [];
 
-        spawnPoints.push(createVector(max_x / 2, max_y / 2));
+        var initial = createVector(max_x / 2, max_y / 2);
+        spawnPoints.push(initial);
+        //points.push(initial);
 
         /* identify parent point for spawning */
         while (spawnPoints.length > 0){
             var spawnIndex = int(random(spawnPoints.length));
             var spawnCentre = spawnPoints[spawnIndex]; 
             var candidateAccepted = false;
-
-            /* create a candidate point in a random surrounding grid */
             
 
 
@@ -120,13 +120,12 @@ class BasicWorldGenerator extends WorldGenerator {
             let nsbr = noise(spawnCentre.x * noiseScale, spawnCentre.y * noiseScale) * 1.5 + gradient;
 
             nsbr = Math.round(nsbr);
- 
-
             // nsbr 1 fails quickly
             // nsbr 2 sometimes fails
             // nsbr 3 is patchy but stable
 
 
+            /* create a candidate point in a random surrounding grid */
             for (var i=0; i<nsbr; i++){
                 var angle = random(TWO_PI);
                 var dir = createVector(sin(angle), cos(angle));
