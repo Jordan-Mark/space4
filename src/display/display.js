@@ -380,6 +380,9 @@ class IntermediateDisplay extends BasicDisplay {
     constructor(camera, outMax, inMax, htmlDisplayElement){
         super(camera, outMax, inMax)
         this.htmlDisplayElement = htmlDisplayElement;
-        this.htmlDisplayElement.innerHTML = "it works!";
+    }
+
+    setParagraph(html){
+        this.htmlDisplayElement.innerHTML = "html!";
     }
 }

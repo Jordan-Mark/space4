@@ -42,6 +42,21 @@ class GameScript extends GameObject {
 
 // entities are simulation objects without a transform
 class Entity extends GameObject {
+
+    feature (world) {
+
+        // check if already featured
+        if (!(game.getParagraph().getFeatured() == this.getID())){
+            game.getParagraph().feature(this.getID());
+
+            this.write(world);
+        }
+    }
+
+    write (world){
+        game.getParagraph().display('entity id: ' + this.getID());
+    }
+
 }
 
 // worldentities are simulation objects with a transform

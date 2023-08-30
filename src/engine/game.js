@@ -19,9 +19,22 @@ class Game {
     mouseWheelEvent = null;
     mouseWheelZoomFactor = 3;
 
-    constructor(world, display) {
+    constructor(world, display, paragraphManager) {
         this.world = world;
         this.display = display;
+        this.paragraphManager = paragraphManager;
+    }
+
+    getParagraph(){
+        return this.paragraphManager;
+    }
+
+    getWorld(){
+        return this.world;
+    }
+
+    getDisplay(){
+        return this.display;
     }
 
     tick() {

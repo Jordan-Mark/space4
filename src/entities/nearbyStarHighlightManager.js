@@ -58,7 +58,10 @@ class NearbyStarHighlightManager extends GameScript {
             // unhighlight old star, rehiglight star (if they exist)
             this.star && world.get(this.star).unHighlight();
             this.star = closestStar;
-            this.star && world.get(this.star).highlight();
+            if (this.star){
+                world.get(this.star).highlight();
+                world.get(this.star).feature(world);
+            }
 
         }
     }
