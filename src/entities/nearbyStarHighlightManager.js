@@ -37,8 +37,8 @@ class NearbyStarHighlightManager extends GameScript {
                 if (world.getStars().includes(entID)){
                     nearbyStars.push(entID);
                 }
-            }
-            
+            }            
+ 
             var closestStar = null;
             var shortestDistance = Infinity;
 
@@ -49,10 +49,9 @@ class NearbyStarHighlightManager extends GameScript {
             for (var starID of nearbyStars){
                 var d = distance(world.get(starID).getPos(), world_mouse);
                 if (d<shortestDistance){
-                    starID = closestStar;
+                    closestStar = starID;
                     shortestDistance=d;
                 }
-
             }
 
             // unhighlight old star, rehiglight star (if they exist)
@@ -62,6 +61,7 @@ class NearbyStarHighlightManager extends GameScript {
                 world.get(this.star).highlight();
                 world.get(this.star).feature(world);
             }
+
 
         }
     }

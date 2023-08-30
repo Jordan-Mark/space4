@@ -340,7 +340,7 @@ class BasicDisplay extends Display {
             let worldy = grid.y * world.grid.cell_size;
             let screenp = c.w2s({ x: worldx, y: worldy });
 
-            stroke(75);
+            stroke(0, 100, 0, 100);
             rectMode(CORNERS);
             rect(screenp.x, screenp.y, screenp.x + world.grid.cell_size * c.zoom, screenp.y + world.grid.cell_size * c.zoom);
 
