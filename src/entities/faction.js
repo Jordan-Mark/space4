@@ -16,6 +16,10 @@ class Faction extends GameObject {
 		this.clients.push(factionID)
 	}
 
+	addShip(shipID) {
+		this.ships.push(shipID);
+	}
+
 	getClients(){
 		return this.clients;
 	}

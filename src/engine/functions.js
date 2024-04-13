@@ -93,6 +93,11 @@ function lerpVector(c1, c2, t) {
 	return { x: c1.x * (1 - t) + c2.x * t, y: c1.y * (1 - t) + c2.y * t };
 }
 
+/* add vectors */
+function addvs(c1, c2) {
+	return { x: c1.x + c2.x, y: c1.y + c2.y };
+}
+
 /* creates a unique string key from two strings & the order of the strings is irrelevant */
 function constKey(str1, str2) {
 	if (str1.localeCompare(str2) > 0){

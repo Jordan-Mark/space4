@@ -11,6 +11,10 @@ class Display {
         this.camera = camera;
     }
 
+    getCamera() {
+        return this.camera;
+    }
+
     draw(world, debug=false){
 
     }
@@ -35,6 +39,21 @@ class DiamondDrawRequest extends DrawRequest {
         this.weight = weight;
         this.strokeColour = strokeColour;
     }
+}
+
+class TriangleDrawRequest extends DrawRequest {
+
+    constructor(c1, c2, c3, colour, weight, strokeColour, z) {
+        super(z);
+        this.c1 = c1;
+        this.c2 = c2;
+        this.c3 = c3;
+        this.colour = colour;
+        this.weight = weight;
+        this.strokeColour = strokeColour;
+        this.z = z;
+    }
+
 }
 
 class LineDrawRequest extends DrawRequest {
@@ -63,7 +82,7 @@ class TextDrawRequest extends DrawRequest {
 
 class BasicDisplay extends Display {
 
-    logTimeout = 0; // attribute used for debugging
+    logTimeout = 0; // attr used for db
 
     requestQueue = {}; // should contain a list of all requests categorised by Z level
 
@@ -134,6 +153,10 @@ class BasicDisplay extends Display {
                 else if (request_type == "TextDrawRequest"){
                     this.drawTexts(structured_requests[request_type])
                 }
+
+                else if (request_type == "TriangleDrawRequest") {
+                    this.drawTriangles(structured_requests[request_type])
+                }
                 else {
                     throw "unknown draw request";
                 }
@@ -151,14 +174,14 @@ class BasicDisplay extends Display {
         this.requestQueue[z].push(request);
 
     
-        // DEBUG check if z=1 requests are successfully being added (they are, here at least)
-        /*
-        if (this.logTimeout < 30 && z===1){
+        // DEBUG check if z=3 requests are successfully being added (they are, here at least)
+
+        if (this.logTimeout < 30 && z === 4) {
             console.log('z submitted:', z);
             console.log('queue()', JSON.parse(JSON.stringify(this.requestQueue)));
-            this.logTimeout++;      
+            this.logTimeout++;
         }
-        */
+        
 
         
     }
@@ -173,6 +196,10 @@ class BasicDisplay extends Display {
 
     drawText(pos, text, colour, size, z=0, align=CENTER){
         this.queue(new TextDrawRequest(pos, text, colour, size, z, align));
+    }
+
+    drawTriangle(c1, c2, c3, colour, weight, strokeColour, z=0) {
+        this.queue(new TriangleDrawRequest(c1, c2, c3, colour, weight, strokeColour, z));
     }
 
     /*draw a batch of unscaled diamonds*/
@@ -214,6 +241,41 @@ class BasicDisplay extends Display {
 
         pop();
     }
+
+    /*draw a batch of unscaled triangles*/
+    drawTriangles(requests) { 
+
+        push();
+        if (requests.length > 0) {
+
+            beginShape(TRIANGLES);
+            var previous_weight = null;
+
+            for (var i = 0; i < requests.length; i++) {
+
+                var req = requests[i];
+
+                // p5 cannot handle strokeweight changes mid shape
+                if (previous_weight != req.weight || previous_weight != null) {
+                    endShape();
+                    strokeWeight(req.weight);
+                    beginShape(TRIANGLES);
+                }
+
+                fill(req.colour.r, req.colour.g, req.colour.b);
+                stroke(req.strokeColour.r, req.strokeColour.g, req.strokeColour.b);
+
+                vertex(req.c1.x, req.c1.y);
+                vertex(req.c2.x, req.c2.y);
+                vertex(req.c3.x, req.c3.y);
+
+                previous_weight = req.weight;
+            } 
+            endShape();
+        }
+        pop();
+    }
+
 
     /*draw a batch of lines*/
     drawLines(requests) {

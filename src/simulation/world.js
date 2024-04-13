@@ -79,6 +79,11 @@ class BasicWorld extends World {
         return finalEnts;
     }
 
+    addShip(ship) {
+        this.add(ship);
+        this.ships.push(ship.getID());
+    }
+
 
     addFaction(faction) {
         this.add(faction);
@@ -127,6 +132,9 @@ class BasicWorld extends World {
         return this.stars.length;
     }
 
+    getShips() {
+        return this.ships;
+    }
 
     /* remove from star list (does not destroy all references, use this.remove) */
     removeStar(id) {

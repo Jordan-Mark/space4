@@ -25,6 +25,19 @@ class Game {
         this.paragraphManager = paragraphManager;
     }
 
+    /*test function to add and draw a ship*/
+    addShip(faction = this.getWorld().getFactions()[0], star = this.getWorld().getStars()[0], speed = 0.025 /*type?*/) {
+        console.log(star);
+        var ship = new Ship(faction, star, speed);
+        var world = this.getWorld();
+        world.addShip(ship);
+        console.log(faction);
+        console.log(world.get(faction));
+        world.get(faction).addShip(ship.getID);
+
+    }
+ 
+
     getParagraph(){
         return this.paragraphManager;
     }

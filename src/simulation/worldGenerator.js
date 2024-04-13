@@ -133,17 +133,14 @@ class BasicWorldGenerator extends WorldGenerator {
                 // IDEA - could increase min radius instead of nsbr?
 
                 /* check for other points in its surrounding grids */
-                console.log('entry');
                 if (this.isValid(candidate, max_x, max_y, cellSize, points, grid, radius, buffer)) {
-                    console.log('accept');
                     /* accept a new point */
                     points.push(createVector(candidate.x, candidate.y));
                     spawnPoints.push(createVector(candidate.x, candidate.y));
-                    grid[int(candidate.x/cellSize)][int(candidate.y/cellSize)] = points.length;
+                    grid[int(candidate.x/cellSize)][int(candidate.y/cellSize)] = points.length; // points.length just assigns each star a number to the grid ... 1, 2, 3 etc
                     candidateAccepted = true;
                     break;
                 }
-                console.log('reject');
             }
 
             /* remove exhausted spawnpoints */
