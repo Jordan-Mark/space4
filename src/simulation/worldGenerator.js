@@ -20,9 +20,8 @@ class WorldGenerator {
 class BasicWorldGenerator extends WorldGenerator {
 
     STAR_MAX_DIST = 50;
-    WGEN_PS_BUFFER = 0;
-    MIN_STARS = 10; // try and create a world with at least this many stars
-    MAX_STARS = 10;
+    MIN_STARS = 300; // try and create a world with at least this many stars
+    MAX_STARS = 500;
     MIN_STARS_TIMEOUT = 3 // if there has been x attempts to create a world with at least MIN_STARS, give up
 
     starNamesTaken = [];
@@ -40,7 +39,7 @@ class BasicWorldGenerator extends WorldGenerator {
         var valid_world = false;
 
         for (var i = 0; i < this.MIN_STARS_TIMEOUT; i++) {
-            var pos_vectors = this.genPoints(this.STAR_MAX_DIST, this.size.x, this.size.y, this.WGEN_PS_BUFFER);
+            var pos_vectors = this.genPoints(this.STAR_MAX_DIST, this.size.x, this.size.y);
             if (pos_vectors.length >= this.MIN_STARS) {
                 valid_world = true;
                 break;
@@ -86,7 +85,7 @@ class BasicWorldGenerator extends WorldGenerator {
 
 
     /* implementation of poisson disc sampling algorithm */
-    genPoints(radius, max_x, max_y, buffer = 10){
+    genPoints(radius, max_x, max_y, buffer=radius){
 
 
         /* create a grid */
@@ -104,7 +103,8 @@ class BasicWorldGenerator extends WorldGenerator {
 
         var initial = createVector(max_x / 2, max_y / 2);
         spawnPoints.push(initial);
-        //points.push(initial);
+        points.push(initial);
+        grid[int(initial.x / cellSize)][int(initial.y / cellSize)] = points.length;
 
         /* identify parent point for spawning */
         while (spawnPoints.length > 0){
@@ -129,10 +129,13 @@ class BasicWorldGenerator extends WorldGenerator {
             for (var i=0; i<nsbr; i++){
                 var angle = random(TWO_PI);
                 var dir = createVector(sin(angle), cos(angle));
-                var candidate = p5.Vector.add(spawnCentre, dir.mult(random(radius, 2*radius)));
+                var candidate = p5.Vector.add(spawnCentre, dir.mult(random(radius, 2 * radius)));
+                // IDEA - could increase min radius instead of nsbr?
 
                 /* check for other points in its surrounding grids */
-                if (this.isValid(candidate, max_x, max_y, cellSize, points, grid, radius, buffer)){
+                console.log('entry');
+                if (this.isValid(candidate, max_x, max_y, cellSize, points, grid, radius, buffer)) {
+                    console.log('accept');
                     /* accept a new point */
                     points.push(createVector(candidate.x, candidate.y));
                     spawnPoints.push(createVector(candidate.x, candidate.y));
@@ -140,6 +143,7 @@ class BasicWorldGenerator extends WorldGenerator {
                     candidateAccepted = true;
                     break;
                 }
+                console.log('reject');
             }
 
             /* remove exhausted spawnpoints */
@@ -167,7 +171,7 @@ class BasicWorldGenerator extends WorldGenerator {
 
             for (var x=searchStartX; x<=searchEndX; x++){
                 for (var y=searchStartY; y<=searchEndY; y++){
-                    var pointIndex = grid[x][y]-1;   
+                    var pointIndex = grid[x][y] - 1;   
                     if (pointIndex != -1){
                         var dst = p5.Vector.add(candidate, p5.Vector.mult(points[pointIndex], -1)).mag();
                         if (dst < radius){
