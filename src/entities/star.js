@@ -17,6 +17,9 @@ class Star extends WorldEntity {
 		this.highlightColour = this.defaultStarHighlightColour;
 		this.displayNumber = null;
 
+		// ship handling
+		this.ships = []; // list of ids
+
     }
 
 	write(world){
@@ -56,6 +59,7 @@ class Star extends WorldEntity {
 		*/
 
 
+		// draw star
 		if (this.highlighted){
 			var screenpos = display.camera.w2s(this.getPos());
 
@@ -71,7 +75,30 @@ class Star extends WorldEntity {
 		}	
 
 
-    }
+		// draw ships
+
+		for (var i = 0; i < this.ships.length; i++) {
+			var ship = game.getWorld().get(this.ships[i]);
+			var camera = display.getCamera();
+
+			// stack ships
+			var offset = {
+				x: int(i / 3) * 8,
+				y: (i % 3) * 7
+			}
+
+			ship.drawShipTriangle(display, offset);
+		}
+	}
+
+	addShip(shipID) {
+		this.ships.push(shipID);
+	}
+
+	removeShip(shipID) {
+		removeFromArr(this.ships, shipID);
+	}
+
 
 	displayN(number){
 		this.displayNumber = number;

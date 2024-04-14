@@ -94,8 +94,17 @@ function lerpVector(c1, c2, t) {
 }
 
 /* add vectors */
-function addvs(c1, c2) {
-	return { x: c1.x + c2.x, y: c1.y + c2.y };
+function addvs(...vectors) {
+
+	let sumX = 0;
+	let sumY = 0;
+
+	vectors.forEach(vector => {
+		sumX += vector.x;
+		sumY += vector.y;
+	});
+
+	return { x: sumX, y: sumY };
 }
 
 /* creates a unique string key from two strings & the order of the strings is irrelevant */
