@@ -62,6 +62,12 @@ function setup() {
     // set globalTimeFactor
     world.setGlobalTimeFactor(GLOBAL_TIME_FACTOR);
 
+    // debug add ship
+    for (var i = 0; i < 1000; i++) {
+        game.addShip();
+    }
+
+
 }
 
 /* debug function */

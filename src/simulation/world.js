@@ -166,6 +166,10 @@ class BasicWorld extends World {
         delete this.gameObjects[id];
     }
 
+    getGlobalTimeFactor() {
+        return this.globalTimeFactor;
+    }
+
     setGlobalTimeFactor(timeFactor) {
         this.globalTimeFactor = timeFactor;
     }

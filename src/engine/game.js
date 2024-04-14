@@ -10,6 +10,9 @@ class Game {
      * 
      * @param {World} world 
      * @param {Display} display
+     * @param {ParagraphManager} paragraphManager
+     * 
+     * 
      */
 
     // debug
@@ -26,7 +29,7 @@ class Game {
     }
 
     /*test function to add and draw a ship*/
-    addShip(faction = this.getWorld().getFactions()[0], star = this.getWorld().getStars()[0], speed = 0.025 /*type?*/) {
+    addShip(faction = this.getWorld().getFactions()[0], star = this.getWorld().getStars()[0], speed = 20 /*type?*/) {
         var ship = new Ship(faction, star, speed);
         var world = this.getWorld();
         console.log(star);

@@ -22,8 +22,28 @@ class Star extends WorldEntity {
 
     }
 
-	write(world){
-		game.getParagraph().display(this.name + '<br>' + 'connections: ' + this.nearby.length.toString() + '<br>' + 'population: ' + this.population.toString() + '<br>' + this.faction.getName());
+	write(world) {
+
+		var shipsParagraph = '';
+		for (var shipID of this.ships) {
+			var ship = world.get(shipID);
+			var faction = world.get(ship.getFaction());
+			var factionColour = faction.getColour();
+			shipsParagraph += 'ship of faction ' + '<span style="color:rgb(' + factionColour.r + ',' + factionColour.g + ',' + factionColour.b + ') ">' + faction.getName() + '</span><br>';
+
+			//rgb(' + int(factionColour.r) + ', ' +  int(factionColour.g) + ', ' + int(factionColour.b) + '; ")>' + faction.getName() + '</span>' + '<br>';
+		}
+		console.log(shipsParagraph);
+
+		var paragraph = this.name + '<br>' +
+			'connections: ' + this.nearby.length.toString() + '<br>' +
+			'population: ' + this.population.toString() + '<br>' +
+			this.faction.getName() + '<br>' +
+			shipsParagraph;
+
+
+		
+		game.getParagraph().display(paragraph);
 	}
 
 	setPopulation(population){
