@@ -2,7 +2,10 @@ class Path {
 
     constructor(nodes){
         this.nodes = nodes;
-        this.length = this.nodes.length;
+    }
+
+    getLength() {
+        return this.nodes.length;
     }
 
     highlight(color={r:255, g:255, b:255}){
@@ -17,6 +20,10 @@ class Path {
                 game.world.get(game.world.getConnection(this.nodes[i], this.nodes[i+1])).highlight();
             }
         }
+    }
+
+    shift() {
+        return (this.nodes.shift());
     }
 }
 

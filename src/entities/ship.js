@@ -12,9 +12,68 @@ class Ship extends WorldEntity {
 		this.warpFrom = null; // index
 		this.warpTo = null; // index
 		this.star = star;
-		this.inWarp = false;
+		this.isAtWarp = false;
+
+		// pathfinding
+		this.path = null;
+
+		//behaviour
+		this.state = 'pathing';
+		this.metaState = 'randomPaths';
 
 	}
+
+	tick(world) {
+
+		if (this.isAtWarp) {
+			this.warpTick(world);
+
+		}
+
+		// randomly travel
+		else {
+			this.metaState_randomPaths(world);
+			this.state_path(world);
+			/*
+			if (random() * 200 < 1) {
+				var random_neighbour = random(world.get(this.star).getNearby());
+				this.travel(random_neighbour);
+			}
+			*/
+
+		}
+	}
+
+	state_path(world) {
+		if (this.path) {
+			this.travel(this.path.shift());
+		}
+	}
+
+	metaState_randomPaths(world) {
+		if (this.path == null && this.star) {
+			var star = world.get(this.star)
+			var randomStar = random(world.getStars());
+			var path = star.djikstra(randomStar);
+			this.path = path;
+			path.highlight();
+		}
+	}
+
+	warpTick(world) {
+
+		this.warpProgress += this.speed * world.deltaTime() * world.getGlobalTimeFactor();
+		this.pos = lerpVector(world.get(this.warpFrom).getPos(),
+			world.get(this.warpTo).getPos(), this.warpProgress / this.warpDistance);
+
+		/* end warp if completed */
+		if (this.warpProgress >= this.warpDistance) {
+			this.finish_travel();
+		}
+
+	}
+	
+
 
 	getFaction() {
 		return this.faction;
@@ -60,7 +119,7 @@ class Ship extends WorldEntity {
 
 		star.removeShip(this.getID());
 
-		this.inWarp = true;
+		this.isAtWarp = true;
 		this.warpDistance = distance(world.get(this.warpFrom).getPos(), world.get(this.warpTo).getPos());
 
 		this.star = null;
@@ -79,32 +138,13 @@ class Ship extends WorldEntity {
 		newStar.addShip(this.getID());
 		newStar.onEntry(this.getID());
 
-		this.inWarp = false;
+		this.isAtWarp = false;
 
 		// set ship coordinates to system coordinates
 		this.pos = game.getWorld().get(this.star).getPos();
 
 	}
 
-	tick(world) {
 
-		if (this.inWarp) {
-			this.warpProgress += this.speed * world.deltaTime() * world.getGlobalTimeFactor();
-			this.pos = lerpVector(world.get(this.warpFrom).getPos(),
-				world.get(this.warpTo).getPos(), this.warpProgress / this.warpDistance);
-
-			/* end warp if completed */
-			if (this.warpProgress >= this.warpDistance) {
-				this.finish_travel();
-			}
-		}
-
-		// randomly travel
-		else {
-			var random_neighbour = random(world.get(this.star).getNearby());
-			this.travel(random_neighbour);
-
-		}
-	}
 
 }
