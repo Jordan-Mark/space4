@@ -75,8 +75,9 @@ class Ship extends WorldEntity {
 		this.warpTo = null;
 		this.warpFrom = null;
 
-		world.get(this.star).addShip(this.getID());
-		console.log(world.get(this.star));
+		var newStar = world.get(this.star)
+		newStar.addShip(this.getID());
+		newStar.onEntry(this.getID());
 
 		this.inWarp = false;
 

@@ -9,7 +9,7 @@ class Star extends WorldEntity {
 
     constructor(loc, faction, name) {
 		super(loc);
-		this.faction = faction;
+		this.faction = faction; //id
 		this.name = name;
 		this.population = 0;
 		this.nearby = []; // should be a list of starIDs
@@ -20,7 +20,31 @@ class Star extends WorldEntity {
 		// ship handling
 		this.ships = []; // list of ids
 
-    }
+	}
+
+
+
+	/* should fire when a ship enters the system */
+	onEntry(shipID) {
+		this.updateFactions();
+	}
+
+	/* this function checks if there are only ships of one faction. if so, it changes to that faction */h
+	updateFactions() {
+
+		var factions = [];
+		if (this.ships.length > 0) {
+			for (var shipID of this.ships) {
+				var ship = game.getWorld().get(shipID);
+				if (!(factions.includes(ship.getFaction()))) {
+					factions.push(ship.getFaction());
+				}
+			}
+		}
+		if (factions.length == 1) {
+			this.faction = factions[0];
+		}
+	}
 
 	write(world) {
 
@@ -35,10 +59,12 @@ class Star extends WorldEntity {
 		}
 		console.log(shipsParagraph);
 
+
+		var faction = world.get(this.faction);
 		var paragraph = this.name + '<br>' +
 			'connections: ' + this.nearby.length.toString() + '<br>' +
 			'population: ' + this.population.toString() + '<br>' +
-			this.faction.getName() + '<br>' +
+			faction.getName() + '<br>' +
 			shipsParagraph;
 
 
@@ -80,10 +106,13 @@ class Star extends WorldEntity {
 
 
 		// draw star
+
+		var faction = game.getWorld().get(this.faction);
+		
 		if (this.highlighted){
 			var screenpos = display.camera.w2s(this.getPos());
 
-			display.drawDiamond(screenpos, this.diamondDrawSize, this.faction.getColour(), 2, this.starHighlightWeight, this.highlightColour);
+			display.drawDiamond(screenpos, this.diamondDrawSize, faction.getColour(), 2, this.starHighlightWeight, this.highlightColour);
 			display.drawText({x:screenpos.x, y:screenpos.y-8}, this.name, this.highlightColour, 10, 3, CENTER);
 			/*
 			display.drawText({x:screenpos.x, y:screenpos.y+16}, this.faction.getName(), this.highlightColour, 10, 3, CENTER);
@@ -91,7 +120,7 @@ class Star extends WorldEntity {
 			*/
 		}
 		else {
-			display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, this.faction.getColour(), 2, this.defaultStrokeWeight);
+			display.drawDiamond(display.camera.w2s(this.getPos()), this.diamondDrawSize, faction.getColour(), 2, this.defaultStrokeWeight);
 		}	
 
 

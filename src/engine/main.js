@@ -63,13 +63,13 @@ function setup() {
     world.setGlobalTimeFactor(GLOBAL_TIME_FACTOR);
 
     // debug add ship
-    for (var i = 0; i < 1000; i++) {
+    for (var i = 0; i < 10; i++) {
         game.addShip();
     }
 
 
 }
-
+dw
 /* debug function */
 function testPathing() {
     var world = game.world;
