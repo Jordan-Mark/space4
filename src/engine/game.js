@@ -29,7 +29,7 @@ class Game {
     }
 
     /*test function to add and draw a ship*/
-    addShip(faction = this.getWorld().getFactions()[1], star = this.getWorld().getStars()[0], speed = 20 /*type?*/) {
+    addShip(faction = this.getWorld().getFactions()[1], star = this.getWorld().getStars()[0], speed = 200 /*type?*/) {
         var ship = new Ship(faction, star, speed);
         var world = this.getWorld();
         world.addShip(ship);

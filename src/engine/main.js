@@ -69,7 +69,7 @@ function setup() {
 
 
 }
-dw
+
 /* debug function */
 function testPathing() {
     var world = game.world;

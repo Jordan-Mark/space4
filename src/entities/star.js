@@ -113,7 +113,7 @@ class Star extends WorldEntity {
 			var screenpos = display.camera.w2s(this.getPos());
 
 			display.drawDiamond(screenpos, this.diamondDrawSize, faction.getColour(), 2, this.starHighlightWeight, this.highlightColour);
-			display.drawText({x:screenpos.x, y:screenpos.y-8}, this.name, this.highlightColour, 10, 3, CENTER);
+			//display.drawText({x:screenpos.x, y:screenpos.y-8}, this.name, this.highlightColour, 10, 3, CENTER);
 			/*
 			display.drawText({x:screenpos.x, y:screenpos.y+16}, this.faction.getName(), this.highlightColour, 10, 3, CENTER);
 			display.drawText({x:screenpos.x, y:screenpos.y+28}, this.getPopulation().toString() + 'K', this.highlightColour, 10, 3, CENTER);

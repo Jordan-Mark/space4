@@ -8,6 +8,8 @@ class Path {
         return this.nodes.length;
     }
 
+
+
     highlight(color={r:255, g:255, b:255}){
 
         for (var i=0; i<this.nodes.length; i++){
@@ -18,6 +20,36 @@ class Path {
             // highlight connections
             if (i+1 in this.nodes){
                 game.world.get(game.world.getConnection(this.nodes[i], this.nodes[i+1])).highlight();
+            }
+        }
+    }
+
+    unHighlight(){
+
+        for (var i=0; i<this.nodes.length; i++){
+
+            // highlight stars
+
+            game.world.get(this.nodes[i]).unHighlight();
+
+            // highlight connections
+            if (i+1 in this.nodes){
+                game.world.get(game.world.getConnection(this.nodes[i], this.nodes[i+1])).unHighlight();
+            }
+        }
+    }
+
+    // gets the next star in the path. returns null if already at the end.
+    next(currentNode){
+        for (var i=0; i < this.nodes.length; i++){
+            var node = this.nodes[i];
+            if (node==currentNode){
+                if (!(currentNode==this.nodes[-1])){ // check if not last node
+                    return this.nodes[i+1];
+                }
+                else {
+                    return null;
+                }
             }
         }
     }

@@ -2,7 +2,7 @@
 
 class Ship extends WorldEntity {
 
-	constructor(faction, star, speed = 20 /*probably best to have ship types? -- json*/) {
+	constructor(faction, star, speed = 200 /*probably best to have ship types? -- json*/) {
 		super(game.getWorld().get(star).getPos());
 
 		this.faction = faction;
@@ -46,13 +46,19 @@ class Ship extends WorldEntity {
 
 	state_path(world) {
 		if (this.path) {
-			this.travel(this.path.shift());
+			if (this.path.next(this.star)){
+				this.travel(this.path.next(this.star));
+			}
+			else {
+				this.path.unHighlight(); // not higlighting because its 0
+				this.path=null;
+			}
 		}
 	}
 
 	metaState_randomPaths(world) {
 		if (this.path == null && this.star) {
-			var star = world.get(this.star)
+			var star = world.get(this.star);
 			var randomStar = random(world.getStars());
 			var path = star.djikstra(randomStar);
 			this.path = path;
