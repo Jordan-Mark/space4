@@ -63,11 +63,9 @@ function setup() {
     world.setGlobalTimeFactor(GLOBAL_TIME_FACTOR);
 
     // debug add ship
-    for (var i = 0; i < 1; i++) {
-        game.addShip();
+    for (var i = 0; i < 3; i++) {
+        game.addShip(game.getWorld().getFactions()[1], game.getWorld().getStars()[0], 200 /*speed. type?*/);
     }
-
-
 }
 
 /* debug function */

@@ -2,7 +2,7 @@
 
 class Ship extends WorldEntity {
 
-	constructor(faction, star, speed = 200 /*probably best to have ship types? -- json*/) {
+	constructor(faction, star, speed /*probably best to have ship types? -- json*/) {
 		super(game.getWorld().get(star).getPos());
 
 		this.faction = faction;
@@ -21,6 +21,17 @@ class Ship extends WorldEntity {
 		this.state = 'pathing';
 		this.metaState = 'randomPaths';
 
+		// highlight
+		this.highlighted = false;
+
+	}
+
+	highlight(){
+		this.highlighted=true;
+	}
+
+	unHighLight(){
+		this.highlighted=false;
 	}
 
 	tick(world) {
@@ -34,13 +45,6 @@ class Ship extends WorldEntity {
 		else {
 			this.metaState_randomPaths(world);
 			this.state_path(world);
-			/*
-			if (random() * 200 < 1) {
-				var random_neighbour = random(world.get(this.star).getNearby());
-				this.travel(random_neighbour);
-			}
-			*/
-
 		}
 	}
 
@@ -66,6 +70,7 @@ class Ship extends WorldEntity {
 		}
 	}
 
+	/* run per tick if at warp */
 	warpTick(world) {
 
 		this.warpProgress += this.speed * world.deltaTime() * world.getGlobalTimeFactor();
@@ -78,8 +83,6 @@ class Ship extends WorldEntity {
 		}
 
 	}
-	
-
 
 	getFaction() {
 		return this.faction;
@@ -111,7 +114,12 @@ class Ship extends WorldEntity {
 
 		//console.log(c1, c2, c3);
 
-		display.drawTriangle(c1, c2, c3, faction.getColour(), 1, faction.getColour(), 5);
+		if (this.highlighted){
+			display.drawTriangle(c1, c2, c3, faction.getColour(), 1, {r:255, g:255, b:255}, 5);
+		}
+		else {
+			display.drawTriangle(c1, c2, c3, faction.getColour(), 1, faction.getColour(), 5);
+		}
 	}
 
 

@@ -54,17 +54,14 @@ class Star extends WorldEntity {
 			var faction = world.get(ship.getFaction());
 			var factionColour = faction.getColour();
 			shipsParagraph += 'ship of faction ' + '<span style="color:rgb(' + factionColour.r + ',' + factionColour.g + ',' + factionColour.b + ') ">' + faction.getName() + '</span><br>';
-
-			//rgb(' + int(factionColour.r) + ', ' +  int(factionColour.g) + ', ' + int(factionColour.b) + '; ")>' + faction.getName() + '</span>' + '<br>';
 		}
-		console.log(shipsParagraph);
-
 
 		var faction = world.get(this.faction);
+		var factionColour = faction.getColour();
 		var paragraph = this.name + '<br>' +
 			'connections: ' + this.nearby.length.toString() + '<br>' +
 			'population: ' + this.population.toString() + '<br>' +
-			faction.getName() + '<br>' +
+			'<span style="color:rgb(' + factionColour.r + ',' + factionColour.g + ',' + factionColour.b + ') ">' + faction.getName() + '</span><br>' +
 			shipsParagraph;
 
 
